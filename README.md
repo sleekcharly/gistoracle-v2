@@ -1,4 +1,4 @@
-# This is the official Next verion of Gistoracle
+# This is the official Next version of Gistoracle
 
 This version was built to incorporate server side rendering and improve SEO.
 
