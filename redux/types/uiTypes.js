@@ -1,0 +1,2 @@
+// UI reducer types
+export const SET_FEATURED_NAV_CATEGORIES = "SET_FEATURED_NAV_CATEGORIES";
