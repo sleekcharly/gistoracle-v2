@@ -1,9 +1,5 @@
-function [slug]() {
-    return (
-        <div>
-            
-        </div>
-    )
+function Post() {
+  return <div></div>;
 }
 
-export default [slug]
+export default Post;

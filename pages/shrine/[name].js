@@ -1,9 +1,5 @@
-function [name]() {
-    return (
-        <div>
-            
-        </div>
-    )
+function Shrine() {
+  return <div></div>;
 }
 
-export default [name]
+export default Shrine;
