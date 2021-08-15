@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import NextLink from "next/Link";
+import NextLink from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import Menu from "@material-ui/core/Menu";
