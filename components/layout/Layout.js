@@ -61,7 +61,7 @@ function Layout() {
       </Head>
 
       {/* Header */}
-      <Header />
+      <Header featuredNavCategories={featuredNavCategories} />
     </div>
   );
 }

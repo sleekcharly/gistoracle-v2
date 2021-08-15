@@ -37,6 +37,6 @@ const app = !firebase.apps.length
 const db = app.firestore();
 const dataStore = firebase;
 const auth = app.auth();
-const analytics = firebase.analytics();
+// const analytics = firebase.analytics();
 
-export { db, dataStore, auth, analytics };
+export { db, dataStore, auth };

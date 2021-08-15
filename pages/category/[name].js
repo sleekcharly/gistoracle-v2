@@ -1,9 +1,5 @@
-function [name]() {
-    return (
-        <div>
-            
-        </div>
-    )
+function Category() {
+  return <div>category page</div>;
 }
 
-export default [name]
+export default Category;
