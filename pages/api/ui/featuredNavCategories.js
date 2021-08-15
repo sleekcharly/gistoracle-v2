@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import db from "../../../firebase";
+import { db } from "../../../firebase";
 
 const handler = nc();
 
@@ -9,17 +9,17 @@ handler.get(async (req, res) => {
     .limit(6)
     .orderBy("nav")
     .get()
-    .then(data => {
+    .then((data) => {
       let featuredNavCategories = [];
-      data.forEach(doc => {
+      data.forEach((doc) => {
         featuredNavCategories.push({
           featuredNavCategoryId: doc.id,
-          ...doc.data()
+          ...doc.data(),
         });
       });
       return res.json(featuredNavCategories);
     })
-    .catch(err => console.error(err));
+    .catch((err) => console.error(err));
 });
 
 export default handler;
