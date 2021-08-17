@@ -27,7 +27,11 @@ const firebaseConfig = {
   appId:
     process.env.NODE_ENV === "production"
       ? process.env.FIREBASE_APP_ID
-      : process.env.FIREBASE_DEV_APP_ID
+      : process.env.FIREBASE_DEV_APP_ID,
+  measurementId:
+    process.env.NODE_ENV === "production"
+      ? process.env.FIREBASE_MEASUREMENT_ID
+      : process.env.FIREBASE_DEV_MEASUREMENT_ID,
 };
 
 const app = !firebase.apps.length
@@ -37,6 +41,6 @@ const app = !firebase.apps.length
 const db = app.firestore();
 const dataStore = firebase;
 const auth = app.auth();
-// const analytics = firebase.analytics();
+const analytics = firebase.analytics;
 
-export { db, dataStore, auth };
+export { db, dataStore, auth, analytics };

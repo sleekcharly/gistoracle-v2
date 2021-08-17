@@ -9,6 +9,7 @@ import {
   SET_FEATURED_NAV_CATEGORIES,
 } from "../redux/types/uiTypes";
 import * as cookie from "cookie";
+import { getSession } from "next-auth/client";
 
 export default function Home() {
   return (
@@ -25,7 +26,7 @@ export default function Home() {
 // get server side props with SSR
 export async function getServerSideProps(context) {
   // Get the authenticated user
-  // const session = await getSession(context);
+  //   const session = await getSession(context);
 
   // get cookies from browser
   const cookies = context.req.headers.cookie;
