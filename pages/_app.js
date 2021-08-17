@@ -6,6 +6,7 @@ import { useStore } from "../redux/store";
 
 function MyApp({ Component, pageProps }) {
   const store = useStore(pageProps.initialReduxState);
+
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Provider store={store}>

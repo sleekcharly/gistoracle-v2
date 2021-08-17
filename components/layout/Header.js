@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import Menu from "@material-ui/core/Menu";
-import { MenuIcon, SearchIcon } from "@heroicons/react/outline";
+import { MenuIcon, SearchIcon, MoonIcon } from "@heroicons/react/outline";
 import {
   ChevronDoubleLeftIcon,
   ChevronDownIcon,
@@ -13,15 +13,59 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/solid";
 import Data from "../../utils/data";
-import { Link, MenuItem } from "@material-ui/core";
+import { Divider, Link, MenuItem, Switch } from "@material-ui/core";
+import { useTheme } from "next-themes";
+import { shallowEqual, useSelector, useDispatch } from "react-redux";
 
 function Header({ featuredNavCategories }) {
+  // *** get redux state parameters ***//
+  // get server-side rendered darkmode state from redux state
+  const useDarkMode = () => {
+    return useSelector(
+      (state) => ({
+        darkMode: state.UI.darkMode,
+      }),
+      shallowEqual
+    );
+  };
+
+  // destructure darkMode
+  const { darkMode } = useDarkMode();
+  console.log(darkMode);
+
+  // define dispatch
+  const dispatch = useDispatch();
+
+  // Change theme handler
+  const { systemTheme, theme, setTheme } = useTheme();
+  const darkModeChanger = () => {
+    const currentTheme = theme === "system" ? systemTheme : theme;
+
+    dispatch({
+      type: currentTheme === "dark" ? "DARK_MODE_OFF" : "DARK_MODE_ON",
+    });
+
+    if (currentTheme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+
+    // save dark mode preference in cookies
+    const newDarkMode = !darkMode;
+    Cookies.set("darkMode", newDarkMode ? "ON" : "OFF");
+
+    // close menu
+    handleAccountIconClose();
+  };
+
   // desktop more nav categories from data
   const desktopNavCategories = Data.navCategories.slice(7);
 
   // define state parameters
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
+  const [accountIconAnchorEl, setAccountIconAnchorEl] = React.useState(null);
 
   //open more menu
   const handleMoreButtonClick = (event) => {
@@ -30,6 +74,15 @@ function Header({ featuredNavCategories }) {
   // close more menu
   const handleMoreClose = () => {
     setAnchorEl(null);
+  };
+
+  // open authentication menu on account icon is clicked
+  const handleAccountIconClick = (event) => {
+    setAccountIconAnchorEl(event.currentTarget);
+  };
+  // close authentication menu
+  const handleAccountIconClose = () => {
+    setAccountIconAnchorEl(null);
   };
   // open mobile category menu icon
   const handleIconClick = (event) => {
@@ -45,7 +98,7 @@ function Header({ featuredNavCategories }) {
       <NextLink href="/" passHref>
         <img
           src="/images/gistoracle_logo.png"
-          className="w-[70px] lg:w-[100px] lg:h-[40px]"
+          className="w-[70px] lg:w-[100px] lg:h-[40px] cursor-pointer"
           alt="Gist oracle logo"
         />
       </NextLink>
@@ -84,13 +137,13 @@ function Header({ featuredNavCategories }) {
               <MenuItem
                 key={mobileMenuCategory.name}
                 onClick={handleIconClose}
-                className="divide-y divide-gray-100 "
+                className="divide-y divide-gray-100 dark:divide-gray-500 "
               >
                 <NextLink
                   href={`/category/${mobileMenuCategory.name}`}
                   passHref
                 >
-                  <p className="uppercase font-medium text-xs">
+                  <p className="uppercase font-medium text-xs dark:text-white">
                     {mobileMenuCategory.name}
                   </p>
                 </NextLink>
@@ -100,7 +153,7 @@ function Header({ featuredNavCategories }) {
         </div>
 
         {/* Desktop navigation */}
-        <div className="hidden lg:flex items-center space-x-5 xl:space-x-8 ml-10">
+        <div className="hidden lg:flex items-center space-x-4 xl:space-x-6 ml-8">
           {featuredNavCategories.map((nav) => (
             <a
               className="header-link group"
@@ -120,7 +173,7 @@ function Header({ featuredNavCategories }) {
               aria-haspopup="true"
               onClick={handleMoreButtonClick}
             >
-              <span className="text-[#800000] dark:text-[#D7DADC] uppercase font-medium text-sm">
+              <span className="text-[#800000] dark:text-[#D7DADC] uppercase font-medium text-xs">
                 More
               </span>
 
@@ -145,13 +198,13 @@ function Header({ featuredNavCategories }) {
                 <MenuItem
                   key={navMenuListCategory.name}
                   onClick={handleMoreClose}
-                  className="divide-y divide-gray-100 "
+                  className="divide-y divide-gray-100 dark:divide-gray-500 "
                 >
                   <NextLink
                     href={`/category/${navMenuListCategory.name}`}
                     passHref
                   >
-                    <p className="uppercase font-medium text-sm text-center text-[#800000] dark:text-black">
+                    <p className="uppercase font-medium text-xs text-center text-[#800000] dark:text-white">
                       {navMenuListCategory.name}
                     </p>
                   </NextLink>
@@ -188,13 +241,59 @@ function Header({ featuredNavCategories }) {
             type="button"
             className="inline-flex items-center justify-center w-full lg:hidden px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
             id="menu-button"
-            aria-expanded="true"
+            aria-label="login or signup"
+            aria-controls="authentication menu"
+            onClick={handleAccountIconClick}
             aria-haspopup="true"
           >
             <UserCircleIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
 
             <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC]" />
           </button>
+          <Menu
+            id="authentication menu"
+            elevation={0}
+            getContentAnchorEl={null}
+            anchorEl={accountIconAnchorEl}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            keepMounted
+            open={Boolean(accountIconAnchorEl)}
+            onClose={handleAccountIconClose}
+          >
+            <MenuItem onClick={handleAccountIconClose} disableGutters>
+              <button className="text-[#800000] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0  tracking-wide">
+                Login
+              </button>
+            </MenuItem>
+            <Divider />
+
+            <MenuItem onClick={handleAccountIconClose} disableGutters>
+              <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0 bg-[#933a16] dark:bg-gray-500">
+                Signup
+              </button>
+            </MenuItem>
+            <Divider />
+
+            <MenuItem disableGutters>
+              <div className="flex space-x-5 ml-3">
+                <span className="flex items-center justify-center space-x-1">
+                  <MoonIcon className="h-5" />
+                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                    Dark Mode
+                  </p>
+                </span>
+                <Switch
+                  checked={darkMode}
+                  onChange={darkModeChanger}
+                  size="small"
+                />
+              </div>
+            </MenuItem>
+          </Menu>
         </div>
 
         {/* logged in user options button */}

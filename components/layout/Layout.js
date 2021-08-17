@@ -7,8 +7,8 @@ import { shallowEqual, useSelector } from "react-redux";
 // get server-side rendered featured categories from redux state
 const useNavCategories = () => {
   return useSelector(
-    state => ({
-      featuredNavCategories: state.UI.featuredNavCategories
+    (state) => ({
+      featuredNavCategories: state.UI.featuredNavCategories,
     }),
     shallowEqual
   );

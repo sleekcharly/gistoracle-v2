@@ -12,7 +12,7 @@ import uiReducer from "./reducers/uiReducer";
 // combine the different reducers
 const reducers = combineReducers({
   // user: userReducer,
-  UI: uiReducer
+  UI: uiReducer,
   // data: dataReducer
 });
 
@@ -30,7 +30,7 @@ function initStore(preloadedState = initialState) {
   );
 }
 
-export const initializeStore = preloadedState => {
+export const initializeStore = (preloadedState) => {
   let _store = store ?? initStore(preloadedState);
 
   // After navigating to a page with an initial Redux state, merge that state
@@ -38,7 +38,7 @@ export const initializeStore = preloadedState => {
   if (preloadedState && store) {
     _store = initStore({
       ...store.getState(),
-      ...preloadedState
+      ...preloadedState,
     });
 
     // Reset the current store

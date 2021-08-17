@@ -12,6 +12,7 @@
     "algoliasearch": "^4.10.3",
     "axios": "^0.21.1",
     "busboy": "^0.3.1",
+    "cookie": "^0.4.1",
     "cors": "^2.8.5",
     "dayjs": "^1.10.6",
     "firebase": "^8.9.1",
