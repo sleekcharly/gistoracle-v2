@@ -216,10 +216,10 @@ function Header({ featuredNavCategories }) {
       </nav>
 
       {/* Search bar area */}
-      <div className="hidden lg:flex ml-2 items-center rounded-full bg-gray-100 p-2 text-[#800000] flex-grow">
-        <SearchIcon className="h-6 text-gray-400" />
+      <div className="hidden lg:flex ml-2 items-center rounded-full bg-gray-100 dark:bg-gray-600 p-2 text-[#800000] dark:text-gray-400 flex-grow">
+        <SearchIcon className="h-6 text-gray-400 dark:text-gray-500" />
         <input
-          className="hidden md:inline-flex  ml-2 items-center bg-transparent outline-none placeholder-gray-300 w-full"
+          className="hidden md:inline-flex  ml-2 items-center bg-transparent outline-none placeholder-gray-300 dark:placeholder-gray-500 w-full"
           type="text"
           placeholder="Search Gistoracle"
         />
