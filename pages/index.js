@@ -18,12 +18,6 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout />
-      <h1
-        className="text-3xl text-black dark:text-pink-500"
-        css={{ backgroundColor: "teal" }}
-      >
-        Welcome to Your App
-      </h1>
     </div>
   );
 }

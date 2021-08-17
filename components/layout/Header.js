@@ -4,7 +4,14 @@ import NextLink from "next/link";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import Menu from "@material-ui/core/Menu";
-import { MenuIcon, SearchIcon, MoonIcon } from "@heroicons/react/outline";
+import {
+  MenuIcon,
+  SearchIcon,
+  MoonIcon,
+  UserIcon,
+  CogIcon,
+  LogoutIcon,
+} from "@heroicons/react/outline";
 import {
   ChevronDoubleLeftIcon,
   ChevronDownIcon,
@@ -57,6 +64,7 @@ function Header({ featuredNavCategories }) {
 
     // close menu
     handleAccountIconClose();
+    handleUserMenuClose();
   };
 
   // desktop more nav categories from data
@@ -66,6 +74,7 @@ function Header({ featuredNavCategories }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
   const [accountIconAnchorEl, setAccountIconAnchorEl] = React.useState(null);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = React.useState(null);
 
   //open more menu
   const handleMoreButtonClick = (event) => {
@@ -74,6 +83,16 @@ function Header({ featuredNavCategories }) {
   // close more menu
   const handleMoreClose = () => {
     setAnchorEl(null);
+  };
+
+  //open logged in user menu area
+  const handleUserMenuClick = (event) => {
+    setUserMenuAnchorEl(event.currentTarget);
+  };
+
+  // close user menu area
+  const handleUserMenuClose = () => {
+    setUserMenuAnchorEl(null);
   };
 
   // open authentication menu on account icon is clicked
@@ -235,11 +254,125 @@ function Header({ featuredNavCategories }) {
           <PencilAltIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
         </button>
 
+        {/* logged in user options button */}
+        <div>
+          <div
+            component="button"
+            className="hidden lg:flex justify-between items-center cursor-pointer border border-[#800000] dark:border-gray-400 border-opacity-20 rounded-full px-3 py-2 space-x-8 w-full hover:bg-red-50 dark:hover:bg-gray-800 group"
+            id="user-menu-button"
+            aria-label="logged in user menu"
+            aria-controls="user menu"
+            onClick={handleUserMenuClick}
+            aria-haspopup="true"
+          >
+            <div className="flex items-center space-x-2">
+              {/* loggin user profile pic */}
+
+              <Image
+                src="/favicon.ico"
+                width="32"
+                height="32"
+                layout="fixed"
+                alt=""
+                className="rounded-full "
+                objectFit="cover"
+              />
+
+              <div className="text-[#800000] text-xs  font-medium dark:text-[#D7DADC] d w-full">
+                <p className="w-full">sleekcharly</p>
+                <span className="flex items-center space-x-1">
+                  <SparklesIcon className="h-3 text-[#800000] dark:text-[#D7DADC] " />
+                  <p>7 vibes</p>
+                </span>
+              </div>
+            </div>
+
+            <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC] dark:hover:bg-[#D7DADC] dark:hover:text-[#800000]" />
+          </div>
+          <Menu
+            id="user menu"
+            elevation={0}
+            getContentAnchorEl={null}
+            anchorEl={userMenuAnchorEl}
+            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            keepMounted
+            open={Boolean(userMenuAnchorEl)}
+            onClose={handleUserMenuClose}
+          >
+            <MenuItem disableGutters>
+              <div className="flex ml-3">
+                <span className="flex items-center justify-center space-x-1">
+                  <UserIcon className="h-5" />
+                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                    My Profile
+                  </p>
+                </span>
+              </div>
+            </MenuItem>
+            <Divider />
+
+            <MenuItem disableGutters>
+              <div className="flex  ml-3">
+                <span className="flex items-center justify-center space-x-1">
+                  <CogIcon className="h-5" />
+                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                    UserSettings
+                  </p>
+                </span>
+              </div>
+            </MenuItem>
+            <Divider />
+
+            <MenuItem disableGutters>
+              <div className="flex ml-3">
+                <span className="flex items-center justify-center space-x-1">
+                  <LogoutIcon className="h-5" />
+                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                    Logout
+                  </p>
+                </span>
+              </div>
+            </MenuItem>
+            <Divider />
+
+            <MenuItem disableGutters>
+              <div className="flex space-x-5 ml-3">
+                <span className="flex items-center justify-center space-x-1">
+                  <MoonIcon className="h-5" />
+                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                    Dark Mode
+                  </p>
+                </span>
+                <Switch
+                  checked={darkMode}
+                  onChange={darkModeChanger}
+                  size="small"
+                />
+              </div>
+            </MenuItem>
+          </Menu>
+        </div>
+
+        {/* large screen authentication buttons */}
+        <div className="hidden md:flex items-center space-x-6 ml-6">
+          <button className="text-[#800000] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 hover:bg-gray-100 dark:hover:text-black tracking-wide transition duration-200">
+            Login
+          </button>
+
+          <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 bg-[#933a16] dark:bg-gray-500 dark:hover:bg-[#800000] dark:hover:text-white">
+            Signup
+          </button>
+        </div>
+
         {/* user action buttons */}
         <div>
           <button
             type="button"
-            className="inline-flex items-center justify-center w-full lg:hidden px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
+            className="inline-flex items-center justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
             id="menu-button"
             aria-label="login or signup"
             aria-controls="authentication menu"
@@ -294,44 +427,6 @@ function Header({ featuredNavCategories }) {
               </div>
             </MenuItem>
           </Menu>
-        </div>
-
-        {/* logged in user options button */}
-        <div className="hidden lg:flex justify-between items-center cursor-pointer border border-[#800000] dark:border-gray-400 border-opacity-20 rounded-full px-3 py-2 space-x-8 w-full hover:bg-red-50 dark:hover:bg-gray-800 group">
-          <div className="flex items-center space-x-2">
-            {/* loggin user profile pic */}
-
-            <Image
-              src="/favicon.ico"
-              width="32"
-              height="32"
-              layout="fixed"
-              alt=""
-              className="rounded-full "
-              objectFit="cover"
-            />
-
-            <div className="text-[#800000] text-xs  font-medium dark:text-[#D7DADC] d w-full">
-              <p className="w-full">sleekcharly</p>
-              <span className="flex items-center space-x-1">
-                <SparklesIcon className="h-3 text-[#800000] dark:text-[#D7DADC] " />
-                <p>7 vibes</p>
-              </span>
-            </div>
-          </div>
-
-          <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC] dark:hover:bg-[#D7DADC] dark:hover:text-[#800000]" />
-        </div>
-
-        {/* large screen authentication buttons */}
-        <div className="hidden md:flex items-center space-x-6 ml-6">
-          <button className="text-[#800000] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 hover:bg-gray-100 dark:hover:text-black tracking-wide transition duration-200">
-            Login
-          </button>
-
-          <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 bg-[#933a16] dark:bg-gray-500 dark:hover:bg-[#800000] dark:hover:text-white">
-            Signup
-          </button>
         </div>
 
         {/* sidebar pop-out button */}
