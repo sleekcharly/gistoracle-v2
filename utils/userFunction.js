@@ -2,17 +2,18 @@ const { default: axios } = require("axios");
 const { default: jwtDecode } = require("jwt-decode");
 const { useDispatch } = require("react-redux");
 const { useAuth } = require("../contexts/AuthContext");
-
-// destructure current user;
-const { currentUser } = useAuth();
-
-// get the authentication token from the local storage
-const token = localStorage.FBIdToken;
-
-// set dispatch
-const dispatch = useDispatch();
+const { getUserData } = require("../redux/actions/userActions");
 
 exports.userAuthRefresh = () => {
+  // destructure current user;
+  const { currentUser } = useAuth();
+
+  // get the authentication token from the local storage
+  const token = localStorage.FBIdToken;
+
+  // set dispatch
+  const dispatch = useDispatch();
+
   // check if a token exist
   if (token) {
     const decodedToken = jwtDecode(token);
@@ -29,7 +30,7 @@ exports.userAuthRefresh = () => {
         axios.defaults.headers.common["Authorization"] = FBIdToken;
 
         // get user data from firestore
-        // dispatch(getUserDate())
+        dispatch(getUserData());
       });
     } else {
       // if token exists set user as authenticated and set authorization header

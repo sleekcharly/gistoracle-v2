@@ -10,8 +10,12 @@ import {
 } from "../redux/types/uiTypes";
 import * as cookie from "cookie";
 import { getSession } from "next-auth/client";
+import { userAuthRefresh } from "../utils/userFunction";
 
 export default function Home() {
+  // check for existing token and token expiration to maintain user authentication
+  userAuthRefresh();
+
   return (
     <div className=" min-h-screen">
       <Head>
