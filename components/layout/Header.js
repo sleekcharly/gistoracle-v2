@@ -38,7 +38,6 @@ function Header({ featuredNavCategories }) {
 
   // destructure darkMode
   const { darkMode } = useDarkMode();
-  console.log(darkMode);
 
   // define dispatch
   const dispatch = useDispatch();

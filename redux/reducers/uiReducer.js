@@ -3,12 +3,15 @@ import {
   SET_FEATURED_NAV_CATEGORIES,
   DARK_MODE_ON,
   DARK_MODE_OFF,
+  CLEAR_ERRORS,
+  SET_ERRORS,
 } from "../types/uiTypes";
 import Cookies from "js-cookie";
 
 const initialState = {
   featuredNavCategories: [],
   darkMode: false,
+  errors: null,
 };
 
 export default function (state = initialState, action) {
@@ -18,10 +21,17 @@ export default function (state = initialState, action) {
         ...state,
         featuredNavCategories: action.payload,
       };
+    //   Dark mode
     case DARK_MODE_ON:
       return { ...state, darkMode: true };
     case DARK_MODE_OFF:
       return { ...state, darkMode: false };
+
+    //   errors
+    case CLEAR_ERRORS:
+      return { ...state, errors: null };
+    case SET_ERRORS:
+      return { ...state, errors: action.payload };
 
     default:
       return state;

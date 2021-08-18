@@ -5,9 +5,10 @@ import { Provider } from "react-redux";
 import { useStore } from "../redux/store";
 import { analytics } from "../firebase";
 import { useEffect } from "react";
+import { AuthProvider } from "../contexts/AuthContext";
 
 function MyApp({ Component, pageProps }) {
-  // initiate google analytics
+  //initiate google analytics
   useEffect(() => {
     if (process.env.NODE_ENV === "production") {
       analytics();
@@ -19,7 +20,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider enableSystem={true} attribute="class">
       <Provider store={store}>
-        <Component {...pageProps} />
+        <AuthProvider>
+          <Component {...pageProps} />
+        </AuthProvider>
       </Provider>
     </ThemeProvider>
   );
