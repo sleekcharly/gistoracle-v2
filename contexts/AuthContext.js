@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect, createContext } from "react";
 import { auth, dataStore, analytics } from "../firebase";
 import { CLEAR_ERRORS, SET_ERRORS } from "../redux/types/uiTypes";
 import { useStore } from "../redux/store";
-import { validateLoginData, validateSignUpData } from "../utils/validator";
+import { validateLoginData, validateSignupData } from "../utils/validator";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 
@@ -45,7 +45,7 @@ export function AuthProvider({ children }) {
     };
 
     // pass new user details to validator
-    const { valid, errors } = validateSignUpData(newUser);
+    const { valid, errors } = validateSignupData(newUser);
     if (!valid) {
       dispatch({ type: SET_ERRORS, payload: errors });
       return;
