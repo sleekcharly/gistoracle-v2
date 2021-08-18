@@ -5,13 +5,13 @@ import thunkMiddleware from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 // reducers
-// import userReducer from "./reducers/userReducer";
+import userReducer from "./reducers/userReducer";
 import uiReducer from "./reducers/uiReducer";
 // import dataReducer from "./reducers/dataReducer";
 
 // combine the different reducers
 const reducers = combineReducers({
-  // user: userReducer,
+  user: userReducer,
   UI: uiReducer,
   // data: dataReducer
 });

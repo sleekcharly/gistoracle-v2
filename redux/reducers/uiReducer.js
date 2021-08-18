@@ -6,7 +6,6 @@ import {
   CLEAR_ERRORS,
   SET_ERRORS,
 } from "../types/uiTypes";
-import Cookies from "js-cookie";
 
 const initialState = {
   featuredNavCategories: [],
@@ -14,7 +13,7 @@ const initialState = {
   errors: null,
 };
 
-export default function (state = initialState, action) {
+export default function uiReducer(state = initialState, action) {
   switch (action.type) {
     case SET_FEATURED_NAV_CATEGORIES:
       return {

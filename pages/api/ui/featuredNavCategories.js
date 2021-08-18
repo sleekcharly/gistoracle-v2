@@ -1,5 +1,5 @@
 import nc from "next-connect";
-import { db } from "../../../firebase";
+import { db } from "../../../utils/firebase/admin";
 
 const handler = nc();
 

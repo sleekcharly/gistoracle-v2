@@ -15,6 +15,7 @@ function MyApp({ Component, pageProps }) {
     }
   }, []);
 
+  // define redux store
   const store = useStore(pageProps.initialReduxState);
 
   return (
