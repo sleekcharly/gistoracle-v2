@@ -22,7 +22,16 @@ import {
 import Data from "../../utils/data";
 import { Divider, Link, MenuItem, Switch } from "@material-ui/core";
 import { useTheme } from "next-themes";
+import Login from "../auth/login";
+import { useAuth } from "../../contexts/AuthContext";
+
+// redux stuff
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
+import {
+  CLEAR_ERRORS,
+  DARK_MODE_OFF,
+  DARK_MODE_ON,
+} from "../../redux/types/uiTypes";
 
 function Header({ featuredNavCategories }) {
   // *** get redux state parameters ***//
@@ -42,13 +51,17 @@ function Header({ featuredNavCategories }) {
   // define dispatch
   const dispatch = useDispatch();
 
+  // get login function from auth context
+  const { login, currentUser } = useAuth();
+  console.log(currentUser);
+
   // Change theme handler
   const { systemTheme, theme, setTheme } = useTheme();
   const darkModeChanger = () => {
     const currentTheme = theme === "system" ? systemTheme : theme;
 
     dispatch({
-      type: currentTheme === "dark" ? "DARK_MODE_OFF" : "DARK_MODE_ON",
+      type: currentTheme === "dark" ? DARK_MODE_OFF : DARK_MODE_ON,
     });
 
     if (currentTheme === "dark") {
@@ -74,6 +87,28 @@ function Header({ featuredNavCategories }) {
   const [iconAnchorEl, setIconAnchorEl] = React.useState(null);
   const [accountIconAnchorEl, setAccountIconAnchorEl] = React.useState(null);
   const [userMenuAnchorEl, setUserMenuAnchorEl] = React.useState(null);
+  const [openLogin, setOpenLogin] = React.useState(false);
+  const [openSignup, setOpenSignup] = React.useState(false);
+
+  // open login dialog
+  const handleLoginClickOpen = () => {
+    dispatch({ type: CLEAR_ERRORS });
+    setOpenLogin(true);
+    setOpenSignup(false);
+  };
+  // close login dialog
+  const handleLoginClose = () => {
+    setOpenLogin(false);
+    // clear any login error messages
+    dispatch({ type: CLEAR_ERRORS });
+  };
+
+  // open signup dialog
+  const handleSignupClickOpen = () => {
+    dispatch({ type: CLEAR_ERRORS });
+    setOpenSignup(true);
+    setOpenLogin(false);
+  };
 
   //open more menu
   const handleMoreButtonClick = (event) => {
@@ -114,11 +149,14 @@ function Header({ featuredNavCategories }) {
     <header className="sticky top-0 z-[1000] flex items-center bg-white py-2 px-2 lg:px-3 lg:py-1 shadow-lg dark:bg-gray-800 ">
       {/* Gist oracle logo */}
       <NextLink href="/" passHref>
-        <img
-          src="/images/gistoracle_logo.png"
-          className="w-[70px] lg:w-[100px] lg:h-[40px] cursor-pointer"
-          alt="Gist oracle logo"
-        />
+        <div className="relative w-[75px] h-[35px] lg:w-[100px] lg:h-[40px] cursor-pointer">
+          <Image
+            src="/images/gistoracle_logo.png"
+            alt="Gist oracle logo"
+            layout="fill"
+            quality="100"
+          />
+        </div>
       </NextLink>
 
       {/* Navigation section */}
@@ -358,7 +396,10 @@ function Header({ featuredNavCategories }) {
 
         {/* large screen authentication buttons */}
         <div className="hidden md:flex items-center space-x-6 ml-6">
-          <button className="text-[#800000] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 hover:bg-gray-100 dark:hover:text-black tracking-wide transition duration-200">
+          <button
+            className="text-[#800000] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 hover:bg-gray-100 dark:hover:text-black tracking-wide transition duration-200"
+            onClick={handleLoginClickOpen}
+          >
             Login
           </button>
 
@@ -397,7 +438,10 @@ function Header({ featuredNavCategories }) {
             onClose={handleAccountIconClose}
           >
             <MenuItem onClick={handleAccountIconClose} disableGutters>
-              <button className="text-[#800000] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0  tracking-wide">
+              <button
+                className="text-[#800000] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0  tracking-wide"
+                onClick={handleLoginClickOpen}
+              >
                 Login
               </button>
             </MenuItem>
@@ -438,6 +482,14 @@ function Header({ featuredNavCategories }) {
           </button>
         </div>
       </div>
+
+      <Login
+        openLogin={openLogin}
+        handleLoginClose={handleLoginClose}
+        handleSignupClickOpen={handleSignupClickOpen}
+        setOpenLogin={setOpenLogin}
+        login={login}
+      />
     </header>
   );
 }
