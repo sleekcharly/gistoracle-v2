@@ -15,6 +15,7 @@ import {
 import {
   ChevronDoubleLeftIcon,
   ChevronDownIcon,
+  CubeTransparentIcon,
   PencilAltIcon,
   SparklesIcon,
   UserCircleIcon,
@@ -33,6 +34,7 @@ import {
   DARK_MODE_ON,
 } from "../../redux/types/uiTypes";
 import { useSnackbar } from "notistack";
+import algoliasearch from "algoliasearch";
 
 function Header({ featuredNavCategories }) {
   // bring in notistack
@@ -97,6 +99,32 @@ function Header({ featuredNavCategories }) {
   const [userMenuAnchorEl, setUserMenuAnchorEl] = React.useState(null);
   const [openLogin, setOpenLogin] = React.useState(false);
   const [openSignup, setOpenSignup] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [searchResults, setSearchResults] = React.useState(null);
+
+  // define algolia variables for full text search
+  const ALGOLIA_APP_ID = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
+  const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY;
+  const ALGOLIA_INDEX_NAME = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME;
+  const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_KEY, {
+    protocol: "https:",
+  });
+  let index = client.initIndex(ALGOLIA_INDEX_NAME);
+
+  // handle search with algolia
+  const handleSearch = (event) => {
+    setSearchQuery(event.target.value);
+
+    //perform algolia operation
+    index
+      .search(searchQuery)
+      .then((data) => {
+        setSearchResults(data.hits);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
 
   // open login dialog
   const handleLoginClickOpen = () => {
@@ -292,13 +320,76 @@ function Header({ featuredNavCategories }) {
       </nav>
 
       {/* Search bar area */}
-      <div className="hidden md:flex ml-2 items-center rounded-full bg-gray-100 dark:bg-gray-600 p-2 text-[#800000] dark:text-gray-400 flex-grow">
-        <SearchIcon className="h-6 text-gray-400 dark:text-gray-500" />
-        <input
-          className="hidden md:inline-flex  ml-2 items-center bg-transparent outline-none placeholder-gray-300 dark:placeholder-gray-500 w-full"
-          type="text"
-          placeholder="Search Gistoracle"
-        />
+      <div className="hidden md:flex flex-grow relative">
+        <div className="flex ml-2 items-center rounded-full bg-gray-100 dark:bg-gray-600 p-2 text-[#800000] dark:text-gray-400 w-full">
+          <SearchIcon className="h-6 text-gray-400 dark:text-gray-500" />
+          <input
+            className="hidden md:inline-flex  ml-2 items-center bg-transparent outline-none placeholder-gray-300 dark:placeholder-gray-500 w-full"
+            type="text"
+            placeholder="Search Gistoracle"
+            aria-label="Search"
+            aria-controls="search-menu"
+            value={searchQuery}
+            onChange={handleSearch}
+          />
+        </div>
+
+        {/* search results */}
+        <div
+          hidden={searchResults ? false : true}
+          className="absolute top-10 w-full max-h-[472px] overflow-y-scroll bg-white dark:bg-gray-800 scrollbar-hide "
+        >
+          {searchQuery &&
+            searchResults &&
+            searchResults.map((result) => (
+              <>
+                <div
+                  className="p-3 hover:bg-[#f5f0f0] cursor-pointer relative"
+                  key={result.objectID}
+                >
+                  <NextLink
+                    href={`/post/${result.shrineName}/${result.objectID}/${result.slug}`}
+                    passHref
+                  >
+                    <div className="p-2 mb-2 flex justify-between items-center">
+                      <div className="flex flex-col">
+                        <div className="flex items-center space-x-2">
+                          <CubeTransparentIcon className="h-3 text-[#800000] dark:text-[#D7DADC]" />
+                          <p className="text-[#800000] dark:text-white font-medium text-xs">
+                            {result.shrineName}
+                          </p>
+                        </div>
+
+                        <p className="mt-2 mr-0 mb-2 ml-3 pr-2 text-sm overflow-hidden overflow-ellipsis text-gray-800 dark:text-white font-semibold">
+                          {result.title}
+                        </p>
+
+                        <p className="text-[#800000] dark:text-white font-medium text-xs">
+                          @{result.username}
+                        </p>
+                      </div>
+
+                      <img
+                        src={result.postThumbnail}
+                        alt={result.title}
+                        width="70px"
+                        height="70px"
+                        className="object-contain rounded-md"
+                      />
+                    </div>
+                  </NextLink>
+                </div>
+                <Divider light />
+              </>
+            ))}
+          {/* algolia image */}
+          <img
+            src="/images/algolia-blue-mark.svg"
+            width={20}
+            height={20}
+            className="w-[20px] h-[20px] absolute top-[1px] right-[1px]"
+          />
+        </div>
       </div>
 
       {/* header action areas */}
