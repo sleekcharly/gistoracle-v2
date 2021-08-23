@@ -11,19 +11,16 @@ import {
 import * as cookie from "cookie";
 import { getSession } from "next-auth/client";
 import { userAuthRefresh } from "../utils/userFunction";
+import HomeComponent from "../components/Home";
 
 export default function Home() {
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
 
   return (
-    <div className=" min-h-screen">
-      <Head>
-        <title>Gistoracle - Africa's online community</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Layout />
-    </div>
+    <Layout>
+      <HomeComponent />
+    </Layout>
   );
 }
 

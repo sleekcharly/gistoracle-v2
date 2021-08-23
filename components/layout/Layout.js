@@ -14,7 +14,7 @@ const useNavCategories = () => {
   );
 };
 
-function Layout() {
+function Layout({ children }) {
   // define head parameters
   const headTitle = "Gistoracle - Africa's online community";
   const headQuote =
@@ -28,7 +28,7 @@ function Layout() {
   const { featuredNavCategories } = useNavCategories();
 
   return (
-    <div>
+    <div className="min-h-screen">
       <Head>
         <title>{headTitle}</title>
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -62,6 +62,13 @@ function Layout() {
 
       {/* Header */}
       <Header featuredNavCategories={featuredNavCategories} />
+
+      {/* content */}
+      <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-8">
+        <main className="w-full flex-grow-1">{children}</main>
+
+        <footer className="w-[25%] hidden lg:block"></footer>
+      </div>
     </div>
   );
 }
