@@ -22,11 +22,13 @@ const initialState = {};
 // create store
 let store;
 
+const composeEnhancers = composeWithDevTools({ trace: true });
+
 function initStore(preloadedState = initialState) {
   return createStore(
     reducers,
     preloadedState,
-    composeWithDevTools(applyMiddleware(thunkMiddleware))
+    composeEnhancers(applyMiddleware(thunkMiddleware))
   );
 }
 

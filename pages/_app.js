@@ -6,6 +6,7 @@ import { useStore } from "../redux/store";
 import { analytics } from "../firebase";
 import { useEffect } from "react";
 import { AuthProvider } from "../contexts/AuthContext";
+import { SnackbarProvider } from "notistack";
 
 function MyApp({ Component, pageProps }) {
   //initiate google analytics
@@ -20,11 +21,15 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <ThemeProvider enableSystem={true} attribute="class">
-      <Provider store={store}>
-        <AuthProvider>
-          <Component {...pageProps} />
-        </AuthProvider>
-      </Provider>
+      <SnackbarProvider
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Provider store={store}>
+          <AuthProvider>
+            <Component {...pageProps} />
+          </AuthProvider>
+        </Provider>
+      </SnackbarProvider>
     </ThemeProvider>
   );
 }

@@ -5,12 +5,14 @@ import {
   DARK_MODE_OFF,
   CLEAR_ERRORS,
   SET_ERRORS,
+  SET_STATUS,
 } from "../types/uiTypes";
 
 const initialState = {
   featuredNavCategories: [],
   darkMode: false,
   errors: null,
+  status: null,
 };
 
 export default function uiReducer(state = initialState, action) {
@@ -31,6 +33,10 @@ export default function uiReducer(state = initialState, action) {
       return { ...state, errors: null };
     case SET_ERRORS:
       return { ...state, errors: action.payload };
+
+    // UI status message
+    case SET_STATUS:
+      return { ...state, status: action.payload };
 
     default:
       return state;

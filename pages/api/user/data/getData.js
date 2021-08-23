@@ -11,7 +11,7 @@ handler.get(async (req, res) => {
 
   await db
     .collection("users")
-    .where("userId", "==", req.userData.uid)
+    .where("userId", "==", req.user.uid)
     .limit(1)
     .get()
     .then((data) => {

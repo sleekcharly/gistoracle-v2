@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import NextLink from "next/link";
 import Cookies from "js-cookie";
@@ -20,7 +20,7 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/solid";
 import Data from "../../utils/data";
-import { Divider, Link, MenuItem, Switch } from "@material-ui/core";
+import { Avatar, Divider, Link, MenuItem, Switch } from "@material-ui/core";
 import { useTheme } from "next-themes";
 import Login from "../auth/login";
 import { useAuth } from "../../contexts/AuthContext";
@@ -32,28 +32,36 @@ import {
   DARK_MODE_OFF,
   DARK_MODE_ON,
 } from "../../redux/types/uiTypes";
+import { useSnackbar } from "notistack";
 
 function Header({ featuredNavCategories }) {
+  // bring in notistack
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+
   // *** get redux state parameters ***//
-  // get server-side rendered darkmode state from redux state
-  const useDarkMode = () => {
+  // get server-side rendered darkmode state and UI status from redux state
+  const useStateParameters = () => {
     return useSelector(
       (state) => ({
         darkMode: state.UI.darkMode,
+        UIStatus: state.UI.status,
+        credentials: state.user.credentials,
       }),
       shallowEqual
     );
   };
 
   // destructure darkMode
-  const { darkMode } = useDarkMode();
+  const { darkMode, UIStatus, credentials } = useStateParameters();
+
+  // show status if any exists
+  if (UIStatus) enqueueSnackbar(UIStatus, { variant: "success" });
 
   // define dispatch
   const dispatch = useDispatch();
 
   // get login function from auth context
-  const { login, currentUser } = useAuth();
-  console.log(currentUser);
+  const { login, logout, currentUser } = useAuth();
 
   // Change theme handler
   const { systemTheme, theme, setTheme } = useTheme();
@@ -145,6 +153,18 @@ function Header({ featuredNavCategories }) {
   const handleIconClose = () => {
     setIconAnchorEl(null);
   };
+
+  // handler for calling the logout function
+  const handleLogout = async () => {
+    try {
+      console.log("user is logged out");
+
+      await logout();
+    } catch {
+      console.log("Failed to logout");
+    }
+  };
+
   return (
     <header className="sticky top-0 z-[1000] flex items-center bg-white py-2 px-2 lg:px-3 lg:py-1 shadow-lg dark:bg-gray-800 ">
       {/* Gist oracle logo */}
@@ -272,7 +292,7 @@ function Header({ featuredNavCategories }) {
       </nav>
 
       {/* Search bar area */}
-      <div className="hidden lg:flex ml-2 items-center rounded-full bg-gray-100 dark:bg-gray-600 p-2 text-[#800000] dark:text-gray-400 flex-grow">
+      <div className="hidden md:flex ml-2 items-center rounded-full bg-gray-100 dark:bg-gray-600 p-2 text-[#800000] dark:text-gray-400 flex-grow">
         <SearchIcon className="h-6 text-gray-400 dark:text-gray-500" />
         <input
           className="hidden md:inline-flex  ml-2 items-center bg-transparent outline-none placeholder-gray-300 dark:placeholder-gray-500 w-full"
@@ -284,193 +304,290 @@ function Header({ featuredNavCategories }) {
       {/* header action areas */}
       <div className="flex items-center ml-auto">
         {/* create post button */}
-        <button
-          type="button"
-          className="inline-flex justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
-        >
-          <PencilAltIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
-        </button>
-
-        {/* logged in user options button */}
-        <div>
-          <div
-            component="button"
-            className="hidden lg:flex justify-between items-center cursor-pointer border border-[#800000] dark:border-gray-400 border-opacity-20 rounded-full px-3 py-2 space-x-8 w-full hover:bg-red-50 dark:hover:bg-gray-800 group"
-            id="user-menu-button"
-            aria-label="logged in user menu"
-            aria-controls="user menu"
-            onClick={handleUserMenuClick}
-            aria-haspopup="true"
-          >
-            <div className="flex items-center space-x-2">
-              {/* loggin user profile pic */}
-
-              <Image
-                src="/favicon.ico"
-                width="32"
-                height="32"
-                layout="fixed"
-                alt=""
-                className="rounded-full "
-                objectFit="cover"
-              />
-
-              <div className="text-[#800000] text-xs  font-medium dark:text-[#D7DADC] d w-full">
-                <p className="w-full">sleekcharly</p>
-                <span className="flex items-center space-x-1">
-                  <SparklesIcon className="h-3 text-[#800000] dark:text-[#D7DADC] " />
-                  <p>7 vibes</p>
-                </span>
-              </div>
-            </div>
-
-            <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC] dark:hover:bg-[#D7DADC] dark:hover:text-[#800000]" />
-          </div>
-          <Menu
-            id="user menu"
-            elevation={0}
-            getContentAnchorEl={null}
-            anchorEl={userMenuAnchorEl}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            keepMounted
-            open={Boolean(userMenuAnchorEl)}
-            onClose={handleUserMenuClose}
-          >
-            <MenuItem disableGutters>
-              <div className="flex ml-3">
-                <span className="flex items-center justify-center space-x-1">
-                  <UserIcon className="h-5" />
-                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                    My Profile
-                  </p>
-                </span>
-              </div>
-            </MenuItem>
-            <Divider />
-
-            <MenuItem disableGutters>
-              <div className="flex  ml-3">
-                <span className="flex items-center justify-center space-x-1">
-                  <CogIcon className="h-5" />
-                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                    UserSettings
-                  </p>
-                </span>
-              </div>
-            </MenuItem>
-            <Divider />
-
-            <MenuItem disableGutters>
-              <div className="flex ml-3">
-                <span className="flex items-center justify-center space-x-1">
-                  <LogoutIcon className="h-5" />
-                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                    Logout
-                  </p>
-                </span>
-              </div>
-            </MenuItem>
-            <Divider />
-
-            <MenuItem disableGutters>
-              <div className="flex space-x-5 ml-3">
-                <span className="flex items-center justify-center space-x-1">
-                  <MoonIcon className="h-5" />
-                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                    Dark Mode
-                  </p>
-                </span>
-                <Switch
-                  checked={darkMode}
-                  onChange={darkModeChanger}
-                  size="small"
-                />
-              </div>
-            </MenuItem>
-          </Menu>
-        </div>
-
-        {/* large screen authentication buttons */}
-        <div className="hidden md:flex items-center space-x-6 ml-6">
-          <button
-            className="text-[#800000] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 hover:bg-gray-100 dark:hover:text-black tracking-wide transition duration-200"
-            onClick={handleLoginClickOpen}
-          >
-            Login
-          </button>
-
-          <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 bg-[#933a16] dark:bg-gray-500 dark:hover:bg-[#800000] dark:hover:text-white">
-            Signup
-          </button>
-        </div>
-
-        {/* user action buttons */}
-        <div>
+        {currentUser && (
           <button
             type="button"
-            className="inline-flex items-center justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
-            id="menu-button"
-            aria-label="login or signup"
-            aria-controls="authentication menu"
-            onClick={handleAccountIconClick}
-            aria-haspopup="true"
+            className="inline-flex justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
           >
-            <UserCircleIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
-
-            <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC]" />
+            <PencilAltIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
           </button>
-          <Menu
-            id="authentication menu"
-            elevation={0}
-            getContentAnchorEl={null}
-            anchorEl={accountIconAnchorEl}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            keepMounted
-            open={Boolean(accountIconAnchorEl)}
-            onClose={handleAccountIconClose}
-          >
-            <MenuItem onClick={handleAccountIconClose} disableGutters>
-              <button
-                className="text-[#800000] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0  tracking-wide"
-                onClick={handleLoginClickOpen}
-              >
-                Login
-              </button>
-            </MenuItem>
-            <Divider />
+        )}
 
-            <MenuItem onClick={handleAccountIconClose} disableGutters>
-              <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0 bg-[#933a16] dark:bg-gray-500">
-                Signup
-              </button>
-            </MenuItem>
-            <Divider />
+        {/* logged in user options button */}
+        {currentUser && (
+          <div className="hidden lg:flex ">
+            <div
+              component="button"
+              className="flex items-center cursor-pointer border border-[#800000] dark:border-gray-400 border-opacity-20 rounded-full px-3 py-2 space-x-2 w-full hover:bg-red-50 dark:hover:bg-gray-800 group h-auto"
+              id="user-menu-button"
+              aria-label="logged in user menu"
+              aria-controls="user menu"
+              onClick={handleUserMenuClick}
+              aria-haspopup="true"
+            >
+              {/* login user profile pic */}
 
-            <MenuItem disableGutters>
-              <div className="flex space-x-5 ml-3">
-                <span className="flex items-center justify-center space-x-1">
-                  <MoonIcon className="h-5" />
-                  <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                    Dark Mode
+              <Avatar
+                alt={credentials.username}
+                src={credentials.imageUrl}
+                style={{ height: "30px", width: "30px" }}
+              />
+
+              <div className="text-[#800000] text-xs  font-medium dark:text-[#D7DADC] w-[110px] flex flex-col text-left">
+                <p className="mb-1">{credentials.username}</p>
+                <div className="flex items-center space-x-1 w-full">
+                  <SparklesIcon className="h-3 text-[#800000] dark:text-[#D7DADC] " />
+                  <p className="flex items-center">
+                    {credentials.vibrations
+                      ? Math.round(credentials.vibrations)
+                      : null}{" "}
+                    {credentials.vibrations > 1.5 ? "vibes" : "vibe"}
                   </p>
-                </span>
-                <Switch
-                  checked={darkMode}
-                  onChange={darkModeChanger}
-                  size="small"
-                />
+                </div>
               </div>
-            </MenuItem>
-          </Menu>
-        </div>
+
+              <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC] dark:hover:bg-[#D7DADC] dark:hover:text-[#800000]" />
+            </div>
+
+            <Menu
+              id="user menu"
+              elevation={0}
+              getContentAnchorEl={null}
+              anchorEl={userMenuAnchorEl}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              keepMounted
+              open={Boolean(userMenuAnchorEl)}
+              onClose={handleUserMenuClose}
+            >
+              <MenuItem disableGutters>
+                <div className="flex ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <UserIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      My Profile
+                    </p>
+                  </span>
+                </div>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem disableGutters>
+                <div className="flex  ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <CogIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      UserSettings
+                    </p>
+                  </span>
+                </div>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem disableGutters onClick={handleLogout}>
+                <div className="flex ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <LogoutIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      Logout
+                    </p>
+                  </span>
+                </div>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem disableGutters>
+                <div className="flex space-x-5 ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <MoonIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      Dark Mode
+                    </p>
+                  </span>
+                  <Switch
+                    checked={darkMode}
+                    onChange={darkModeChanger}
+                    size="small"
+                  />
+                </div>
+              </MenuItem>
+            </Menu>
+          </div>
+        )}
+
+        {/* large screen authentication buttons */}
+        {!currentUser && (
+          <div className="hidden md:flex items-center space-x-6 ml-6">
+            <button
+              className="text-[#800000] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 hover:bg-gray-100 dark:hover:text-black tracking-wide transition duration-200"
+              onClick={handleLoginClickOpen}
+            >
+              Login
+            </button>
+
+            <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 bg-[#933a16] dark:bg-gray-500 dark:hover:bg-[#800000] dark:hover:text-white">
+              Signup
+            </button>
+          </div>
+        )}
+
+        {/* user action buttons when non authenticated */}
+        {!currentUser && (
+          <div>
+            <button
+              type="button"
+              className="inline-flex items-center justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
+              id="menu-button"
+              aria-label="login or signup"
+              aria-controls="authentication menu"
+              onClick={handleAccountIconClick}
+              aria-haspopup="true"
+            >
+              <UserCircleIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
+
+              <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC]" />
+            </button>
+            <Menu
+              id="authentication menu"
+              elevation={0}
+              getContentAnchorEl={null}
+              anchorEl={accountIconAnchorEl}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              keepMounted
+              open={Boolean(accountIconAnchorEl)}
+              onClose={handleAccountIconClose}
+            >
+              <MenuItem onClick={handleAccountIconClose} disableGutters>
+                <button
+                  className="text-[#800000] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0  tracking-wide"
+                  onClick={handleLoginClickOpen}
+                >
+                  Login
+                </button>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem onClick={handleAccountIconClose} disableGutters>
+                <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0 bg-[#933a16] dark:bg-gray-500">
+                  Signup
+                </button>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem disableGutters>
+                <div className="flex space-x-5 ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <MoonIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      Dark Mode
+                    </p>
+                  </span>
+                  <Switch
+                    checked={darkMode}
+                    onChange={darkModeChanger}
+                    size="small"
+                  />
+                </div>
+              </MenuItem>
+            </Menu>
+          </div>
+        )}
+
+        {/* user action buttons when authenticated for mobile devices */}
+        {currentUser && (
+          <div className="block lg:hidden">
+            <button
+              type="button"
+              className="inline-flex items-center justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
+              id="menu-button"
+              aria-label="login or signup"
+              aria-controls="authentication menu"
+              onClick={handleUserMenuClick}
+              aria-haspopup="true"
+            >
+              <Avatar
+                alt={credentials.username}
+                src={credentials.imageUrl}
+                style={{ width: "30px", height: "30px" }}
+              />
+
+              <ChevronDownIcon className="h-4 text-[#800000] dark:text-[#D7DADC]" />
+            </button>
+            <Menu
+              id="user menu"
+              elevation={0}
+              getContentAnchorEl={null}
+              anchorEl={userMenuAnchorEl}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              keepMounted
+              open={Boolean(userMenuAnchorEl)}
+              onClose={handleUserMenuClose}
+            >
+              <MenuItem disableGutters>
+                <div className="flex ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <UserIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      My Profile
+                    </p>
+                  </span>
+                </div>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem disableGutters>
+                <div className="flex  ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <CogIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      UserSettings
+                    </p>
+                  </span>
+                </div>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem disableGutters onClick={handleLogout}>
+                <div className="flex ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <LogoutIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      Logout
+                    </p>
+                  </span>
+                </div>
+              </MenuItem>
+              <Divider />
+
+              <MenuItem disableGutters>
+                <div className="flex space-x-5 ml-3">
+                  <span className="flex items-center justify-center space-x-1">
+                    <MoonIcon className="h-5" />
+                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                      Dark Mode
+                    </p>
+                  </span>
+                  <Switch
+                    checked={darkMode}
+                    onChange={darkModeChanger}
+                    size="small"
+                  />
+                </div>
+              </MenuItem>
+            </Menu>{" "}
+          </div>
+        )}
 
         {/* sidebar pop-out button */}
         <div className="ml-4">

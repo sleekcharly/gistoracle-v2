@@ -18,14 +18,18 @@ import {
 import Image from "next/image";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { CLEAR_ERRORS } from "../../redux/types/uiTypes";
 import { useAuth } from "../../contexts/AuthContext";
+import ResetPassword from "./resetPassword";
 
 function Login({ openLogin, handleLoginClose }) {
   // import media query and theme from material ui
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down("xs"));
+
+  // define dispatch
+  const dispatch = useDispatch();
 
   // define component state parameters
   const [email, setEmail] = useState("");
@@ -73,8 +77,8 @@ function Login({ openLogin, handleLoginClose }) {
 
   // function for opening reset dialog
   const handleResetOpen = () => {
-    setResetOpen(true);
     handleLoginClose();
+    setResetOpen(true);
   };
 
   // function for closing reset dialog
@@ -202,6 +206,7 @@ function Login({ openLogin, handleLoginClose }) {
               <button
                 type="text"
                 className="text-sm font-normal text-[#800000] mb-4"
+                onClick={handleResetOpen}
               >
                 Forgot password ?
               </button>
@@ -219,6 +224,11 @@ function Login({ openLogin, handleLoginClose }) {
           </form>
         </DialogContent>
       </Dialog>
+
+      <ResetPassword
+        resetOpen={resetOpen}
+        handleResetClose={handleResetClose}
+      />
     </div>
   );
 }

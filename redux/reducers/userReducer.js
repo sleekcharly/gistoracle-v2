@@ -1,6 +1,6 @@
 // bring in reducer types
 
-import { SET_SUBSCRIBED_SHRINES } from "../types/userTypes";
+import { SET_SUBSCRIBED_SHRINES, SET_USER } from "../types/userTypes";
 
 // initialize state for users
 const initialState = {
@@ -22,6 +22,11 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         subscribedShrines: action.payload,
+      };
+    case SET_USER:
+      return {
+        ...state,
+        ...action.payload,
       };
     default:
       return state;

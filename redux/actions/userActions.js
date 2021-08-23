@@ -1,5 +1,6 @@
 import axios from "axios";
-import { SET_SUBSCRIBED_SHRINES } from "../types/userTypes";
+import { CLEAR_ERRORS, SET_ERRORS } from "../types/uiTypes";
+import { SET_SUBSCRIBED_SHRINES, SET_USER } from "../types/userTypes";
 
 // function for getting user's data
 export const getUserData = () => (dispatch) => {
@@ -10,8 +11,9 @@ export const getUserData = () => (dispatch) => {
   axios
     .get("/api/user/data/getData")
     .then((res) => {
+    
       // set user data in redux state
-      dispatch({ type: SET_USER, paylaod: res.data });
+      dispatch({ type: SET_USER, payload: res.data });
 
       // get shrines user is subscribed to
       dispatch(getUserSubscribedShrines());
@@ -29,5 +31,22 @@ export const getUserSubscribedShrines = () => (dispatch) => {
     .catch((err) => {
       dispatch({ type: SET_SUBSCRIBED_SHRINES, payload: [] });
       console.error(err);
+    });
+};
+
+// reset password user action
+export const sendResetEmail = (userData) => (dispatch) => {
+  axios
+    .post("/api/user/settings/sendPasswordResetEmail", userData)
+    .then((res) => {
+      dispatch({ type: CLEAR_ERRORS });
+      dispatch({ type: SET_STATUS, payload: res.data });
+    })
+    .catch((err) => {
+      try {
+        dispatch({ type: SET_ERRORS, payload: err.response.data });
+      } catch (error) {
+        console.log(error);
+      }
     });
 };

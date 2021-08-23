@@ -38,7 +38,7 @@ exports.userAuthRefresh = () => {
       axios.defaults.headers.common["Authorization"] = token;
 
       // get user data
-      //   dispatch(getUserData());
+      dispatch(getUserData());
     }
   } else {
     return;
