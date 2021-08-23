@@ -337,14 +337,14 @@ function Header({ featuredNavCategories }) {
         {/* search results */}
         <div
           hidden={searchResults ? false : true}
-          className="absolute top-10 w-full max-h-[472px] overflow-y-scroll bg-white dark:bg-gray-800 scrollbar-hide "
+          className="absolute top-10 w-full max-h-[472px] overflow-y-scroll bg-white dark:bg-gray-800 scrollbar-hide dark:border border-gray-600"
         >
           {searchQuery &&
             searchResults &&
             searchResults.map((result) => (
               <>
                 <div
-                  className="p-3 hover:bg-[#f5f0f0] cursor-pointer relative"
+                  className="p-3 hover:bg-[#f5f0f0] dark:hover:bg-gray-500 cursor-pointer relative"
                   key={result.objectID}
                 >
                   <NextLink
@@ -379,7 +379,7 @@ function Header({ featuredNavCategories }) {
                     </div>
                   </NextLink>
                 </div>
-                <Divider light />
+                <Divider />
               </>
             ))}
           {/* algolia image */}
