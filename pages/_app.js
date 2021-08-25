@@ -7,6 +7,13 @@ import { analytics } from "../firebase";
 import { useEffect } from "react";
 import { AuthProvider } from "../contexts/AuthContext";
 import { SnackbarProvider } from "notistack";
+// Material-ui custom theme
+import themeFile from "../utils/theme";
+import {
+  createMuiTheme,
+  createTheme,
+  MuiThemeProvider,
+} from "@material-ui/core";
 
 function MyApp({ Component, pageProps }) {
   //initiate google analytics
@@ -19,17 +26,22 @@ function MyApp({ Component, pageProps }) {
   // define redux store
   const store = useStore(pageProps.initialReduxState);
 
+  // create Application theme
+  const theme = createTheme(themeFile);
+
   return (
     <ThemeProvider enableSystem={true} attribute="class">
-      <SnackbarProvider
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Provider store={store}>
-          <AuthProvider>
-            <Component {...pageProps} />
-          </AuthProvider>
-        </Provider>
-      </SnackbarProvider>
+      <MuiThemeProvider theme={theme}>
+        <SnackbarProvider
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        >
+          <Provider store={store}>
+            <AuthProvider>
+              <Component {...pageProps} />
+            </AuthProvider>
+          </Provider>
+        </SnackbarProvider>
+      </MuiThemeProvider>
     </ThemeProvider>
   );
 }

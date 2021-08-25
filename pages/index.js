@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Head from "next/head";
 import Layout from "../components/layout/Layout";
 import { initializeStore } from "../redux/store";
 import { db } from "../firebase";
@@ -9,7 +8,6 @@ import {
   SET_FEATURED_NAV_CATEGORIES,
 } from "../redux/types/uiTypes";
 import * as cookie from "cookie";
-import { getSession } from "next-auth/client";
 import { userAuthRefresh } from "../utils/userFunction";
 import HomeComponent from "../components/Home";
 

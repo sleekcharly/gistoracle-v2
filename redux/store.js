@@ -7,13 +7,13 @@ import { composeWithDevTools } from "redux-devtools-extension";
 // reducers
 import userReducer from "./reducers/userReducer";
 import uiReducer from "./reducers/uiReducer";
-// import dataReducer from "./reducers/dataReducer";
+import dataReducer from "./reducers/dataReducer";
 
 // combine the different reducers
 const reducers = combineReducers({
   user: userReducer,
   UI: uiReducer,
-  // data: dataReducer
+  data: dataReducer,
 });
 
 // set initial state
