@@ -5,7 +5,7 @@
 const admin = require("firebase-admin");
 
 // set environment project id
-const project = NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+const project = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
 /*Your Firebase service account can be used to authenticate 
 multiple Firebase features, such as Database, Storage and
