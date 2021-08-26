@@ -16,20 +16,13 @@ var serviceAccount =
     : require("../../utils/firebase/firebaseServiceAccount/gistoracle-dev-firebase-adminsdk-4qg56-ce04c6150b.json");
 
 // intializing the application to use the admin SDK
-if(!admin.apps.length){
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket:
-    project === "gistoracle-28360"
-      ? process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-      : process.env.NEXT_PUBLIC_FIREBASE_DEV_STORAGE_BUCKET,
-  databaseURL:
-    project === "gistoracle-28360"
-      ? process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL
-      : process.env.NEXT_PUBLIC_FIREBASE_DEV_DATABASE_URL,
-});
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+  });
 }
-
 
 // instantiate the firebase store
 const db = admin.firestore();
