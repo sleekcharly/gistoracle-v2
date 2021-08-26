@@ -15,8 +15,6 @@ var serviceAccount =
     ? require("../../utils/firebase/firebaseServiceAccount/gistoracle-28360-firebase-adminsdk-ewftv-9107d0cc69.json")
     : require("../../utils/firebase/firebaseServiceAccount/gistoracle-dev-firebase-adminsdk-4qg56-ce04c6150b.json");
 
-console.log(serviceAccount);
-
 // intializing the application to use the admin SDK
 if (!admin.apps.length) {
   admin.initializeApp({

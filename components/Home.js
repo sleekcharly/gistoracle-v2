@@ -152,7 +152,7 @@ function HomeComponent() {
     if (!currentUser) {
       if (!fetchingPosts && buttonClicked === "new") {
         dispatch(getNextPosts("new", lastItem?.createdAt));
-      } else if (!fetchingPosts && bttonClicked === "top") {
+      } else if (!fetchingPosts && buttonClicked === "top") {
         dispatch(getNextPosts("top", lastItem?.postId));
       } else if (!fetchingPosts && buttonClicked === "spicy") {
         dispatch(getNextPosts("spicy", lastItem?.postId));
