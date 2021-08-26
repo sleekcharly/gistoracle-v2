@@ -23,7 +23,6 @@ handler.get(async (req, res) => {
 
   // define posts array
   let posts = [];
-  console.log(shrines.length);
 
   // loop through subscribed shrines to get user tailored posts
   for (let i = 0; i < shrines.length; i++) {

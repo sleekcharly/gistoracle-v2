@@ -13,6 +13,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { analytics } from "../firebase";
 import {
   getAllPosts,
+  getNextAuthPosts,
   getNextPosts,
   getTailoredPosts,
   getTotalPostsCount,
@@ -157,7 +158,7 @@ function HomeComponent() {
         dispatch(getNextPosts("spicy", lastItem?.postId));
       }
     } else {
-      if (fetchingPosts && buttonClicked === "new") {
+      if (!fetchingPosts && buttonClicked === "new") {
         dispatch(getNextAuthPosts("new", shrineFetchNo));
 
         setShrineSlice(shrineFetchNo);
@@ -271,7 +272,7 @@ function HomeComponent() {
           next={fetchPosts}
           hasMore={hasMorePosts}
           loader={<Loader />}
-          className="h-[100%] overflow-visible"
+          style={{ height: "100%", overflow: "visible" }}
         >
           <div>{postMarkup}</div>
         </InfiniteScroll>
@@ -281,7 +282,7 @@ function HomeComponent() {
           next={fetchPosts}
           hasMore={hasMoreAuthPosts}
           loader={<Loader />}
-          className="h-[100%] overflow-visible"
+          style={{ height: "100%", overflow: "visible" }}
         >
           <div>{postMarkup}</div>
         </InfiniteScroll>

@@ -1,5 +1,6 @@
 import nc from "next-connect";
 import { db } from "../../../../../utils/firebase/admin";
+import FBAuth from "../../../../../utils/FBAuth";
 
 const handler = nc();
 handler.use(FBAuth);
@@ -27,7 +28,7 @@ handler.get(async (req, res) => {
   let posts = [];
 
   // loop through subscribed shrines to get user tailored posts
-  for (i = 0; i < shrines.length; i++) {
+  for (let i = 0; i < shrines.length; i++) {
     let query = await db
       .collection("posts")
       .where("shrineId", "==", shrines[i])
