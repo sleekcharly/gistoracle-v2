@@ -5,7 +5,7 @@
 const admin = require("firebase-admin");
 
 // set environment project id
-const project = process.env.GCLOUD_PROJECT;
+const project = NEXT_PUBLIC_FIREBASE_PROJECT_ID;
 
 /*Your Firebase service account can be used to authenticate 
 multiple Firebase features, such as Database, Storage and
@@ -14,6 +14,8 @@ var serviceAccount =
   project === "gistoracle-28360"
     ? require("../../utils/firebase/firebaseServiceAccount/gistoracle-28360-firebase-adminsdk-ewftv-9107d0cc69.json")
     : require("../../utils/firebase/firebaseServiceAccount/gistoracle-dev-firebase-adminsdk-4qg56-ce04c6150b.json");
+
+console.log(serviceAccount);
 
 // intializing the application to use the admin SDK
 if (!admin.apps.length) {
