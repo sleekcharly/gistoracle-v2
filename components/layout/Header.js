@@ -29,7 +29,8 @@ import { useAuth } from "../../contexts/AuthContext";
 // redux stuff
 import { shallowEqual, useSelector, useDispatch } from "react-redux";
 import {
-  CLEAR_ERRORS,
+  CLEAR_LOGIN_ERRORS,
+  CLEAR_SIGNUP_ERRORS,
   DARK_MODE_OFF,
   DARK_MODE_ON,
 } from "../../redux/types/uiTypes";
@@ -37,16 +38,12 @@ import { useSnackbar } from "notistack";
 import algoliasearch from "algoliasearch";
 
 function Header({ featuredNavCategories }) {
-  // bring in notistack
-  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
-
   // *** get redux state parameters ***//
   // get server-side rendered darkmode state and UI status from redux state
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
         darkMode: state.UI.darkMode,
-        UIStatus: state.UI.status,
         credentials: state.user.credentials,
       }),
       shallowEqual
@@ -54,10 +51,7 @@ function Header({ featuredNavCategories }) {
   };
 
   // destructure darkMode
-  const { darkMode, UIStatus, credentials } = useStateParameters();
-
-  // show status if any exists
-  if (UIStatus) enqueueSnackbar(UIStatus, { variant: "success" });
+  const { darkMode, credentials } = useStateParameters();
 
   // define dispatch
   const dispatch = useDispatch();
@@ -112,11 +106,11 @@ function Header({ featuredNavCategories }) {
   let index = client.initIndex(ALGOLIA_INDEX_NAME);
 
   // handle search with algolia
-  const handleSearch = (event) => {
+  const handleSearch = async (event) => {
     setSearchQuery(event.target.value);
 
     //perform algolia operation
-    index
+    await index
       .search(searchQuery)
       .then((data) => {
         setSearchResults(data.hits);
@@ -128,20 +122,18 @@ function Header({ featuredNavCategories }) {
 
   // open login dialog
   const handleLoginClickOpen = () => {
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_LOGIN_ERRORS });
     setOpenLogin(true);
     setOpenSignup(false);
   };
   // close login dialog
   const handleLoginClose = () => {
     setOpenLogin(false);
-    // clear any login error messages
-    dispatch({ type: CLEAR_ERRORS });
   };
 
   // open signup dialog
   const handleSignupClickOpen = () => {
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_SIGNUP_ERRORS });
     setOpenSignup(true);
     setOpenLogin(false);
   };
@@ -191,6 +183,11 @@ function Header({ featuredNavCategories }) {
     } catch {
       console.log("Failed to logout");
     }
+  };
+
+  // handle error from images
+  const addDefaultSrc = (ev) => {
+    ev.target.src = "/images/post-thumbnail-placeholder.png";
   };
 
   return (
@@ -370,6 +367,7 @@ function Header({ featuredNavCategories }) {
                       </div>
 
                       <img
+                        onError={addDefaultSrc}
                         src={result.postThumbnail}
                         alt={result.title}
                         width="70px"

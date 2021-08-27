@@ -47,7 +47,7 @@ exports.validateLoginData = (data) => {
   }
 
   // check that password  field is not empty
-  if (isEmpty(data.password)) {
+  if (data.password && isEmpty(data.password)) {
     errors.password = "Please enter your password!";
   }
 

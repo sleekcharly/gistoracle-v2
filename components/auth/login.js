@@ -19,7 +19,10 @@ import Image from "next/image";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { CLEAR_ERRORS } from "../../redux/types/uiTypes";
+import {
+  CLEAR_RESET_PASSWORD_ERRORS,
+  CLEAR_RESET_PASSWORD_STATUS,
+} from "../../redux/types/uiTypes";
 import { useAuth } from "../../contexts/AuthContext";
 import ResetPassword from "./resetPassword";
 
@@ -56,7 +59,8 @@ function Login({ openLogin, handleLoginClose }) {
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
-        UIErrors: state.UI.errors,
+        UIErrors: state.UI.loginErrors,
+        UIStatus: state.UI.resetPasswordStatus,
       }),
       shallowEqual
     );
@@ -68,22 +72,19 @@ function Login({ openLogin, handleLoginClose }) {
   // set errors if any exist once received from state
   useEffect(() => {
     setErrors(UIErrors);
+    UIErrors && setloading(false);
   }, [UIErrors]);
-
-  // change loading state if any error exists
-  useEffect(() => {
-    if (errors) setloading(false);
-  }, [errors]);
 
   // function for opening reset dialog
   const handleResetOpen = () => {
-    handleLoginClose();
+    // handleLoginClose();
+    dispatch({ type: CLEAR_RESET_PASSWORD_STATUS });
+    dispatch({ type: CLEAR_RESET_PASSWORD_ERRORS });
     setResetOpen(true);
   };
 
   // function for closing reset dialog
   const handleResetClose = () => {
-    dispatch({ type: CLEAR_ERRORS });
     setResetOpen(false);
   };
 
@@ -126,7 +127,7 @@ function Login({ openLogin, handleLoginClose }) {
           <p className="font-bold text-2xl">Sign in</p>
         </DialogTitle>
 
-        <DialogContent>
+        <DialogContent style={{ position: "relative" }}>
           <form noValidate onSubmit={handleSubmit}>
             <TextField
               autoFocus
@@ -177,14 +178,6 @@ function Login({ openLogin, handleLoginClose }) {
 
             <DialogActions>
               <button
-                type="text"
-                onClick={handleLoginClose}
-                className="uppercase text-[#800000] text-sm mt-[20px] mr-2"
-              >
-                Cancel
-              </button>
-
-              <button
                 type="submit"
                 disabled={loading}
                 className={`relative text-[#fafafa] text-sm font-bold border rounded-md uppercase ${
@@ -201,27 +194,34 @@ function Login({ openLogin, handleLoginClose }) {
                 )}
               </button>
             </DialogActions>
-
-            <div className=" text-right">
-              <button
-                type="text"
-                className="text-sm font-normal text-[#800000] mb-4"
-                onClick={handleResetOpen}
-              >
-                Forgot password ?
-              </button>
-            </div>
-
-            <div className="text-center text-sm font-normal">
-              <em>New to Gist Oracle ?</em>
-              <button
-                type="text"
-                className="font-bold uppercase text-[#800000]  px-4 py-0 "
-              >
-                Signup
-              </button>
-            </div>
           </form>
+
+          <button
+            onClick={handleLoginClose}
+            className="uppercase text-[#800000] text-sm mt-[20px] mr-2 absolute top-[130px] md:bottom-[85px] right-[120px]"
+          >
+            Cancel
+          </button>
+
+          <div className=" text-right">
+            <button
+              type="text"
+              className="text-sm font-normal text-[#800000] mb-4"
+              onClick={handleResetOpen}
+            >
+              Forgot password ?
+            </button>
+          </div>
+
+          <div className="text-center text-sm font-normal">
+            <em>New to Gist Oracle ?</em>
+            <button
+              type="text"
+              className="font-bold uppercase text-[#800000]  px-4 py-0 "
+            >
+              Signup
+            </button>
+          </div>
         </DialogContent>
       </Dialog>
 

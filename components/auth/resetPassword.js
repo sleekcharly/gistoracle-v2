@@ -11,8 +11,10 @@ import {
 import Image from "next/image";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { sendResetEmail } from "../../redux/actions/userActions";
+import { CLEAR_RESET_PASSWORD_ERRORS } from "../../redux/types/uiTypes";
 
 function ResetPassword({ resetOpen, handleResetClose }) {
+  //   console.log("reset password dialog");
   // define component state
   const [email, setEmail] = useState("");
   const [errors, setErrors] = useState({});
@@ -25,29 +27,37 @@ function ResetPassword({ resetOpen, handleResetClose }) {
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
-        UIErrors: state.UI.errors,
+        UIErrors: state.UI.resetPasswordErrors,
+        UIStatus: state.UI.resetPasswordStatus,
       }),
       shallowEqual
     );
   };
 
   // destructure errors from state
-  const { UIErrors } = useStateParameters();
+  const { UIErrors, UIStatus } = useStateParameters();
 
   // set errors if any exist
   useEffect(() => {
     setErrors(UIErrors);
+    setLoading(false);
   }, [UIErrors]);
+
+  // close resetpassword dialog
+  if (UIStatus) {
+    handleResetClose();
+  }
 
   // submit email for password reset
   const handleSubmit = (event) => {
     event.preventDefault();
+    dispatch({ type: CLEAR_RESET_PASSWORD_ERRORS });
+
     setLoading(true);
 
     const userData = {
       email: email,
     };
-    console.log(userData);
 
     dispatch(sendResetEmail(userData));
   };
@@ -73,7 +83,7 @@ function ResetPassword({ resetOpen, handleResetClose }) {
           <p className="font-bold text-2xl">Reset Password</p>
         </DialogTitle>
 
-        <DialogContent>
+        <DialogContent style={{ position: "relative" }}>
           <DialogContentText>
             Have you forgotten your password? No worries, we are here to help.
             Fill in your email and you will receive a link to reset your
@@ -103,14 +113,6 @@ function ResetPassword({ resetOpen, handleResetClose }) {
 
             <DialogActions>
               <button
-                type="text"
-                onClick={handleResetClose}
-                className="uppercase text-[#800000] text-sm mt-[20px] mr-2"
-              >
-                Cancel
-              </button>
-
-              <button
                 type="submit"
                 disabled={loading}
                 className={`relative text-[#fafafa] text-sm font-bold border rounded-md uppercase ${
@@ -121,13 +123,19 @@ function ResetPassword({ resetOpen, handleResetClose }) {
                 {loading && (
                   <CircularProgress
                     size={30}
-                    color="#933a16"
+                    color="secondary"
                     className="absolute top-1 right-5"
                   />
                 )}
               </button>
             </DialogActions>
           </form>
+          <button
+            onClick={handleResetClose}
+            className="uppercase text-[#800000] text-sm mt-[20px] mr-2 absolute bottom-7 right-[120px]"
+          >
+            Cancel
+          </button>
         </DialogContent>
       </Dialog>
     </div>

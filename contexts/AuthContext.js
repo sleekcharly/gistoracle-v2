@@ -1,7 +1,14 @@
 import axios from "axios";
 import React, { useContext, useState, useEffect, createContext } from "react";
 import { auth, dataStore, analytics } from "../firebase";
-import { CLEAR_ERRORS, SET_ERRORS } from "../redux/types/uiTypes";
+import {
+  CLEAR_ERRORS,
+  CLEAR_LOGIN_ERRORS,
+  CLEAR_SIGNUP_ERRORS,
+  SET_ERRORS,
+  SET_LOGIN_ERRORS,
+  SET_SIGNUP_ERRORS,
+} from "../redux/types/uiTypes";
 import { useStore } from "../redux/store";
 import { validateLoginData, validateSignupData } from "../utils/validator";
 import { useSelector, useDispatch } from "react-redux";
@@ -33,7 +40,7 @@ export function AuthProvider({ children }) {
   //signup function
   const signup = async (userDetails) => {
     // clear any existing errors before continuing
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_SIGNUP_ERRORS });
 
     // extract and store user details form validation
     const newUser = {
@@ -120,7 +127,7 @@ export function AuthProvider({ children }) {
                 setAuthorizationHeader(token);
 
                 // clear any existing errors
-                dispatch({ type: CLEAR_ERRORS });
+                dispatch({ type: CLEAR_SIGNUP_ERRORS });
 
                 //reload application page
                 router.push("/");
@@ -133,13 +140,13 @@ export function AuthProvider({ children }) {
             console.error(err);
             if (err.code === "auth/email-already-in-use") {
               dispatch({
-                type: SET_ERRORS,
+                type: SET_SIGNUP_ERRORS,
                 payload: { email: "Email is already in use" },
               });
               return;
             } else {
               dispatch({
-                type: SET_ERRORS,
+                type: SET_SIGNUP_ERRORS,
                 payload: { general: "Something went wrong, please try again" },
               });
               return;
@@ -150,7 +157,7 @@ export function AuthProvider({ children }) {
         console.log(err.response.data);
         // set errors if any
         dispatch({
-          type: SET_ERRORS,
+          type: SET_SIGNUP_ERRORS,
           payload: err.response.data,
         });
 
@@ -163,7 +170,7 @@ export function AuthProvider({ children }) {
   // function for logging in user
   const login = (userDetails) => {
     // clear login errors
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_LOGIN_ERRORS });
 
     // extract and store user details for validation
     let user = { email: userDetails.email, password: userDetails.password };
@@ -192,7 +199,7 @@ export function AuthProvider({ children }) {
         setAuthorizationHeader(userToken);
 
         // clear any login errors
-        dispatch({ type: CLEAR_ERRORS });
+        dispatch({ type: CLEAR_LOGIN_ERRORS });
 
         // reload page
         window.location.reload();
@@ -202,7 +209,7 @@ export function AuthProvider({ children }) {
 
         // set error in redux
         dispatch({
-          type: SET_ERRORS,
+          type: SET_LOGIN_ERRORS,
           payload: { general: "Wrong email or password! please try again" },
         });
 

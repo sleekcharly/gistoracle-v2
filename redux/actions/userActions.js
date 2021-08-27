@@ -1,5 +1,11 @@
 import axios from "axios";
-import { CLEAR_ERRORS, SET_ERRORS } from "../types/uiTypes";
+import {
+  CLEAR_ERRORS,
+  SET_ERRORS,
+  SET_RESET_PASSWORD_ERRORS,
+  SET_RESET_PASSWORD_STATUS,
+  SET_STATUS,
+} from "../types/uiTypes";
 import { SET_SUBSCRIBED_SHRINES, SET_USER } from "../types/userTypes";
 
 // function for getting user's data
@@ -11,7 +17,6 @@ export const getUserData = () => (dispatch) => {
   axios
     .get("/api/user/data/getData")
     .then((res) => {
-    
       // set user data in redux state
       dispatch({ type: SET_USER, payload: res.data });
 
@@ -39,12 +44,15 @@ export const sendResetEmail = (userData) => (dispatch) => {
   axios
     .post("/api/user/settings/sendPasswordResetEmail", userData)
     .then((res) => {
-      dispatch({ type: CLEAR_ERRORS });
-      dispatch({ type: SET_STATUS, payload: res.data });
+      dispatch({ type: SET_RESET_PASSWORD_STATUS, payload: res.data.message });
     })
     .catch((err) => {
+      console.error(err);
       try {
-        dispatch({ type: SET_ERRORS, payload: err.response.data });
+        dispatch({
+          type: SET_RESET_PASSWORD_ERRORS,
+          payload: err.response.data,
+        });
       } catch (error) {
         console.log(error);
       }

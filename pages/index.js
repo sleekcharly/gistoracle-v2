@@ -10,10 +10,35 @@ import {
 import * as cookie from "cookie";
 import { userAuthRefresh } from "../utils/userFunction";
 import HomeComponent from "../components/Home";
+import { useSnackbar } from "notistack";
+import { shallowEqual, useSelector } from "react-redux";
 
 export default function Home() {
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
+
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+
+  // get server-side rendered featured categories from redux state
+  const useStateParameters = () => {
+    return useSelector(
+      (state) => ({
+        UIStatus: state.UI.resetPasswordStatus,
+      }),
+      shallowEqual
+    );
+  };
+
+  // destructure errors from state
+  const { UIStatus } = useStateParameters();
+
+  // run status
+  if (UIStatus) {
+    enqueueSnackbar(UIStatus, {
+      variant: "success",
+      preventDuplicate: true,
+    });
+  }
 
   return (
     <Layout>

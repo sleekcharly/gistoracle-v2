@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }) {
     <ThemeProvider enableSystem={true} attribute="class">
       <MuiThemeProvider theme={theme}>
         <SnackbarProvider
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
           <Provider store={store}>
             <AuthProvider>

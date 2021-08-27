@@ -1,7 +1,22 @@
-// UI reducer types
+/** UI reducer types **/
+
 export const SET_FEATURED_NAV_CATEGORIES = "SET_FEATURED_NAV_CATEGORIES";
+// light and dark mode
 export const DARK_MODE_ON = "DARK_MODE_ON";
 export const DARK_MODE_OFF = "DARK_MODE_OFF";
-export const CLEAR_ERRORS = "CLEAR_ERRORS";
-export const SET_ERRORS = "SET_ERRORS";
+
+// status types
 export const SET_STATUS = "SET_STATUS";
+export const CLEAR_STATUS = "CLEAR_STATUS";
+export const SET_RESET_PASSWORD_STATUS = "SET_RESET_PASSWORD_STATUS";
+export const CLEAR_RESET_PASSWORD_STATUS = "CLEAR_RESET_PASSWORD_STATUS";
+
+// error types
+export const SET_ERRORS = "SET_ERRORS";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const SET_LOGIN_ERRORS = "SET_LOGIN_ERRORS";
+export const CLEAR_LOGIN_ERRORS = "CLEAR_LOGIN_ERRORS";
+export const SET_SIGNUP_ERRORS = "SET_SIGNUP_ERRORS";
+export const CLEAR_SIGNUP_ERRORS = "CLEAR_SIGNUP_ERRORS";
+export const SET_RESET_PASSWORD_ERRORS = "SET_RESET_PASSWORD_ERRORS";
+export const CLEAR_RESET_PASSWORD_ERRORS = "CLEAR_RESET_PASSWORD_ERRORS";

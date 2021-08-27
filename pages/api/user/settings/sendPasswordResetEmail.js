@@ -5,15 +5,11 @@ import { validateLoginData } from "../../../../utils/validator";
 
 const handler = nc();
 
-handler.get(async (req, res) => {
-  // define status object
-  let status = {};
-
+handler.post(async (req, res) => {
   // create user object from
   const user = {
     email: req.body.email,
   };
-
   // validate user email using validator
   const { valid, errors } = validateLoginData(user);
   if (!valid) return res.status(400).json(errors);
@@ -23,24 +19,27 @@ handler.get(async (req, res) => {
 
   await userRef
     .get()
-    .then((snapshot) => {
-      // check to see if email already exists
-      if (snapshot.empty) {
-        console.log("not found");
-        return res.status(400).json({ email: "email does not exist" });
-      } else {
-        // if email exists send reset email
-        return auth.sendPasswordResetEmail(user.email).then(() => {
-          res.json({ message: "Check your email to reset your password" });
-        });
-      }
+    .then(async () => {
+      // if email exists send reset email
+      await auth.sendPasswordResetEmail(user.email).then(() => {
+        res
+          .status(200)
+          .json({ message: "Check your email to reset your password" });
+      });
     })
     .catch((err) => {
       console.error(err);
 
       return res
         .status(500)
-        .json({ general: "Something went wrong, please try again" });
+        .json({
+          general:
+            err.code === "auth/user-not-found"
+              ? "Email does not exist on our database"
+              : err.code === "auth/too-many-requests"
+              ? err.message
+              : "check that you have an active network connection",
+        });
     });
 });
 

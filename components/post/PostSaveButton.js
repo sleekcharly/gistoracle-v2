@@ -3,7 +3,10 @@ import { SaveIcon } from "@heroicons/react/outline";
 import { SaveIcon as SaveIconSolid } from "@heroicons/react/solid";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
-import { CLEAR_ERRORS } from "../../redux/types/uiTypes";
+import {
+  CLEAR_LOGIN_ERRORS,
+  CLEAR_SIGNUP_ERRORS,
+} from "../../redux/types/uiTypes";
 import Login from "../auth/login";
 import Signup from "../auth/signup";
 
@@ -38,14 +41,14 @@ function PostSaveButton({ postId }) {
 
   // open login dialog
   const handleLoginClickOpen = () => {
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_LOGIN_ERRORS });
     setLoginOpen(true);
     setOpen(false);
   };
 
   // open signup dialog
   const handleSignupClickOpen = () => {
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_SIGNUP_ERRORS });
     setOpen(true);
     setLoginOpen(false);
   };
@@ -53,13 +56,11 @@ function PostSaveButton({ postId }) {
   // close signup dialog
   const handleSignupClose = () => {
     setOpen(false);
-    dispatch({ type: CLEAR_ERRORS });
   };
 
   // close login dialog
   const handleLoginClose = () => {
     setLoginOpen(false);
-    dispatch({ type: CLEAR_ERRORS });
   };
 
   // check to see if a post is saved

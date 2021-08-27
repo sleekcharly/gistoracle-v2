@@ -50,7 +50,7 @@ function Posts({ post }) {
   } = post;
 
   // get auth context parameters
-  const { login, signup, currentUser } = useAuth();
+  const { currentUser } = useAuth();
 
   // *** get redux state parameters ***//
   const useStateParameters = () => {

@@ -1,12 +1,12 @@
-import { HeartIcon } from "@heroicons/react/outline";
-import { HeartIcon as HeartIconSolid } from "@heroicons/react/solid";
-
 import React, { useState } from "react";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
-import { CLEAR_ERRORS } from "../../redux/types/uiTypes";
+import {
+  CLEAR_LOGIN_ERRORS,
+  CLEAR_SIGNUP_ERRORS,
+} from "../../redux/types/uiTypes";
 import Login from "../auth/login";
 import Signup from "../auth/signup";
 import MyButton from "../MyButton";
@@ -42,14 +42,14 @@ function PostLikeButton(props) {
 
   // open login dialog
   const handleLoginClickOpen = () => {
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_LOGIN_ERRORS });
     setLoginOpen(true);
     setOpen(false);
   };
 
   // open signup dialog
   const handleSignupClickOpen = () => {
-    dispatch({ type: CLEAR_ERRORS });
+    dispatch({ type: CLEAR_SIGNUP_ERRORS });
     setOpen(true);
     setLoginOpen(false);
   };
@@ -57,13 +57,11 @@ function PostLikeButton(props) {
   // close signup dialog
   const handleSignupClose = () => {
     setOpen(false);
-    dispatch({ type: CLEAR_ERRORS });
   };
 
   // close login dialog
   const handleLoginClose = () => {
     setLoginOpen(false);
-    dispatch({ type: CLEAR_ERRORS });
   };
 
   // check if a post is liked
