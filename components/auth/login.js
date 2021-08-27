@@ -39,7 +39,7 @@ function Login({ openLogin, handleLoginClose }) {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setloading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
 
   // get login function from auth context
@@ -55,7 +55,7 @@ function Login({ openLogin, handleLoginClose }) {
     event.preventDefault();
   };
 
-  // get server-side rendered featured categories from redux state
+  // get redux state parameters
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
@@ -71,9 +71,17 @@ function Login({ openLogin, handleLoginClose }) {
 
   // set errors if any exist once received from state
   useEffect(() => {
-    setErrors(UIErrors);
-    UIErrors && setloading(false);
+    let mounted = true;
+
+    if (mounted) setErrors(UIErrors);
+
+    return () => (mounted = false);
   }, [UIErrors]);
+
+  // change loading state if errors exist
+  useEffect(() => {
+    if (errors) setLoading(false);
+  }, [errors]);
 
   // function for opening reset dialog
   const handleResetOpen = () => {

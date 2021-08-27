@@ -36,6 +36,7 @@ import {
 } from "../../redux/types/uiTypes";
 import { useSnackbar } from "notistack";
 import algoliasearch from "algoliasearch";
+import Signup from "../auth/signup";
 
 function Header({ featuredNavCategories }) {
   // *** get redux state parameters ***//
@@ -58,6 +59,10 @@ function Header({ featuredNavCategories }) {
 
   // get login function from auth context
   const { login, logout, currentUser } = useAuth();
+
+  // set highlidht for signup component
+  const highlight =
+    "Owning a Gist Oracle account gives you the opportunity to be heard and equipped with power to shake up your favourite shrines.";
 
   // Change theme handler
   const { systemTheme, theme, setTheme } = useTheme();
@@ -136,6 +141,11 @@ function Header({ featuredNavCategories }) {
     dispatch({ type: CLEAR_SIGNUP_ERRORS });
     setOpenSignup(true);
     setOpenLogin(false);
+  };
+
+  // close signup dialog
+  const handleSignupClose = () => {
+    setOpenSignup(false);
   };
 
   //open more menu
@@ -517,7 +527,10 @@ function Header({ featuredNavCategories }) {
               Login
             </button>
 
-            <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 bg-[#933a16] dark:bg-gray-500 dark:hover:bg-[#800000] dark:hover:text-white">
+            <button
+              className="text-[#fafafa] dark:text-[#D7DADC] font-bold border rounded-md uppercase px-4 py-0 bg-[#933a16] dark:bg-gray-500 dark:hover:bg-[#800000] dark:hover:text-white"
+              onClick={handleSignupClickOpen}
+            >
               Signup
             </button>
           </div>
@@ -564,7 +577,10 @@ function Header({ featuredNavCategories }) {
               <Divider />
 
               <MenuItem onClick={handleAccountIconClose} disableGutters>
-                <button className="text-[#fafafa] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0 bg-[#933a16] dark:bg-gray-500">
+                <button
+                  className="text-[#fafafa] dark:text-[#D7DADC] font-bold text-sm border rounded-md uppercase ml-3 px-4 py-0 bg-[#933a16] dark:bg-gray-500"
+                  onClick={handleSignupClickOpen}
+                >
                   Signup
                 </button>
               </MenuItem>
@@ -695,6 +711,13 @@ function Header({ featuredNavCategories }) {
         handleSignupClickOpen={handleSignupClickOpen}
         setOpenLogin={setOpenLogin}
         login={login}
+      />
+
+      <Signup
+        openSignup={openSignup}
+        handleLoginClickOpen={handleLoginClickOpen}
+        handleSignupClose={handleSignupClose}
+        highlight={highlight}
       />
     </header>
   );
