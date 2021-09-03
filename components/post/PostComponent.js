@@ -34,6 +34,8 @@ import {
   TwitterShareButton,
   WhatsappShareButton,
 } from "react-share";
+import Report from "../user/Report";
+import NewComment from "../comments/newComment";
 // get suneditor without server side rendering
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
 
@@ -169,7 +171,7 @@ function PostComponent({ post, postId, currentUrl }) {
       </section>
 
       {/* load this section if post exists */}
-      <section>
+      <section className="mb-6">
         <header className="mb-[10px]">
           {!loadingPost ? (
             // post title
@@ -187,12 +189,14 @@ function PostComponent({ post, postId, currentUrl }) {
         {/* post body with suneditor */}
         <div>
           {!loadingPost ? (
-            <SunEditor
-              setContents={body}
-              disable={true}
-              showToolbar={false}
-              height="auto"
-            />
+            <div>
+              <SunEditor
+                setContents={body}
+                disable={true}
+                showToolbar={false}
+                height="auto"
+              />
+            </div>
           ) : (
             <Skeleton
               animation="wave"
@@ -271,10 +275,26 @@ function PostComponent({ post, postId, currentUrl }) {
                 </MenuItem>
               </Menu>
             </div>
+
+            {/* report  */}
+            <Report
+              postId={postId}
+              username={username}
+              postTitle={title}
+              userImage={userImage}
+            />
           </div>
         ) : (
           <Skeleton animation="wave" variant="react" width="50%" height={20} />
         )}
+      </section>
+
+      {/* comments section */}
+      <section>
+        {/* new comments form */}
+        <NewComment postId={postId} />
+
+        {/* comments list */}
       </section>
     </article>
   );
