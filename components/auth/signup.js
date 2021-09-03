@@ -174,7 +174,11 @@ function Signup({
               </div>
             </DialogTitle>
 
-            <p className="font-semibold hidden sm:block mb-20">{highlight}</p>
+            <p className="font-semibold hidden sm:block mb-20">
+              {highlight
+                ? highlight
+                : "Owning a Gist Oracle account gives you the opportunity to be heard and equipped with power to shake up your favourite shrines. "}
+            </p>
 
             {/* tees and cees */}
             <p className="hidden sm:block text-xs sm:text-sm">

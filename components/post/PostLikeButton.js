@@ -16,6 +16,9 @@ function PostLikeButton(props) {
   const [open, setOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
 
+  // signup highlight
+  const signupHighlight = "Sign up today and join the worldwide conversation";
+
   // define dispatch
   const dispatch = useDispatch();
 
@@ -102,6 +105,7 @@ function PostLikeButton(props) {
         handleSignupClose={handleSignupClose}
         handleLoginClickOpen={handleLoginClickOpen}
         signup={signup}
+        highlight={signupHighlight}
       />
     </>
   ) : likedPost() ? (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React from "react";
 import Layout from "../components/layout/Layout";
 import { initializeStore } from "../redux/store";
 import { db } from "../firebase";
@@ -12,6 +12,7 @@ import { userAuthRefresh } from "../utils/userFunction";
 import HomeComponent from "../components/Home";
 import { useSnackbar } from "notistack";
 import { shallowEqual, useSelector } from "react-redux";
+import PageMeta from "../utils/pageMeta";
 
 export default function Home() {
   // check for existing token and token expiration to maintain user authentication
@@ -42,6 +43,7 @@ export default function Home() {
 
   return (
     <Layout>
+      <PageMeta />
       <HomeComponent />
     </Layout>
   );
@@ -54,7 +56,7 @@ export async function getServerSideProps(context) {
 
   // get cookies from browser
   const cookies = context.req.headers.cookie;
-  const parsedCookies = cookie.parse(cookies);
+  const parsedCookies = cookies && cookie.parse(cookies);
 
   // preload the featured nav categories  from firestore and redux store
   const reduxStore = initializeStore();
@@ -87,7 +89,7 @@ export async function getServerSideProps(context) {
 
   // feed cookies to redux initial redux state
   await dispatch({
-    type: parsedCookies.darkMode === "ON" ? DARK_MODE_ON : DARK_MODE_OFF,
+    type: parsedCookies ? parsedCookies.darkMode === "ON" ? DARK_MODE_ON : DARK_MODE_OFF : DARK_MODE_OFF,
   });
 
   return {

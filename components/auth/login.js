@@ -26,7 +26,7 @@ import {
 import { useAuth } from "../../contexts/AuthContext";
 import ResetPassword from "./resetPassword";
 
-function Login({ openLogin, handleLoginClose }) {
+function Login({ openLogin, handleLoginClose, handleSignupClickOpen }) {
   // import media query and theme from material ui
   const theme = useTheme();
   const fullscreen = useMediaQuery(theme.breakpoints.down("xs"));
@@ -99,7 +99,7 @@ function Login({ openLogin, handleLoginClose }) {
   // submit user data for login
   const handleSubmit = (event) => {
     event.preventDefault();
-    setloading(true);
+    setLoading(true);
 
     const userData = {
       email: email,
@@ -225,7 +225,8 @@ function Login({ openLogin, handleLoginClose }) {
             <em>New to Gist Oracle ?</em>
             <button
               type="text"
-              className="font-bold uppercase text-[#800000]  px-4 py-0 "
+              className="font-bold uppercase text-[#800000]  px-4 py-0"
+              onClick={handleSignupClickOpen}
             >
               Signup
             </button>
