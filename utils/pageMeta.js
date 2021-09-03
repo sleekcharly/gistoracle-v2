@@ -32,8 +32,6 @@ function PageMeta({
   // set content type
   let pageType = contentType ? contentType : "website";
 
-  console.log(info);
-
   return (
     <Head>
       <title>{title}</title>
