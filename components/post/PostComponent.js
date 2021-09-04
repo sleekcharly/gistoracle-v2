@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Menu,
   MenuItem,
@@ -10,6 +14,7 @@ import {
 } from "@material-ui/core";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import {
+  Close,
   Delete,
   EmojiObjects,
   Facebook,
@@ -46,6 +51,8 @@ function PostComponent({ post, postId, currentUrl }) {
   // set component state
   const [loadingPost, setLoadingPost] = useState(true);
   const [anchorEl, setAnchorEl] = useState(null);
+  // set state for delete dialog component
+  const [dialogOpen, setDialogOpen] = React.useState(false);
 
   // set loading state when post is present
   useEffect(() => {
@@ -104,9 +111,6 @@ function PostComponent({ post, postId, currentUrl }) {
     userImage,
   } = post;
 
-  // delete post handler
-  const handleDelete = () => {};
-
   // function for opening share button
   const handleShareClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -117,10 +121,20 @@ function PostComponent({ post, postId, currentUrl }) {
     setAnchorEl(null);
   };
 
+  // open delete dialog
+  const handleDelete = () => {
+    setDialogOpen(true);
+  };
+
+  // close delete dialog
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
+
   return (
-    <article className="bg-white p-5 rounded-t-md">
+    <article className="bg-white px-[55px] py-10 rounded-t-md">
       {/* post info section */}
-      <section className="relative mt-[20px] mb-[20px] md:flex md:items-center md:space-x-4">
+      <section className="relative mb-[20px] md:flex md:items-center md:space-x-4">
         {/* shrine name */}
         <div className="flex items-center">
           <EmojiObjects color="secondary" />
@@ -165,6 +179,49 @@ function PostComponent({ post, postId, currentUrl }) {
                   <Delete fontSize="small" />
                 </IconButton>
               </Tooltip>
+
+              <Dialog
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                maxWidth="sm"
+              >
+                <DialogTitle>
+                  <div className="flex items-center">
+                    <p className="flex-grow font-semibold text-black">
+                      Delete post?
+                    </p>
+                    <IconButton onClick={handleDialogClose}>
+                      <Close />
+                    </IconButton>
+                  </div>
+                </DialogTitle>
+
+                <DialogContent dividers>
+                  <p className="text-black">
+                    This action can't be undone. This post would be removed from
+                    your profile and any shrine associated with it. Are you sure
+                    you want to do this?
+                  </p>
+                </DialogContent>
+
+                <DialogActions>
+                  <div className="flex space-x-4">
+                    <button
+                      className="border border-[#933a16] border-opacity-80 text-black px-4 py-2 w-auto rounded-md hover:bg-[#933a16] hover:text-white"
+                      onClick={handleDialogClose}
+                    >
+                      Cancel
+                    </button>
+
+                    <button
+                      className="bg-[#933a16] text-white px-4 py-2 w-auto rounded-md hover:bg-[#800000]"
+                      //   onClick={handleSubmit}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </DialogActions>
+              </Dialog>
             </div>
           ) : null}
         </div>
@@ -290,7 +347,7 @@ function PostComponent({ post, postId, currentUrl }) {
       </section>
 
       {/* comments section */}
-      <section>
+      <section className="mb-8">
         {/* new comments form */}
         <NewComment postId={postId} />
 
