@@ -9,11 +9,7 @@ import { AuthProvider } from "../contexts/AuthContext";
 import { SnackbarProvider } from "notistack";
 // Material-ui custom theme
 import themeFile from "../utils/theme";
-import {
-  createMuiTheme,
-  createTheme,
-  MuiThemeProvider,
-} from "@material-ui/core";
+import { createTheme, MuiThemeProvider } from "@material-ui/core";
 
 function MyApp({ Component, pageProps }) {
   //initiate google analytics

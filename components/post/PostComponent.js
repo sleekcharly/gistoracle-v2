@@ -41,6 +41,7 @@ import {
 } from "react-share";
 import Report from "../user/Report";
 import NewComment from "../comments/newComment";
+import Comments from "../comments/Comments";
 // get suneditor without server side rendering
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
 
@@ -85,18 +86,6 @@ function PostComponent({ post, postId, currentUrl }) {
 
   // define dispatch
   const dispatch = useDispatch();
-
-  // load post comments
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      // get post comments
-      //   dispatch(getPostComments(postId));
-    }
-
-    return () => (mounted = false);
-  }, []);
 
   // destructure post data
   const {
@@ -352,6 +341,11 @@ function PostComponent({ post, postId, currentUrl }) {
         <NewComment postId={postId} />
 
         {/* comments list */}
+        {commentCount > 0 ? (
+          <div>
+            <Comments />
+          </div>
+        ) : null}
       </section>
     </article>
   );

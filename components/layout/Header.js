@@ -10,7 +10,7 @@ import {
   MoonIcon,
   UserIcon,
   CogIcon,
-  LogoutIcon
+  LogoutIcon,
 } from "@heroicons/react/outline";
 import {
   ChevronDoubleLeftIcon,
@@ -18,7 +18,7 @@ import {
   CubeTransparentIcon,
   PencilAltIcon,
   SparklesIcon,
-  UserCircleIcon
+  UserCircleIcon,
 } from "@heroicons/react/solid";
 import Data from "../../utils/data";
 import { Avatar, Divider, Link, MenuItem, Switch } from "@material-ui/core";
@@ -32,7 +32,7 @@ import {
   CLEAR_LOGIN_ERRORS,
   CLEAR_SIGNUP_ERRORS,
   DARK_MODE_OFF,
-  DARK_MODE_ON
+  DARK_MODE_ON,
 } from "../../redux/types/uiTypes";
 import { useSnackbar } from "notistack";
 import algoliasearch from "algoliasearch";
@@ -43,9 +43,9 @@ function Header({ featuredNavCategories }) {
   // get server-side rendered darkmode state and UI status from redux state
   const useStateParameters = () => {
     return useSelector(
-      state => ({
+      (state) => ({
         darkMode: state.UI.darkMode,
-        credentials: state.user.credentials
+        credentials: state.user.credentials,
       }),
       shallowEqual
     );
@@ -70,7 +70,7 @@ function Header({ featuredNavCategories }) {
     const currentTheme = theme === "system" ? systemTheme : theme;
 
     dispatch({
-      type: currentTheme === "dark" ? DARK_MODE_OFF : DARK_MODE_ON
+      type: currentTheme === "dark" ? DARK_MODE_OFF : DARK_MODE_ON,
     });
 
     if (currentTheme === "dark") {
@@ -106,21 +106,21 @@ function Header({ featuredNavCategories }) {
   const ALGOLIA_SEARCH_KEY = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_KEY;
   const ALGOLIA_INDEX_NAME = process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME;
   const client = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_SEARCH_KEY, {
-    protocol: "https:"
+    protocol: "https:",
   });
   let index = client.initIndex(ALGOLIA_INDEX_NAME);
 
   // handle search with algolia
-  const handleSearch = async event => {
+  const handleSearch = async (event) => {
     setSearchQuery(event.target.value);
 
     //perform algolia operation
     await index
       .search(searchQuery)
-      .then(data => {
+      .then((data) => {
         setSearchResults(data.hits);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
       });
   };
@@ -149,7 +149,7 @@ function Header({ featuredNavCategories }) {
   };
 
   //open more menu
-  const handleMoreButtonClick = event => {
+  const handleMoreButtonClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   // close more menu
@@ -158,7 +158,7 @@ function Header({ featuredNavCategories }) {
   };
 
   //open logged in user menu area
-  const handleUserMenuClick = event => {
+  const handleUserMenuClick = (event) => {
     setUserMenuAnchorEl(event.currentTarget);
   };
 
@@ -168,7 +168,7 @@ function Header({ featuredNavCategories }) {
   };
 
   // open authentication menu on account icon is clicked
-  const handleAccountIconClick = event => {
+  const handleAccountIconClick = (event) => {
     setAccountIconAnchorEl(event.currentTarget);
   };
   // close authentication menu
@@ -176,7 +176,7 @@ function Header({ featuredNavCategories }) {
     setAccountIconAnchorEl(null);
   };
   // open mobile category menu icon
-  const handleIconClick = event => {
+  const handleIconClick = (event) => {
     setIconAnchorEl(event.currentTarget);
   };
   // close mobile category menu icon
@@ -196,7 +196,7 @@ function Header({ featuredNavCategories }) {
   };
 
   // handle error from images
-  const addDefaultSrc = ev => {
+  const addDefaultSrc = (ev) => {
     ev.target.src = "/images/post-thumbnail-placeholder.png";
   };
 
@@ -210,6 +210,7 @@ function Header({ featuredNavCategories }) {
             alt="Gist oracle logo"
             layout="fill"
             quality="100"
+            component="link"
           />
         </div>
       </NextLink>
@@ -238,13 +239,13 @@ function Header({ featuredNavCategories }) {
             anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             transformOrigin={{
               vertical: "top",
-              horizontal: "center"
+              horizontal: "center",
             }}
             keepMounted
             open={Boolean(iconAnchorEl)}
             onClose={handleIconClose}
           >
-            {Data.navCategories.map(mobileMenuCategory => (
+            {Data.navCategories.map((mobileMenuCategory) => (
               <MenuItem
                 key={mobileMenuCategory.name}
                 onClick={handleIconClose}
@@ -265,7 +266,7 @@ function Header({ featuredNavCategories }) {
 
         {/* Desktop navigation */}
         <div className="hidden lg:flex items-center space-x-4 xl:space-x-6 ml-8">
-          {featuredNavCategories.map(nav => (
+          {featuredNavCategories.map((nav) => (
             <a
               className="header-link group"
               key={nav.name}
@@ -299,13 +300,13 @@ function Header({ featuredNavCategories }) {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               transformOrigin={{
                 vertical: "top",
-                horizontal: "center"
+                horizontal: "center",
               }}
               keepMounted
               open={Boolean(anchorEl)}
               onClose={handleMoreClose}
             >
-              {desktopNavCategories.map(navMenuListCategory => (
+              {desktopNavCategories.map((navMenuListCategory) => (
                 <MenuItem
                   key={navMenuListCategory.name}
                   onClick={handleMoreClose}
@@ -348,7 +349,7 @@ function Header({ featuredNavCategories }) {
         >
           {searchQuery &&
             searchResults &&
-            searchResults.map(result => (
+            searchResults.map((result) => (
               <>
                 <div
                   className="p-3 hover:bg-[#f5f0f0] dark:hover:bg-gray-500 cursor-pointer relative"
@@ -456,7 +457,7 @@ function Header({ featuredNavCategories }) {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               transformOrigin={{
                 vertical: "top",
-                horizontal: "center"
+                horizontal: "center",
               }}
               keepMounted
               open={Boolean(userMenuAnchorEl)}
@@ -560,7 +561,7 @@ function Header({ featuredNavCategories }) {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               transformOrigin={{
                 vertical: "top",
-                horizontal: "center"
+                horizontal: "center",
               }}
               keepMounted
               open={Boolean(accountIconAnchorEl)}
@@ -633,7 +634,7 @@ function Header({ featuredNavCategories }) {
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
               transformOrigin={{
                 vertical: "top",
-                horizontal: "center"
+                horizontal: "center",
               }}
               keepMounted
               open={Boolean(userMenuAnchorEl)}

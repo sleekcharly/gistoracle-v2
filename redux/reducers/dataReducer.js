@@ -6,6 +6,12 @@ import {
   LOADING_POSTS,
   SET_TOTAL_POSTS_COUNT,
   SET_MORE_POSTS,
+  SET_POST_COMMENTS,
+  REPLY_LEVEL_1,
+  REPLY_LEVEL_2,
+  REPLY_LEVEL_3,
+  REPLY_LEVEL_4,
+  REPLY_LEVEL_5,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -14,6 +20,8 @@ const initialState = {
   fetchinPosts: false,
   posts: [],
   totalPosts: 0,
+  postComments: {},
+  commentReply: {},
 };
 
 export default function dataReducer(state = initialState, action) {
@@ -44,6 +52,36 @@ export default function dataReducer(state = initialState, action) {
         ...state,
         posts: [...state.posts, ...action.payload],
         fetchingPosts: false,
+      };
+    case SET_POST_COMMENTS:
+      return {
+        ...state,
+        postComments: action.payload,
+      };
+    case REPLY_LEVEL_1:
+      return {
+        ...state,
+        commentReply: action.payload,
+      };
+    case REPLY_LEVEL_2:
+      return {
+        ...state,
+        commentReply: action.payload,
+      };
+    case REPLY_LEVEL_3:
+      return {
+        ...state,
+        commentReply: action.payload,
+      };
+    case REPLY_LEVEL_4:
+      return {
+        ...state,
+        commentReply: action.payload,
+      };
+    case REPLY_LEVEL_5:
+      return {
+        ...state,
+        commentReply: action.payload,
       };
     default:
       return state;

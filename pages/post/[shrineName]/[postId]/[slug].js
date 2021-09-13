@@ -3,6 +3,7 @@ import Layout from "../../../../components/layout/Layout";
 import PostComponent from "../../../../components/post/PostComponent";
 import { db } from "../../../../firebase";
 import { initializeStore } from "../../../../redux/store";
+import { SET_POST_COMMENTS } from "../../../../redux/types/dataTypes";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../../../redux/types/uiTypes";
 import PageMeta from "../../../../utils/pageMeta";
 import { userAuthRefresh } from "../../../../utils/userFunction";
@@ -71,7 +72,7 @@ export async function getServerSideProps(context) {
     .then((doc) => {
       // check if post exists
       if (!doc.exists) {
-        return res.status(404).json({ error: "Post not found!" });
+        return { error: "Post not found!" };
       }
       postData = doc.data();
       postData.postId = doc.id;
@@ -84,10 +85,36 @@ export async function getServerSideProps(context) {
       return;
     });
 
+  // get post comments from firestore
+  const comments = await db
+    .collection("comments")
+    .orderBy("createdAt", "desc")
+    .where("postId", "==", postId)
+    .get()
+    .then((data) => {
+      let comments = [];
+
+      data.forEach((doc) => {
+        comments.push({ commentId: doc.id, ...doc.data() });
+      });
+
+      return comments;
+    })
+    .catch((err) => {
+      console.error(err);
+      console.log(err.message);
+    });
+
   // feed featured navigation categories to redux state
   await dispatch({
     type: SET_FEATURED_NAV_CATEGORIES,
     payload: categories,
+  });
+
+  // feed post comments to redux state
+  await dispatch({
+    type: SET_POST_COMMENTS,
+    payload: comments,
   });
 
   return {

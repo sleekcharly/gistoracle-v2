@@ -15,6 +15,11 @@ import {
   CLEAR_RESET_PASSWORD_ERRORS,
   SET_RESET_PASSWORD_STATUS,
   CLEAR_RESET_PASSWORD_STATUS,
+  SET_REPLY_FORM_ERRORS,
+  CLEAR_REPLY_FORM_ERRORS,
+  SET_REPLY_STATUS,
+  SET_COMMENT_REPLY_FORM_ERRORS_1,
+  CLEAR_COMMENT_REPLY_FORM_ERRORS_1,
 } from "../types/uiTypes";
 
 const initialState = {
@@ -26,6 +31,9 @@ const initialState = {
   resetPasswordErrors: null,
   status: "",
   resetPasswordStatus: null,
+  replyFormErrors: null,
+  replySent: false,
+  commentReplyFormErrors1: null,
 };
 
 export default function uiReducer(state = initialState, action) {
@@ -58,6 +66,14 @@ export default function uiReducer(state = initialState, action) {
       return { ...state, resetPasswordErrors: action.payload };
     case CLEAR_RESET_PASSWORD_ERRORS:
       return { ...state, resetPasswordErrors: null };
+    case SET_REPLY_FORM_ERRORS:
+      return { ...state, replyFormErrors: action.payload };
+    case CLEAR_REPLY_FORM_ERRORS:
+      return { ...state, replyFormErrors: null };
+    case SET_COMMENT_REPLY_FORM_ERRORS_1:
+      return { ...state, commentReplyFormErrors1: action.payload };
+    case CLEAR_COMMENT_REPLY_FORM_ERRORS_1:
+      return { ...state, commentReplyFormErrors1: null };
 
     // UI status message
     case SET_STATUS:
@@ -68,6 +84,10 @@ export default function uiReducer(state = initialState, action) {
       return { ...state, resetPasswordStatus: action.payload };
     case CLEAR_RESET_PASSWORD_STATUS:
       return { ...state, resetPasswordStatus: null };
+
+    // loading status
+    case SET_REPLY_STATUS:
+      return { ...state, replySent: true };
 
     default:
       return state;

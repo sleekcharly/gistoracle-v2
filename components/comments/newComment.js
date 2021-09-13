@@ -28,7 +28,6 @@ function NewComment({ postId }) {
     return useSelector(
       (state) => ({
         UIErrors: state.UI.createCommentErrors,
-        UIStatus: state.UI.resetPasswordStatus,
       }),
       shallowEqual
     );
@@ -100,7 +99,7 @@ function NewComment({ postId }) {
 
   // setup markup
   const commentFormMarkup = currentUser ? (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="mb-[30px]">
       <TextField
         name="body"
         type="text"
@@ -138,7 +137,7 @@ function NewComment({ postId }) {
     <>
       <button
         onClick={handleDialogOpen}
-        className="text-[0.9rem] text-white font-normal border rounded-md uppercase bg-[#933a16] h-10 w-auto px-4 py-0  mt-[20px] hover:bg-[#800000]"
+        className="text-[0.9rem] text-white font-normal border rounded-md uppercase bg-[#933a16] h-10 w-auto px-4 py-0  mt-[20px] mb-[30px] hover:bg-[#800000]"
       >
         POST COMMENT
       </button>
