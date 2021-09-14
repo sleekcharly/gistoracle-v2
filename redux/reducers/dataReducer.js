@@ -9,6 +9,10 @@ import {
   SET_POST_COMMENTS,
   SET_COMMENT_REPLY,
   SET_COMMENT_REPLY_1,
+  SET_COMMENT_REPLY_2,
+  SET_COMMENT_REPLY_3,
+  SET_COMMENT_REPLY_4,
+  SET_COMMENT_REPLY_5,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -20,6 +24,10 @@ const initialState = {
   postComments: {},
   commentReply: {},
   commentReply1: {},
+  commentReply2: {},
+  commentReply3: {},
+  commentReply4: {},
+  commentReply5: {},
 };
 
 export default function dataReducer(state = initialState, action) {
@@ -63,6 +71,14 @@ export default function dataReducer(state = initialState, action) {
       };
     case SET_COMMENT_REPLY_1:
       return { ...state, commentReply1: action.payload };
+    case SET_COMMENT_REPLY_2:
+      return { ...state, commentReply2: action.payload };
+    case SET_COMMENT_REPLY_3:
+      return { ...state, commentReply3: action.payload };
+    case SET_COMMENT_REPLY_4:
+      return { ...state, commentReply4: action.payload };
+    case SET_COMMENT_REPLY_5:
+      return { ...state, commentReply5: action.payload };
     default:
       return state;
   }

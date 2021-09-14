@@ -15,6 +15,8 @@ import { MessageOutlined, Reply } from "@material-ui/icons";
 import MyButton from "../MyButton";
 import numeral from "numeral";
 import Replies from "./Replies";
+import Login from "../auth/login";
+import Signup from "../auth/signup";
 
 function InnerComments({
   commentId,
@@ -37,7 +39,7 @@ function InnerComments({
   const [loading, setLoading] = useState(false);
 
   // establish authentication
-  const { currentUser } = useAuth();
+  const { currentUser, login, signup } = useAuth();
 
   // define dispatch
   const dispatch = useDispatch();
@@ -254,6 +256,22 @@ function InnerComments({
 
         {commentReplies}
       </div>
+
+      {/* authentication dialogs */}
+      <Login
+        openLogin={loginOpen}
+        handleLoginClose={handleLoginClose}
+        handleSignupClickOpen={handleSignupOpen}
+        login={login}
+      />
+
+      <Signup
+        openSignup={signupOpen}
+        handleSignupClose={handleSignupClose}
+        handleLoginClickOpen={handleLoginOpen}
+        highlight="Signup to comment on your favourite post and engage with tonnes of posts by amazing oracles"
+        signup={signup}
+      />
     </div>
   );
 }

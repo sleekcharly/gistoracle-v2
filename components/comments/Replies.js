@@ -10,7 +10,6 @@ function Replies({ commentId }) {
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
-        replySent: state.UI.replySent,
         commentReply: state.data.commentReply,
       }),
       shallowEqual
@@ -18,7 +17,7 @@ function Replies({ commentId }) {
   };
 
   // destructure errors from state
-  const { replySent, commentReply } = useStateParameters();
+  const { commentReply } = useStateParameters();
 
   // define component's state
   const [comments, setComments] = useState([]);
