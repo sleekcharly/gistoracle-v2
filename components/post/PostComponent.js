@@ -331,7 +331,7 @@ function PostComponent({ post, postId, currentUrl }) {
             />
           </div>
         ) : (
-          <Skeleton animation="wave" variant="react" width="50%" height={20} />
+          <Skeleton animation="wave" variant="rect" width="50%" height={20} />
         )}
       </section>
 

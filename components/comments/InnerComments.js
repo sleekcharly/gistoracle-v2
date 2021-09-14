@@ -10,7 +10,7 @@ import {
   CLEAR_REPLY_FORM_ERRORS,
   CLEAR_SIGNUP_ERRORS,
 } from "../../redux/types/uiTypes";
-import { Avatar, TextField } from "@material-ui/core";
+import { Avatar, CircularProgress, TextField } from "@material-ui/core";
 import { MessageOutlined, Reply } from "@material-ui/icons";
 import MyButton from "../MyButton";
 import numeral from "numeral";
@@ -50,20 +50,23 @@ function InnerComments({
     return useSelector(
       (state) => ({
         UIErrors: state.UI.replyFormErrors,
-        replySent: state.UI.replySent,
+        commentReply: state.data.commentReply,
       }),
       shallowEqual
     );
   };
 
   // destructure errors from state
-  const { UIErrors, replySent } = useStateParameters();
+  const { UIErrors, commentReply } = useStateParameters();
 
   // Set errors if errors exist
   useEffect(() => {
     let mounted = true;
 
-    if (mounted) setErrors(UIErrors);
+    if (mounted) {
+      setErrors(UIErrors);
+      UIErrors && setLoading(false);
+    }
 
     return () => (mounted = false);
   }, [UIErrors]);
@@ -73,13 +76,13 @@ function InnerComments({
     let mounted = true;
 
     if (mounted) {
-      replySent && setBody("");
-      replySent && setLoading(false);
-      replySent && handleReplyFormClose();
+      commentReply && setFormBody("");
+      commentReply && setLoading(false);
+      commentReply && handleReplyFormClose();
     }
 
     return () => (mounted = false);
-  }, [replySent]);
+  }, [commentReply]);
 
   // control comment form value with state
   const handleChange = (event) => {
@@ -95,6 +98,7 @@ function InnerComments({
   // handle closing of comment form
   const handleReplyFormClose = () => {
     setReplyFormOpen(true);
+    setFormBody("");
     dispatch({ type: CLEAR_REPLY_FORM_ERRORS });
   };
 
@@ -130,12 +134,9 @@ function InnerComments({
     //set loading state
     setLoading(true);
 
-    // set content type for layering
-    const content = "reply1";
-
     // reply to comment action
     await dispatch(
-      replyToComment(commentId, content, {
+      replyToComment(commentId, {
         body: formBody,
         commentPostId: commentPostId,
       })
@@ -164,21 +165,32 @@ function InnerComments({
 
         <div className=" text-right mt-[20px]">
           <button
+            type="reset"
             className="uppercase text-[#800000] text-sm  mr-2 px-4 py-0 h-10 rounded-md w-auto border border-[#933a16] border-opacity-80 hover:bg-[#933a16] hover:text-white"
             onClick={handleReplyFormClose}
           >
             Cancel
           </button>
 
-          <button className="relative text-[#fafafa] text-sm font-bold border rounded-md uppercase bg-[#933a16] h-10 w-[80px] px-4 py-0 hover:bg-[#800000]">
+          <button
+            className={`relative text-[#fafafa] text-sm font-bold border rounded-md uppercase bg-[#933a16] ${
+              loading && "bg-opacity-40 "
+            } h-10 w-[80px] px-4 py-0 hover:${
+              !loading ? "bg-[#800000]" : "bg-opacity-40"
+            }`}
+            type="submit"
+            disabled={loading}
+          >
             Reply
           </button>
+
+          {loading && (
+            <CircularProgress size={20} color="primary" className="ml-2" />
+          )}
         </div>
       </form>
     </div>
   );
-
-  console.log(comments);
 
   // markup for display of comments under a comment
   const commentReplies =
@@ -191,7 +203,7 @@ function InnerComments({
         <Avatar
           alt={username}
           src={userImage}
-          className="mr-2 w-[40px] h-[40px] "
+          className="w-[30px] h-[30px] md:w-[40px] md:h-[40px] "
         />
 
         {/* username */}
@@ -229,7 +241,7 @@ function InnerComments({
                 />
               </MyButton>
 
-              <p className="text-gray-800 ml-[-5px]">
+              <p className="text-gray-800 ml-[-5px] text-xs md:text-sm">
                 {numeral(comments).format("0a")}{" "}
                 {comments > 1 ? "replies" : "reply"}
               </p>

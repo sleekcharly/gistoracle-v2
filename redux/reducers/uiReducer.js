@@ -18,8 +18,21 @@ import {
   SET_REPLY_FORM_ERRORS,
   CLEAR_REPLY_FORM_ERRORS,
   SET_REPLY_STATUS,
+  SET_REPLY_STATUS_1,
+  SET_REPLY_STATUS_2,
+  SET_REPLY_STATUS_3,
+  SET_REPLY_STATUS_4,
+  SET_REPLY_STATUS_5,
   SET_COMMENT_REPLY_FORM_ERRORS_1,
   CLEAR_COMMENT_REPLY_FORM_ERRORS_1,
+  SET_COMMENT_REPLY_FORM_ERRORS_2,
+  CLEAR_COMMENT_REPLY_FORM_ERRORS_2,
+  SET_COMMENT_REPLY_FORM_ERRORS_3,
+  CLEAR_COMMENT_REPLY_FORM_ERRORS_3,
+  SET_COMMENT_REPLY_FORM_ERRORS_4,
+  CLEAR_COMMENT_REPLY_FORM_ERRORS_4,
+  SET_COMMENT_REPLY_FORM_ERRORS_5,
+  CLEAR_COMMENT_REPLY_FORM_ERRORS_5,
 } from "../types/uiTypes";
 
 const initialState = {
@@ -33,7 +46,16 @@ const initialState = {
   resetPasswordStatus: null,
   replyFormErrors: null,
   replySent: false,
+  replySent1: false,
+  replySent2: false,
+  replySent3: false,
+  replySent4: false,
+  replySent5: false,
   commentReplyFormErrors1: null,
+  commentReplyFormErrors2: null,
+  commentReplyFormErrors3: null,
+  commentReplyFormErrors4: null,
+  commentReplyFormErrors5: null,
 };
 
 export default function uiReducer(state = initialState, action) {
@@ -74,6 +96,22 @@ export default function uiReducer(state = initialState, action) {
       return { ...state, commentReplyFormErrors1: action.payload };
     case CLEAR_COMMENT_REPLY_FORM_ERRORS_1:
       return { ...state, commentReplyFormErrors1: null };
+    case SET_COMMENT_REPLY_FORM_ERRORS_2:
+      return { ...state, commentReplyFormErrors2: action.payload };
+    case CLEAR_COMMENT_REPLY_FORM_ERRORS_2:
+      return { ...state, commentReplyFormErrors2: null };
+    case SET_COMMENT_REPLY_FORM_ERRORS_3:
+      return { ...state, commentReplyFormErrors3: action.payload };
+    case CLEAR_COMMENT_REPLY_FORM_ERRORS_3:
+      return { ...state, commentReplyFormErrors3: null };
+    case SET_COMMENT_REPLY_FORM_ERRORS_4:
+      return { ...state, commentReplyFormErrors4: action.payload };
+    case CLEAR_COMMENT_REPLY_FORM_ERRORS_4:
+      return { ...state, commentReplyFormErrors4: null };
+    case SET_COMMENT_REPLY_FORM_ERRORS_5:
+      return { ...state, commentReplyFormErrors5: action.payload };
+    case CLEAR_COMMENT_REPLY_FORM_ERRORS_5:
+      return { ...state, commentReplyFormErrors5: null };
 
     // UI status message
     case SET_STATUS:
@@ -88,6 +126,16 @@ export default function uiReducer(state = initialState, action) {
     // loading status
     case SET_REPLY_STATUS:
       return { ...state, replySent: true };
+    case SET_REPLY_STATUS_1:
+      return { ...state, replySent1: true };
+    case SET_REPLY_STATUS_2:
+      return { ...state, replySent2: true };
+    case SET_REPLY_STATUS_3:
+      return { ...state, replySent3: true };
+    case SET_REPLY_STATUS_4:
+      return { ...state, replySent4: true };
+    case SET_REPLY_STATUS_5:
+      return { ...state, replySent5: true };
 
     default:
       return state;

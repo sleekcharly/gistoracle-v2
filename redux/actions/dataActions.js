@@ -9,6 +9,7 @@ import {
   REPLY_LEVEL_3,
   REPLY_LEVEL_4,
   REPLY_LEVEL_5,
+  SET_COMMENT_REPLY,
   SET_MORE_POSTS,
   SET_POSTS,
   SET_TOTAL_POSTS_COUNT,
@@ -99,56 +100,43 @@ export const getNextAuthPosts =
   };
 
 // reply to a comment
-export const replyToComment =
-  (commentId, content, commentData) => (dispatch) => {
-    // set type to dispatch based on content
-    const dispatchType =
-      content === "reply1"
-        ? REPLY_LEVEL_1
-        : content === "reply2"
-        ? REPLY_LEVEL_2
-        : content === "reply3"
-        ? REPLY_LEVEL_3
-        : content === "reply4"
-        ? REPLY_LEVEL_4
-        : REPLY_LEVEL_5;
+export const replyToComment = (commentId, commentData) => (dispatch) => {
+  // reply to a comment
+  axios
+    .post(`/api/comment/reply/${commentId}`, commentData)
+    .then((res) => {
+      // set reply state
+      dispatch({ type: SET_REPLY_STATUS });
 
-    // reply to a comment
-    axios
-      .post(`/api/comment/${commentId}/reply`, commentData)
-      .then((res) => {
-        // set reply state
-        dispatch({ type: SET_REPLY_STATUS });
+      //   set comment reply
+      dispatch({ type: SET_COMMENT_REPLY, payload: res.data });
 
-        // log analytics data on replied comment
-        analytics().logEvent("reply_to_comment", { commentId: Id });
+      // log analytics data on replied comment
+      analytics().logEvent("reply_to_comment", { commentId: commentId });
+    })
+    .catch((err) => {
+      const errorMessage = (() => {
+        if (err.response) {
+          //The request was made and the server responded with a status code
+          // that falls out of the 2xx range
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          return err.response.data;
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+          return err.request;
+        } else {
+          //something happened in setting up the request that triggered the error
+          console.log("Error", err.message);
+          return err.message;
+        }
+      })();
 
-        // update comment1 reply state level
-        dispatch({ type: dispatchType, payload: res.data });
-      })
-      .catch((err) => {
-        const errorMessage = (() => {
-          if (err.response) {
-            //The request was made and the server responded with a status code
-            // that falls out of the 2xx range
-            console.log(err.response.data);
-            console.log(err.response.status);
-            console.log(err.response.headers);
-            return err.response.data;
-          } else if (err.request) {
-            // The request was made but no response was received
-            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-            // http.ClientRequest in node.js
-            console.log(err.request);
-            return err.request;
-          } else {
-            //something happened in setting up the request that triggered the error
-            console.log("Error", err.message);
-            return err.message;
-          }
-        })();
-
-        // clear errors
-        dispatch({ type: SET_REPLY_FORM_ERRORS, payload: errorMessage });
-      });
-  };
+      // clear errors
+      dispatch({ type: SET_REPLY_FORM_ERRORS, payload: errorMessage });
+    });
+};

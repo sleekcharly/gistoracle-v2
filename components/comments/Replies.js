@@ -3,8 +3,23 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReplyContent from "./ReplyContent";
+import { shallowEqual, useSelector } from "react-redux";
 
 function Replies({ commentId }) {
+  // *** get redux state parameters ***//
+  const useStateParameters = () => {
+    return useSelector(
+      (state) => ({
+        replySent: state.UI.replySent,
+        commentReply: state.data.commentReply,
+      }),
+      shallowEqual
+    );
+  };
+
+  // destructure errors from state
+  const { replySent, commentReply } = useStateParameters();
+
   // define component's state
   const [comments, setComments] = useState([]);
 
@@ -25,7 +40,7 @@ function Replies({ commentId }) {
 
     // cleanup
     return () => (mounted = false);
-  }, []);
+  }, [commentReply]);
 
   return (
     <>
@@ -46,7 +61,10 @@ function Replies({ commentId }) {
 
           //   return markup
           return (
-            <div key={createdAt}>
+            <div
+              key={createdAt}
+              className="p-1 sm:p-4 border-l border-dotted border-l-[#cfcdca]"
+            >
               <ReplyContent
                 body={body}
                 createdAt={createdAt}

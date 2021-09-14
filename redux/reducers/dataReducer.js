@@ -7,11 +7,8 @@ import {
   SET_TOTAL_POSTS_COUNT,
   SET_MORE_POSTS,
   SET_POST_COMMENTS,
-  REPLY_LEVEL_1,
-  REPLY_LEVEL_2,
-  REPLY_LEVEL_3,
-  REPLY_LEVEL_4,
-  REPLY_LEVEL_5,
+  SET_COMMENT_REPLY,
+  SET_COMMENT_REPLY_1,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -22,6 +19,7 @@ const initialState = {
   totalPosts: 0,
   postComments: {},
   commentReply: {},
+  commentReply1: {},
 };
 
 export default function dataReducer(state = initialState, action) {
@@ -58,31 +56,13 @@ export default function dataReducer(state = initialState, action) {
         ...state,
         postComments: action.payload,
       };
-    case REPLY_LEVEL_1:
+    case SET_COMMENT_REPLY:
       return {
         ...state,
         commentReply: action.payload,
       };
-    case REPLY_LEVEL_2:
-      return {
-        ...state,
-        commentReply: action.payload,
-      };
-    case REPLY_LEVEL_3:
-      return {
-        ...state,
-        commentReply: action.payload,
-      };
-    case REPLY_LEVEL_4:
-      return {
-        ...state,
-        commentReply: action.payload,
-      };
-    case REPLY_LEVEL_5:
-      return {
-        ...state,
-        commentReply: action.payload,
-      };
+    case SET_COMMENT_REPLY_1:
+      return { ...state, commentReply1: action.payload };
     default:
       return state;
   }

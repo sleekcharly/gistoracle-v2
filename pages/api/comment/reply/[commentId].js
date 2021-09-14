@@ -7,34 +7,34 @@ const handler = nc();
 // use authentication middleware
 handler.use(FBAuth);
 
-handler.get(async (req, res) => {
+handler.post(async (req, res) => {
   // initiate batch
   const batch = db.batch();
 
   // ensure user does not send an empty body
   if (req.body.body === "")
-    return res.statusCode(400).json({ commentReply: "Must not be empty" });
+    return res.status(400).json({ commentReply: "Must not be empty" });
 
   // extract request body details
   const newReplyToComment = {
     body: req.body.body,
     createdAt: new Date().toISOString(),
-    commentId: req.params.commentId,
+    commentId: req.query.commentId,
     commentPostId: req.body.commentPostId,
     username: req.user.username,
     userImage: req.user.imageUrl,
-    likes: 0,
     comments: 0,
   };
+  console.log(req.query.commentId);
 
   // run reply operation
   await db
-    .doc(`/comments/${req.params.commentId}`)
+    .doc(`/comments/${req.query.commentId}`)
     .get()
     .then((doc) => {
       // check if document exists
       if (!doc.exists) {
-        return res.statusCode(404).json({ error: "Comment not found" });
+        return res.status(404).json({ error: "Comment not found" });
       }
 
       return db.collection("comments").add(newReplyToComment);
@@ -52,11 +52,11 @@ handler.get(async (req, res) => {
       let userId = [];
 
       data.forEach((doc) => {
-        userid.push(doc.id);
+        userId.push(doc.id);
       });
 
       // update comment collection
-      const commentRef = await db.doc(`/comments/${req.params.commentId}`);
+      const commentRef = await db.doc(`/comments/${req.query.commentId}`);
       batch.update(commentRef, {
         comments: admin.firestore.FieldValue.increment(1),
       });
@@ -80,7 +80,7 @@ handler.get(async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
-      res.statusCode(500).json({ error: "Something went wrong" });
+      res.status(500).json({ error: "Something went wrong" });
     });
 });
 
