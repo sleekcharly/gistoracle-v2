@@ -2,15 +2,15 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ReplyContent3 from "./ReplyContent3";
+import ReplyContent4 from "./ReplyContent4";
 import { shallowEqual, useSelector } from "react-redux";
 
-function Replies3({ commentId }) {
+function Replies4({ commentId }) {
   // *** get redux state parameters ***//
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
-        commentReply: state.data.commentReply2,
+        commentReply: state.data.commentReply3,
       }),
       shallowEqual
     );
@@ -64,7 +64,7 @@ function Replies3({ commentId }) {
               key={createdAt}
               className="p-1 sm:p-4 border-l border-dotted border-l-[#cfcdca]"
             >
-              <ReplyContent3
+              <ReplyContent4
                 body={body}
                 createdAt={createdAt}
                 userImage={userImage}
@@ -82,4 +82,4 @@ function Replies3({ commentId }) {
   );
 }
 
-export default Replies3;
+export default Replies4;

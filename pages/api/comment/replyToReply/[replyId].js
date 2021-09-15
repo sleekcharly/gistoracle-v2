@@ -23,7 +23,8 @@ handler.post(async (req, res) => {
     createdAt: new Date().toISOString(),
     commentId: req.query.replyId,
     commentPostId: req.body.postId,
-    username: req.user.imageUrl,
+    userImage: req.user.imageUrl,
+    username: req.user.username,
     comments: 0,
   };
 

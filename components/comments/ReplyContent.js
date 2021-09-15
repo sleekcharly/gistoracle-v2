@@ -12,6 +12,7 @@ import {
   SET_COMMENT_REPLY_FORM_ERRORS_1,
   SET_REPLY_STATUS_1,
 } from "../../redux/types/uiTypes";
+import { SET_COMMENT_REPLY_1 } from "../../redux/types/dataTypes";
 import Replies2 from "./Replies2";
 import axios from "axios";
 import { analytics } from "../../firebase";

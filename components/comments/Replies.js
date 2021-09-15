@@ -62,7 +62,7 @@ function Replies({ commentId }) {
           return (
             <div
               key={createdAt}
-              className="p-1 sm:p-4 border-l border-dotted border-l-[#cfcdca]"
+              className="px-1 py-1 sm:px-2 sm:py-2 border-l border-dotted border-l-[#cfcdca]"
             >
               <ReplyContent
                 body={body}

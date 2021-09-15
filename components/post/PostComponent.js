@@ -121,7 +121,7 @@ function PostComponent({ post, postId, currentUrl }) {
   };
 
   return (
-    <article className="bg-white px-[55px] py-10 rounded-t-md">
+    <article className="bg-white mt-[-8px] lg:mt-0 px-2 md:px-[55px] py-10 rounded-t-md">
       {/* post info section */}
       <section className="relative mb-[20px] md:flex md:items-center md:space-x-4">
         {/* shrine name */}

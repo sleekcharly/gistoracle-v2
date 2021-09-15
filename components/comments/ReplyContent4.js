@@ -8,16 +8,16 @@ import MyButton from "../MyButton";
 import numeral from "numeral";
 import { useAuth } from "../../contexts/AuthContext";
 import {
-  CLEAR_COMMENT_REPLY_FORM_ERRORS_2,
-  SET_COMMENT_REPLY_FORM_ERRORS_2,
-  SET_REPLY_STATUS_2,
+  CLEAR_COMMENT_REPLY_FORM_ERRORS_4,
+  SET_COMMENT_REPLY_FORM_ERRORS_4,
+  SET_REPLY_STATUS_4,
 } from "../../redux/types/uiTypes";
-import { SET_COMMENT_REPLY_2 } from "../../redux/types/dataTypes";
-import Replies3 from "./Replies3";
+import { SET_COMMENT_REPLY_4 } from "../../redux/types/dataTypes";
+import Replies5 from "./Replies5";
 import axios from "axios";
 import { analytics } from "../../firebase";
 
-function ReplyContent2({
+function ReplyContent4({
   body,
   createdAt,
   username,
@@ -48,8 +48,8 @@ function ReplyContent2({
     //   get authenticated user
     return useSelector(
       (state) => ({
-        UIErrors: state.UI.commentReplyFormErrors2,
-        commentReply: state.data.commentReply2,
+        UIErrors: state.UI.commentReplyFormErrors4,
+        commentReply: state.data.commentReply4,
       }),
       shallowEqual
     );
@@ -93,7 +93,7 @@ function ReplyContent2({
   const handleReplyFormClose = () => {
     setReplyFormOpen(true);
     setFormBody("");
-    dispatch({ type: CLEAR_COMMENT_REPLY_FORM_ERRORS_2 });
+    dispatch({ type: CLEAR_COMMENT_REPLY_FORM_ERRORS_4 });
   };
 
   // handle form data change
@@ -116,9 +116,9 @@ function ReplyContent2({
     axios
       .post(`/api/comment/replyToReply/${replyId}`, replyData)
       .then((res) => {
-        dispatch({ type: SET_REPLY_STATUS_2 });
-        dispatch({ type: SET_COMMENT_REPLY_2, payload: res.data });
-        dispatch({ type: CLEAR_COMMENT_REPLY_FORM_ERRORS_2 });
+        dispatch({ type: SET_REPLY_STATUS_4 });
+        dispatch({ type: SET_COMMENT_REPLY_4, payload: res.data });
+        dispatch({ type: CLEAR_COMMENT_REPLY_FORM_ERRORS_4 });
         analytics().logEvent("comment_on_comment", { commentId: replyId });
         setFormBody("");
       })
@@ -146,7 +146,7 @@ function ReplyContent2({
 
         // clear errors
         dispatch({
-          type: SET_COMMENT_REPLY_FORM_ERRORS_2,
+          type: SET_COMMENT_REPLY_FORM_ERRORS_4,
           payload: errorMessage,
         });
       });
@@ -202,7 +202,7 @@ function ReplyContent2({
   );
 
   //   markup for display of replies under a reply
-  const repliesToReply = comments > 0 ? <Replies3 commentId={replyId} /> : null;
+  const repliesToReply = comments > 0 ? <Replies5 commentId={replyId} /> : null;
 
   //   return content markup
   return (
@@ -267,4 +267,4 @@ function ReplyContent2({
   );
 }
 
-export default ReplyContent2;
+export default ReplyContent4;
