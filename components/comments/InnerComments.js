@@ -29,7 +29,7 @@ function InnerComments({
 }) {
   // define components state
   //   const [comments, setComments] = useState([]);
-  const [comment, setComment] = useState(null);
+  const [commentCount, setCommentCount] = useState(0);
   const [formBody, setFormBody] = useState("");
   const [errors, setErrors] = useState({});
   const [signupOpen, setSignupOpen] = useState(false);
@@ -61,6 +61,17 @@ function InnerComments({
   // destructure errors from state
   const { UIErrors, commentReply } = useStateParameters();
 
+  //   set comment count
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      setCommentCount(comments);
+    }
+
+    return () => (mounted = false);
+  }, [comments]);
+
   // Set errors if errors exist
   useEffect(() => {
     let mounted = true;
@@ -81,6 +92,7 @@ function InnerComments({
       commentReply && setFormBody("");
       commentReply && setLoading(false);
       commentReply && handleReplyFormClose();
+      commentReply && setCommentCount(commentCount + 1);
     }
 
     return () => (mounted = false);
@@ -196,7 +208,7 @@ function InnerComments({
 
   // markup for display of comments under a comment
   const commentReplies =
-    comments > 0 ? <Replies commentId={commentId} /> : null;
+    commentCount > 0 ? <Replies commentId={commentId} /> : null;
 
   return (
     <div className="mb-7 bg-[#faefed] p-1 sm:p-3 sm:mb-8 rounded-[7px]">
@@ -233,7 +245,7 @@ function InnerComments({
             <p className="text-sm text-[#933a16]">Reply</p>
           </MyButton>
 
-          {comments > 0 ? (
+          {commentCount > 0 ? (
             <div className="flex items-center ml-1">
               <MyButton tip="replies">
                 <MessageOutlined
@@ -244,8 +256,8 @@ function InnerComments({
               </MyButton>
 
               <p className="text-gray-800 ml-[-5px] text-xs md:text-sm">
-                {numeral(comments).format("0a")}{" "}
-                {comments > 1 ? "replies" : "reply"}
+                {numeral(commentCount).format("0a")}{" "}
+                {commentCount > 1 ? "replies" : "reply"}
               </p>
             </div>
           ) : null}

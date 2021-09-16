@@ -9,6 +9,8 @@ import numeral from "numeral";
 import { useAuth } from "../../contexts/AuthContext";
 import {
   CLEAR_COMMENT_REPLY_FORM_ERRORS_4,
+  CLEAR_LOGIN_ERRORS,
+  CLEAR_SIGNUP_ERRORS,
   SET_COMMENT_REPLY_FORM_ERRORS_4,
   SET_REPLY_STATUS_4,
 } from "../../redux/types/uiTypes";
@@ -16,6 +18,8 @@ import { SET_COMMENT_REPLY_4 } from "../../redux/types/dataTypes";
 import Replies5 from "./Replies5";
 import axios from "axios";
 import { analytics } from "../../firebase";
+import Login from "../auth/login";
+import Signup from "../auth/signup";
 
 function ReplyContent4({
   body,
@@ -26,6 +30,7 @@ function ReplyContent4({
   userImage,
   commentPostId,
 }) {
+  const [commentCount, setCommentCount] = useState(0);
   const [formBody, setFormBody] = useState("");
   const [errors, setErrors] = useState({});
   const [signupOpen, setSignupOpen] = useState(false);
@@ -71,6 +76,17 @@ function ReplyContent4({
     return () => (mounted = false);
   }, [UIErrors]);
 
+  //   set comment count
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      setCommentCount(comments);
+    }
+
+    return () => (mounted = false);
+  }, [comments]);
+
   // reset body if comment is successfully posted and set loading to false
   useEffect(() => {
     let mounted = true;
@@ -79,6 +95,7 @@ function ReplyContent4({
       commentReply && setFormBody("");
       commentReply && setLoading(false);
       commentReply && handleReplyFormClose();
+      commentReply && setCommentCount(commentCount + 1);
     }
 
     return () => (mounted = false);
@@ -94,6 +111,30 @@ function ReplyContent4({
     setReplyFormOpen(true);
     setFormBody("");
     dispatch({ type: CLEAR_COMMENT_REPLY_FORM_ERRORS_4 });
+  };
+
+  // handle opening of login dialog from button click
+  const handleLoginOpen = () => {
+    dispatch({ type: CLEAR_LOGIN_ERRORS });
+    setLoginOpen(true);
+    setSignupOpen(false);
+  };
+
+  // handle closing of login dialog
+  const handleLoginClose = () => {
+    setLoginOpen(false);
+  };
+
+  // handle opening of signup dialog
+  const handleSignupOpen = () => {
+    setSignupOpen(true);
+    setLoginOpen(false);
+    dispatch({ type: CLEAR_SIGNUP_ERRORS });
+  };
+
+  // handleclosing of signup dialog
+  const handleSignupClose = () => {
+    setSignupOpen(false);
   };
 
   // handle form data change
@@ -202,7 +243,8 @@ function ReplyContent4({
   );
 
   //   markup for display of replies under a reply
-  const repliesToReply = comments > 0 ? <Replies5 commentId={replyId} /> : null;
+  const repliesToReply =
+    commentCount > 0 ? <Replies5 commentId={replyId} /> : null;
 
   //   return content markup
   return (
@@ -240,7 +282,7 @@ function ReplyContent4({
 
           {/* comments numbers */}
           <div className="flex items-center">
-            {comments > 0 ? (
+            {commentCount > 0 ? (
               <span className="flex items-center space-x-[-7px]">
                 <MyButton tip="replies">
                   <MessageOutlined
@@ -249,8 +291,8 @@ function ReplyContent4({
                   />
                 </MyButton>
                 <p className="text-black text-xs md:text-sm">
-                  {numeral(comments).format("0a")}{" "}
-                  {comments > 1 ? " replies" : " reply"}
+                  {numeral(commentCount).format("0a")}{" "}
+                  {commentCount > 1 ? " replies" : " reply"}
                 </p>
               </span>
             ) : null}
@@ -263,6 +305,22 @@ function ReplyContent4({
         {/* display replies to reply */}
         {repliesToReply}
       </div>
+
+      {/* authentication dialogs */}
+      <Login
+        openLogin={loginOpen}
+        handleLoginClose={handleLoginClose}
+        handleSignupClickOpen={handleSignupOpen}
+        login={login}
+      />
+
+      <Signup
+        openSignup={signupOpen}
+        handleSignupClose={handleSignupClose}
+        handleLoginClickOpen={handleLoginOpen}
+        highlight="Signup to comment on your favourite post and engage with tonnes of posts by amazing oracles"
+        signup={signup}
+      />
     </div>
   );
 }

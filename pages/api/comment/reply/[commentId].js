@@ -25,7 +25,6 @@ handler.post(async (req, res) => {
     userImage: req.user.imageUrl,
     comments: 0,
   };
-  console.log(req.query.commentId);
 
   // run reply operation
   await db

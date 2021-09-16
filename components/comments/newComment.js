@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { TextField, CircularProgress, Button } from "@material-ui/core";
 import Login from "../auth/login";
 import Signup from "../auth/signup";
+import { commentOnPost } from "../../redux/actions/dataActions";
 
 function NewComment({ postId }) {
   // initialize component's state
@@ -28,13 +29,14 @@ function NewComment({ postId }) {
     return useSelector(
       (state) => ({
         UIErrors: state.UI.createCommentErrors,
+        postComment: state.data.commentOnPost,
       }),
       shallowEqual
     );
   };
 
   // destructure errors from state
-  const { UIErrors } = useStateParameters();
+  const { UIErrors, postComment } = useStateParameters();
 
   // set errors if any exist once received from state
   useEffect(() => {
@@ -50,10 +52,19 @@ function NewComment({ postId }) {
     if (errors) setLoading(false);
   }, [errors, body]);
 
+  //   clear form if comment posted is successful
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      postComment && setBody("");
+      postComment && setLoading(false);
+    }
+  }, [postComment]);
+
   // handle form data change
   const handleChange = (event) => {
     setBody(event.target.value);
-    setLoading(false);
   };
 
   // handle opening of signup dialog
@@ -92,9 +103,9 @@ function NewComment({ postId }) {
   // submit comment data
   const handleSubmit = (event) => {
     event.preventDefault();
+
     setLoading(true);
-    //   dispatch(commentOnPost(postId, body))
-    setBody("");
+    dispatch(commentOnPost(postId, { body: body }));
   };
 
   // setup markup

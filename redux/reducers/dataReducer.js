@@ -7,6 +7,7 @@ import {
   SET_TOTAL_POSTS_COUNT,
   SET_MORE_POSTS,
   SET_POST_COMMENTS,
+  SET_POST_COMMENT,
   SET_COMMENT_REPLY,
   SET_COMMENT_REPLY_1,
   SET_COMMENT_REPLY_2,
@@ -22,12 +23,13 @@ const initialState = {
   posts: [],
   totalPosts: 0,
   postComments: {},
-  commentReply: {},
-  commentReply1: {},
-  commentReply2: {},
-  commentReply3: {},
-  commentReply4: {},
-  commentReply5: {},
+  commentReply: null,
+  commentReply1: null,
+  commentReply2: null,
+  commentReply3: null,
+  commentReply4: null,
+  commentReply5: null,
+  commentOnPost: null,
 };
 
 export default function dataReducer(state = initialState, action) {
@@ -63,6 +65,12 @@ export default function dataReducer(state = initialState, action) {
       return {
         ...state,
         postComments: action.payload,
+      };
+    case SET_POST_COMMENT:
+      return {
+        ...state,
+        commentOnPost: action.payload,
+        postComments: [action.payload, ...state.postComments],
       };
     case SET_COMMENT_REPLY:
       return {

@@ -23,6 +23,8 @@ import {
   SET_REPLY_STATUS_3,
   SET_REPLY_STATUS_4,
   SET_REPLY_STATUS_5,
+  SET_CREATE_COMMENT_ERRORS,
+  CLEAR_CREATE_COMMENT_ERRORS,
   SET_COMMENT_REPLY_FORM_ERRORS_1,
   CLEAR_COMMENT_REPLY_FORM_ERRORS_1,
   SET_COMMENT_REPLY_FORM_ERRORS_2,
@@ -51,6 +53,7 @@ const initialState = {
   replySent3: false,
   replySent4: false,
   replySent5: false,
+  createCommentErrors: null,
   commentReplyFormErrors1: null,
   commentReplyFormErrors2: null,
   commentReplyFormErrors3: null,
@@ -112,6 +115,10 @@ export default function uiReducer(state = initialState, action) {
       return { ...state, commentReplyFormErrors5: action.payload };
     case CLEAR_COMMENT_REPLY_FORM_ERRORS_5:
       return { ...state, commentReplyFormErrors5: null };
+    case SET_CREATE_COMMENT_ERRORS:
+      return { ...state, createCommentErrors: action.payload };
+    case CLEAR_CREATE_COMMENT_ERRORS:
+      return { ...state, createCommentErrors: null };
 
     // UI status message
     case SET_STATUS:

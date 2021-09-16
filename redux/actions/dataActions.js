@@ -4,17 +4,19 @@ import { analytics } from "../../firebase";
 import {
   FETCHING_MORE_POSTS,
   LOADING_POSTS,
-  REPLY_LEVEL_1,
-  REPLY_LEVEL_2,
-  REPLY_LEVEL_3,
-  REPLY_LEVEL_4,
-  REPLY_LEVEL_5,
   SET_COMMENT_REPLY,
   SET_MORE_POSTS,
   SET_POSTS,
   SET_TOTAL_POSTS_COUNT,
+  SET_POST_COMMENT,
+  UPDATE_COMMENT_COUNT,
 } from "../types/dataTypes";
-import { SET_REPLY_FORM_ERRORS, SET_REPLY_STATUS } from "../types/uiTypes";
+import {
+  CLEAR_CREATE_COMMENT_ERRORS,
+  SET_CREATE_COMMENT_ERRORS,
+  SET_REPLY_FORM_ERRORS,
+  SET_REPLY_STATUS,
+} from "../types/uiTypes";
 import { SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL } from "../types/userTypes";
 
 // get all posts
@@ -98,6 +100,50 @@ export const getNextAuthPosts =
         dispatch({ type: SET_MORE_POSTS, payload: [] });
       });
   };
+
+//   comment on a post
+export const commentOnPost = (postId, body) => (dispatch) => {
+  console.log(body);
+  axios
+    .post(`/api/comment/commentOnPost/${postId}`, body)
+    .then((res) => {
+      // log analytics on commented post
+      analytics().logEvent("comment_on_post", { postId: postId });
+
+      //   clear errors
+      dispatch({ type: CLEAR_CREATE_COMMENT_ERRORS });
+
+      // set returned comment on post
+      dispatch({ type: SET_POST_COMMENT, payload: res.data });
+    })
+    .catch((err) => {
+      const errorMessage = (() => {
+        if (err.response) {
+          //The request was made and the server responded with a status code
+          // that falls out of the 2xx range
+          console.log(err.response.data);
+          console.log(err.response.status);
+          console.log(err.response.headers);
+          return err.response.data;
+        } else if (err.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(err.request);
+          return err.request;
+        } else {
+          //something happened in setting up the request that triggered the error
+          console.log("Error", err.message);
+          return err.message;
+        }
+      })();
+
+      dispatch({
+        type: SET_CREATE_COMMENT_ERRORS,
+        payload: errorMessage,
+      });
+    });
+};
 
 // reply to a comment
 export const replyToComment = (commentId, commentData) => (dispatch) => {
