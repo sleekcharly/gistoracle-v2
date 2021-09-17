@@ -1,6 +1,8 @@
 // bring in reducer types
 
 import {
+  ADD_USER_LIKES,
+  REMOVE_USER_LIKE,
   RESET_AUTH_SHRINES_FOR_INFINITE_SCROLL,
   SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL,
   SET_SUBSCRIBED_SHRINES,
@@ -49,6 +51,19 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         authShrinesForInfiniteScroll: [...state.subscribedShrines.slice(0, 10)],
+      };
+    case ADD_USER_LIKES:
+      let likeData = {
+        username: state.credentials.username,
+        postId: action.payload,
+      };
+
+      return { ...state, likes: [likeData, ...state.likes] };
+
+    case REMOVE_USER_LIKE:
+      return {
+        ...state,
+        likes: state.likes.filter((like) => like.postId !== action.payload),
       };
     default:
       return state;

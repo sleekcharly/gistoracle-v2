@@ -12,3 +12,7 @@ export const SET_COMMENT_REPLY_2 = "SET_COMMENT_REPLY_2";
 export const SET_COMMENT_REPLY_3 = "SET_COMMENT_REPLY_3";
 export const SET_COMMENT_REPLY_4 = "SET_COMMENT_REPLY_4";
 export const SET_COMMENT_REPLY_5 = "SET_COMMENT_REPLY_5";
+
+// like and unlike post
+export const LIKE_POST = "LIKE_POST";
+export const UNLIKE_POST = "UNLIKE_POST";

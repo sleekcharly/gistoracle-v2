@@ -14,6 +14,8 @@ import {
   SET_COMMENT_REPLY_3,
   SET_COMMENT_REPLY_4,
   SET_COMMENT_REPLY_5,
+  LIKE_POST,
+  UNLIKE_POST,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -21,6 +23,7 @@ const initialState = {
   loadingPosts: false,
   fetchinPosts: false,
   posts: [],
+  post: {},
   totalPosts: 0,
   postComments: {},
   commentReply: null,
@@ -87,6 +90,20 @@ export default function dataReducer(state = initialState, action) {
       return { ...state, commentReply4: action.payload };
     case SET_COMMENT_REPLY_5:
       return { ...state, commentReply5: action.payload };
+
+    //   like and unlike post case
+    case LIKE_POST:
+    case UNLIKE_POST:
+      let index = state.posts.findIndex(
+        (post) => post.postId === action.payload.postId
+      );
+
+      state.posts[index] = action.payload;
+      if (state.post.postId === action.payload.postId) {
+        state.post = action.payload;
+      }
+
+      return { ...state };
     default:
       return state;
   }

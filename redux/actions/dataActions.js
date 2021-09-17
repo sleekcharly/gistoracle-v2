@@ -9,7 +9,8 @@ import {
   SET_POSTS,
   SET_TOTAL_POSTS_COUNT,
   SET_POST_COMMENT,
-  UPDATE_COMMENT_COUNT,
+  LIKE_POST,
+  UNLIKE_POST,
 } from "../types/dataTypes";
 import {
   CLEAR_CREATE_COMMENT_ERRORS,
@@ -17,7 +18,11 @@ import {
   SET_REPLY_FORM_ERRORS,
   SET_REPLY_STATUS,
 } from "../types/uiTypes";
-import { SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL } from "../types/userTypes";
+import {
+  ADD_USER_LIKES,
+  REMOVE_USER_LIKE,
+  SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL,
+} from "../types/userTypes";
 
 // get all posts
 export const getAllPosts = (clickedButton) => (dispatch) => {
@@ -185,4 +190,38 @@ export const replyToComment = (commentId, commentData) => (dispatch) => {
       // clear errors
       dispatch({ type: SET_REPLY_FORM_ERRORS, payload: errorMessage });
     });
+};
+
+// like a post
+export const likePost = (postId) => (dispatch) => {
+  // run action through api
+  axios
+    .get(`/api/posts/likePost/${postId}`)
+    .then((res) => {
+      // log analytics for post like
+      analytics().logEvent("post_liked", { postId: postId });
+
+      dispatch({ type: LIKE_POST, payload: res.data });
+
+      //   update user likes state
+      dispatch({ type: ADD_USER_LIKES, payload: postId });
+    })
+    .catch((err) => console.log(err));
+};
+
+// unlike a post
+export const unlikePost = (postId) => (dispatch) => {
+  // run action through api
+  axios
+    .get(`/api/posts/unlikePost/${postId}`)
+    .then((res) => {
+      // log analytics on post disliked
+      analytics().logEvent("post_unliked", { postId: postId });
+
+      dispatch({ type: UNLIKE_POST, payload: res.data });
+
+      //   update user likes state
+      dispatch({ type: REMOVE_USER_LIKE, payload: postId });
+    })
+    .catch((err) => console.log(err));
 };

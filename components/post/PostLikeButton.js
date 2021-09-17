@@ -10,8 +10,9 @@ import {
 import Login from "../auth/login";
 import Signup from "../auth/signup";
 import MyButton from "../MyButton";
+import { likePost, unlikePost } from "../../redux/actions/dataActions";
 
-function PostLikeButton(props) {
+function PostLikeButton({ postId }) {
   // initialize button state
   const [open, setOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
@@ -69,7 +70,7 @@ function PostLikeButton(props) {
 
   // check if a post is liked
   const likedPost = () => {
-    if (likes && likes.find((like) => like.postId === props.postId)) {
+    if (likes && likes.find((like) => like.postId === postId)) {
       return true;
     } else {
       return false;
@@ -77,14 +78,14 @@ function PostLikeButton(props) {
   };
 
   // like post action
-  //   const like = () => {
-  //       dispatch(likePost(props.postId));
-  //   }
+  const like = () => {
+    dispatch(likePost(postId));
+  };
 
   // unlike post action
-  //   const unlike = () => {
-  //       dispatch(unlikePost(props.postId));
-  //   }
+  const unlike = () => {
+    dispatch(unlikePost({ postId }.postId));
+  };
 
   // establish like and unlike button based on authenticated user
   const likeButton = !currentUser ? (
@@ -109,11 +110,11 @@ function PostLikeButton(props) {
       />
     </>
   ) : likedPost() ? (
-    <MyButton tip="Unlike post">
+    <MyButton tip="Unlike post" onClick={unlike}>
       <FavoriteIcon color="primary" fontSize="small" />
     </MyButton>
   ) : (
-    <MyButton tip="Like post">
+    <MyButton tip="Like post" onClick={like}>
       <FavoriteBorder color="primary" fontSize="small" />
     </MyButton>
   );
