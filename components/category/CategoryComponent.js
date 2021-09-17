@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { Card, CardHeader } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { getCategoryPosts } from "../../redux/actions/dataActions";
+import {
+  getCategoryPosts,
+  getNextCategoryPosts,
+} from "../../redux/actions/dataActions";
 import Posts from "../post/Posts";
 import {
   FireIcon,
@@ -45,6 +48,8 @@ function CategoryComponent({ category }) {
   // destructure darkMode
   const { posts, loadingComponentPosts, fetchingPosts, hasMoreCategoryPosts } =
     useStateParameters();
+
+  console.log(hasMoreCategoryPosts);
 
   // function for getting the latest category posts
   const newButtonClick = () => {
@@ -102,7 +107,7 @@ function CategoryComponent({ category }) {
   //    markup for posts
   let numbers = [0, 1, 2, 3, 4, 5, 6, 7];
   let postMarkup = !loadingComponentPosts
-    ? posts && posts.map((post) => <Posts key={post.postid} post={post} />)
+    ? posts && posts.map((post) => <Posts key={post.postId} post={post} />)
     : numbers.map((number, i) => (
         <Card key={i}>
           <CardHeader
