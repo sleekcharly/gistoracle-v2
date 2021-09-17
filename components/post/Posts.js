@@ -88,12 +88,14 @@ function Posts({ post }) {
   return (
     <div className=" relative flex border-[1px] bg-white border-[#ded9d9] border-opacity-40 rounded-md p-3 lg:pr-4 lg:pl-4 hover:border-gray-800 hover:border-opacity-70 ">
       <NextLink href={`/post/${shrineName}/${postId}/${slug}`} passHref>
-        <img
-          onError={addDefaultSrc}
-          src={postThumbnail && postThumbnail}
-          alt={title ? title : "post image"}
-          className="w-[104px] h-[104px] md:w-[105px] md:h-[90px] lg:w-[115px] lg:h-[104px] object-cover rounded-md cursor-pointer"
-        />
+        <span className="w-[130px] md:w-[150px] lg:w-[200px]">
+          <img
+            onError={addDefaultSrc}
+            src={postThumbnail && postThumbnail}
+            alt={title ? title : "post image"}
+            className="w-full h-[104px] md:h-[120px] lg:h-[140px] object-cover rounded-md cursor-pointer"
+          />
+        </span>
       </NextLink>
 
       <div className="ml-4 last:pb-0 w-full">
