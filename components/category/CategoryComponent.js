@@ -49,8 +49,6 @@ function CategoryComponent({ category }) {
   const { posts, loadingComponentPosts, fetchingPosts, hasMoreCategoryPosts } =
     useStateParameters();
 
-  console.log(hasMoreCategoryPosts);
-
   // function for getting the latest category posts
   const newButtonClick = () => {
     // get category name form url parameters
