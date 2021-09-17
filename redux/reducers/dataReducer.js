@@ -17,14 +17,17 @@ import {
   SET_COMMENT_REPLY_5,
   LIKE_POST,
   UNLIKE_POST,
+  SET_CATEGORY,
+  SET_MORE_CATEGORY_POSTS,
 } from "../types/dataTypes";
 
 // initialize state for users
 const initialState = {
   loadingPosts: false,
-  fetchinPosts: false,
+  fetchingPosts: false,
   posts: [],
   post: {},
+  category: {},
   totalPosts: 0,
   postComments: {},
   commentReply: null,
@@ -43,6 +46,8 @@ export default function dataReducer(state = initialState, action) {
         ...state,
         loadingPosts: true,
       };
+    case SET_CATEGORY:
+      return { ...state, category: action.payload };
     case FETCHING_MORE_POSTS:
       return {
         ...state,
@@ -64,6 +69,12 @@ export default function dataReducer(state = initialState, action) {
         totalPosts: action.payload,
       };
     case SET_MORE_POSTS:
+      return {
+        ...state,
+        posts: [...state.posts, ...action.payload],
+        fetchingPosts: false,
+      };
+    case SET_MORE_CATEGORY_POSTS:
       return {
         ...state,
         posts: [...state.posts, ...action.payload],

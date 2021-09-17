@@ -13,6 +13,8 @@ export const SET_COMMENT_REPLY_2 = "SET_COMMENT_REPLY_2";
 export const SET_COMMENT_REPLY_3 = "SET_COMMENT_REPLY_3";
 export const SET_COMMENT_REPLY_4 = "SET_COMMENT_REPLY_4";
 export const SET_COMMENT_REPLY_5 = "SET_COMMENT_REPLY_5";
+export const SET_CATEGORY = "SET_CATEGORY";
+export const SET_MORE_CATEGORY_POSTS = "SET_MORE_CATEGORY_POSTS";
 
 // like and unlike post
 export const LIKE_POST = "LIKE_POST";

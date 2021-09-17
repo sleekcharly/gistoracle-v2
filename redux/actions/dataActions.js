@@ -11,12 +11,15 @@ import {
   SET_POST_COMMENT,
   LIKE_POST,
   UNLIKE_POST,
+  SET_MORE_CATEGORY_POSTS,
 } from "../types/dataTypes";
 import {
   CLEAR_CREATE_COMMENT_ERRORS,
   SET_CREATE_COMMENT_ERRORS,
+  SET_LOADING_COMPONENT_POSTS,
   SET_REPLY_FORM_ERRORS,
   SET_REPLY_STATUS,
+  STOP_LOADING_COMPONENT_POSTS,
 } from "../types/uiTypes";
 import {
   ADD_USER_LIKES,
@@ -103,6 +106,43 @@ export const getNextAuthPosts =
       })
       .catch((err) => {
         dispatch({ type: SET_MORE_POSTS, payload: [] });
+      });
+  };
+
+export const getCategoryPosts = (categoryName, parameter) => (dispatch) => {
+  //   set loading state
+  dispatch({ type: SET_LOADING_COMPONENT_POSTS });
+
+  // run action
+  axios
+    .get(`/api/posts/getCategoryPosts/${categoryName}/${parameter}`)
+    .then((res) => {
+      dispatch({ type: SET_POSTS, payload: res.data });
+
+      // stop loading state
+      dispatch({ type: STOP_LOADING_COMPONENT_POSTS });
+    })
+    .catch((err) => {
+      dispatch({ type: SET_POSTS, payload: [] });
+    });
+};
+//  get next category posts for infinite scroll component
+export const getNextCategoryPosts =
+  (clickedButton, parameter, categoryName) => (dispatch) => {
+    //  set loading state
+    dispatch({ type: FETCHING_MORE_POSTS });
+
+    //  perfoem get more posts action
+    axios
+      .get(
+        `/api/posts/nextCategoryPosts/${clickedButton}/${parameter}/${categoryName}`
+      )
+      .then((res) => {
+        // dispatch to redux state
+        dispatch({ type: SET_MORE_CATEGORY_POSTS, payload: res.data });
+      })
+      .catch((err) => {
+        dispatch({ type: SET_MORE_CATEGORY_POSTS, payload: [] });
       });
   };
 
