@@ -45,33 +45,44 @@ import Comments from "../comments/Comments";
 // get suneditor without server side rendering
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
 
-function PostComponent({ post, postId, currentUrl }) {
+function PostComponent({ postId, currentUrl }) {
   // bring in mui theme
   const theme = useTheme();
 
   // set component state
   const [loadingPost, setLoadingPost] = useState(true);
+  const [post, setPost] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   // set state for delete dialog component
   const [dialogOpen, setDialogOpen] = React.useState(false);
-
-  // set loading state when post is present
-  useEffect(() => {
-    post ? setLoadingPost(false) : set;
-  }, [post]);
 
   // *** get redux state parameters ***//
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
         credentials: state.user.credentials,
+        postData: state.data.post,
       }),
       shallowEqual
     );
   };
 
   // destructure darkMode
-  const { credentials } = useStateParameters();
+  const { credentials, postData } = useStateParameters();
+
+  //   get post from redux once page loads
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) setPost(postData);
+
+    return () => (mounted = false);
+  }, [postData]);
+
+  // set loading state when post is present
+  useEffect(() => {
+    post ? setLoadingPost(false) : set;
+  }, [post]);
 
   // set date in human readable format
   dayjs.extend(relativeTime);

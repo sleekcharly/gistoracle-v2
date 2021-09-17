@@ -3,6 +3,7 @@
 import {
   FETCHING_MORE_POSTS,
   SET_POSTS,
+  SET_POST,
   LOADING_POSTS,
   SET_TOTAL_POSTS_COUNT,
   SET_MORE_POSTS,
@@ -53,6 +54,10 @@ export default function dataReducer(state = initialState, action) {
         posts: action.payload,
         loadingPosts: false,
       };
+
+    case SET_POST:
+      return { ...state, post: action.payload };
+
     case SET_TOTAL_POSTS_COUNT:
       return {
         ...state,

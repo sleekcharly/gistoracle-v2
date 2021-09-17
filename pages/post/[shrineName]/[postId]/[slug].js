@@ -3,14 +3,14 @@ import Layout from "../../../../components/layout/Layout";
 import PostComponent from "../../../../components/post/PostComponent";
 import { db } from "../../../../firebase";
 import { initializeStore } from "../../../../redux/store";
-import { SET_POST_COMMENTS } from "../../../../redux/types/dataTypes";
+import { SET_POST, SET_POST_COMMENTS } from "../../../../redux/types/dataTypes";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../../../redux/types/uiTypes";
 import PageMeta from "../../../../utils/pageMeta";
 import { userAuthRefresh } from "../../../../utils/userFunction";
 
-function Post({ post, postId, urlPath }) {
+function Post({ postData, postId, urlPath }) {
   // destructure post items
-  const { title, postThumbnail } = post;
+  const { title, postThumbnail } = postData;
 
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
@@ -23,7 +23,7 @@ function Post({ post, postId, urlPath }) {
         urlPath={urlPath}
         contentType="article"
       />
-      <PostComponent post={post} postId={postId} currentUrl={urlPath} />
+      <PostComponent postId={postId} currentUrl={urlPath} />
     </Layout>
   );
 }
@@ -105,6 +105,9 @@ export async function getServerSideProps(context) {
       console.log(err.message);
     });
 
+  // feed postdata to redux
+  await dispatch({ type: SET_POST, payload: postData });
+
   // feed featured navigation categories to redux state
   await dispatch({
     type: SET_FEATURED_NAV_CATEGORIES,
@@ -121,7 +124,7 @@ export async function getServerSideProps(context) {
     props: {
       //session,
       initialReduxState: reduxStore.getState(),
-      post: postData,
+      postData: postData,
       postId: postId,
       urlPath: urlPath,
     },
