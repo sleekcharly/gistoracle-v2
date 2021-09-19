@@ -251,14 +251,11 @@ function Header({ featuredNavCategories }) {
                 onClick={handleIconClose}
                 className="divide-y divide-gray-100 dark:divide-gray-500 "
               >
-                <NextLink
-                  href={`/category/${mobileMenuCategory.name}`}
-                  passHref
-                >
+                <a href={`/category/${mobileMenuCategory.name}`}>
                   <p className="uppercase font-medium text-xs dark:text-white">
                     {mobileMenuCategory.name}
                   </p>
-                </NextLink>
+                </a>
               </MenuItem>
             ))}
           </Menu>
@@ -312,14 +309,11 @@ function Header({ featuredNavCategories }) {
                   onClick={handleMoreClose}
                   className="divide-y divide-gray-100 dark:divide-gray-500 "
                 >
-                  <NextLink
-                    href={`/category/${navMenuListCategory.name}`}
-                    passHref
-                  >
+                  <a href={`/category/${navMenuListCategory.name}`}>
                     <p className="uppercase font-medium text-xs text-center text-[#800000] dark:text-white">
                       {navMenuListCategory.name}
                     </p>
-                  </NextLink>
+                  </a>
                 </MenuItem>
               ))}
             </Menu>
