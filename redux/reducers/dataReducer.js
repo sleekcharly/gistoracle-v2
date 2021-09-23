@@ -19,6 +19,9 @@ import {
   UNLIKE_POST,
   SET_CATEGORY,
   SET_MORE_CATEGORY_POSTS,
+  SET_SHRINE,
+  FOLLOW_SHRINE,
+  UNFOLLOW_SHRINE,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -37,6 +40,7 @@ const initialState = {
   commentReply4: null,
   commentReply5: null,
   commentOnPost: null,
+  shrine: {},
 };
 
 export default function dataReducer(state = initialState, action) {
@@ -107,6 +111,9 @@ export default function dataReducer(state = initialState, action) {
     case SET_COMMENT_REPLY_5:
       return { ...state, commentReply5: action.payload };
 
+    case SET_SHRINE:
+      return { ...state, shrine: action.payload };
+
     //   like and unlike post case
     case LIKE_POST:
     case UNLIKE_POST:
@@ -120,6 +127,13 @@ export default function dataReducer(state = initialState, action) {
       }
 
       return { ...state };
+
+    case FOLLOW_SHRINE:
+    case UNFOLLOW_SHRINE:
+      return {
+        ...state,
+        shrine: action.payload,
+      };
     default:
       return state;
   }

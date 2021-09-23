@@ -16,7 +16,7 @@ function Category({ category, urlPath }) {
   analytics().logEvent(`${category.name}_page_view`);
 
   return (
-    <Layout page="post">
+    <Layout page="category">
       <PageMeta
         pageTitle={`${category.name.toUpperCase()} | Gistoracle`}
         urlPath={urlPath}
@@ -69,7 +69,7 @@ export async function getServerSideProps(context) {
 
   //   get category
   let category = [];
-  const next = await db
+  await db
     .collection("category")
     .where("name", "==", categoryName)
     .limit(1)

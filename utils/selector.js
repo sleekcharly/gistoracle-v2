@@ -13,6 +13,10 @@ const userShrines = (state) => state.user.subscribedShrines;
 const categoryPostsCount = (state) => state.data.category.posts;
 const categoryPostsSelector = (state) => state.data.posts;
 
+// selectors for shrine posts
+const shrinePostsCount = (state) => state.data.shrine.posts;
+const shrinePostsSelector = (state) => state.data.posts;
+
 // export function for home page infinite scroll funnctionality
 export const hasMorePostsSelector = createSelector(
   totalPostsCount,
@@ -25,6 +29,13 @@ export const hasMoreCategoryPostsSelector = createSelector(
   categoryPostsCount,
   categoryPostsSelector,
   (postCounts, posts) => postCounts > posts.length
+);
+
+// export function for shrine page infinite scroll functionality
+export const hasMoreShrinePostsSelector = createSelector(
+  shrinePostsCount,
+  shrinePostsSelector,
+  (postsCounter, posts) => postsCounter > posts.length
 );
 
 // export function for authenticated user home page infinite scroll functionality

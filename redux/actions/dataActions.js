@@ -12,6 +12,9 @@ import {
   LIKE_POST,
   UNLIKE_POST,
   SET_MORE_CATEGORY_POSTS,
+  SET_MORE_SHRINE_POSTS,
+  FOLLOW_SHRINE,
+  UNFOLLOW_SHRINE,
 } from "../types/dataTypes";
 import {
   CLEAR_CREATE_COMMENT_ERRORS,
@@ -109,6 +112,26 @@ export const getNextAuthPosts =
       });
   };
 
+// get
+export const getShrinePosts = (shrineName, parameter) => (dispatch) => {
+  // set loading state
+  dispatch({ type: SET_LOADING_COMPONENT_POSTS });
+
+  // run action
+  axios
+    .get(`/api/posts/getShrinePosts/${shrineName}/${parameter}`)
+    .then((res) => {
+      dispatch({ type: SET_POSTS, payload: res.data });
+
+      // stop loading state
+      dispatch({ type: STOP_LOADING_COMPONENT_POSTS });
+    })
+    .catch((err) => {
+      dispatch({ type: SET_POSTS, payload: [] });
+    });
+};
+
+// get category page posts
 export const getCategoryPosts = (categoryName, parameter) => (dispatch) => {
   //   set loading state
   dispatch({ type: SET_LOADING_COMPONENT_POSTS });
@@ -126,6 +149,27 @@ export const getCategoryPosts = (categoryName, parameter) => (dispatch) => {
       dispatch({ type: SET_POSTS, payload: [] });
     });
 };
+
+// get next shrine posts for infinite scroll component
+export const getNextShrinePosts =
+  (clickedButton, parameter, shrineName) => (dispatch) => {
+    //  set loading state
+    dispatch({ type: FETCHING_MORE_POSTS });
+
+    //  perfoem get more posts action
+    axios
+      .get(
+        `/api/posts/nextShrinePosts/${clickedButton}/${parameter}/${shrineName}`
+      )
+      .then((res) => {
+        // dispatch to redux state
+        dispatch({ type: SET_MORE_SHRINE_POSTS, payload: res.data });
+      })
+      .catch((err) => {
+        dispatch({ type: SET_MORE_SHRINE_POSTS, payload: [] });
+      });
+  };
+
 //  get next category posts for infinite scroll component
 export const getNextCategoryPosts =
   (clickedButton, parameter, categoryName) => (dispatch) => {
@@ -264,4 +308,35 @@ export const unlikePost = (postId) => (dispatch) => {
       dispatch({ type: REMOVE_USER_LIKE, payload: postId });
     })
     .catch((err) => console.log(err));
+};
+
+// follow a shrine
+export const followShrine = (shrineId) => (dispatch) => {
+  // run shrine follow action
+  axios
+    .get(`/api/shrine/follow/${shrineId}`)
+    .then((res) => {
+      // log analytics event
+      analytics().logEvent("shrine_followed", { shrineId: shrineId });
+
+      dispatch({
+        type: FOLLOW_SHRINE,
+        payload: res.data,
+      });
+    })
+    .catch((err) => console.log(err.response.data));
+};
+
+// unfollow a shrine
+export const unfollowShrine = (shrineId) => (dispatch) => {
+  // run shrine unfollow action
+  axios
+    .get(`/api/shrine/unfollow/${shrineId}`)
+    .then((res) => {
+      // log analytics event for unfollowing a shrine
+      analytics().logEvent("shrine_unfollowed", { shrineId: shrineId });
+
+      dispatch({ type: UNFOLLOW_SHRINE, payload: res.data });
+    })
+    .catch((err) => console.log(err.response.data));
 };
