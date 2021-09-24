@@ -18,7 +18,7 @@ function Shrine({ shrine, urlPath }) {
   return (
     <Layout page="shrine">
       <PageMeta
-        pageTitle={`${shrine.name.toUpperCase()} | Gistoracle`}
+        pageTitle={`${shrine.name.toUpperCase()} shrine | Gistoracle`}
         urlPath={urlPath}
         description={shrine.description}
       />

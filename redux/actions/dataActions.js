@@ -340,3 +340,25 @@ export const unfollowShrine = (shrineId) => (dispatch) => {
     })
     .catch((err) => console.log(err.response.data));
 };
+
+// get user posts for user profile page
+export const getUserPosts = (username) => (dispatch) => {
+  // set loading state
+  dispatch({ type: SET_LOADING_COMPONENT_POSTS });
+
+  axios
+    .get(`/api/user/data/userposts/${username}`)
+    .then((res) => {
+      dispatch({
+        type: SET_POSTS,
+        payload: res.data,
+      });
+
+      // stop loading state
+      dispatch({ type: STOP_LOADING_COMPONENT_POSTS });
+    })
+    .catch((err) => {
+      console.error(err);
+      dispatch({ type: SET_POSTS, payload: [] });
+    });
+};

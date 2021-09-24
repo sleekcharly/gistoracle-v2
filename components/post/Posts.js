@@ -103,7 +103,7 @@ function Posts({ post }) {
           <div className="flex space-x-3 w-full md:w-auto">
             {/* post's username */}
             <NextLink href={`/user/${username}`} passHref>
-              <p className="text-xs md:text-sm text-[#800000] mr-2 font-bold ">
+              <p className="text-xs md:text-sm text-[#800000] mr-2 font-bold cursor-pointer">
                 @{username}
               </p>
             </NextLink>
