@@ -150,6 +150,28 @@ export const getCategoryPosts = (categoryName, parameter) => (dispatch) => {
     });
 };
 
+// get user posts for user profile page
+export const getUserPosts = (username, parameter) => (dispatch) => {
+  // set loading state
+  dispatch({ type: SET_LOADING_COMPONENT_POSTS });
+
+  axios
+    .get(`/api/user/data/userposts/${username}/${parameter}`)
+    .then((res) => {
+      dispatch({
+        type: SET_POSTS,
+        payload: res.data,
+      });
+
+      // stop loading state
+      dispatch({ type: STOP_LOADING_COMPONENT_POSTS });
+    })
+    .catch((err) => {
+      console.error(err);
+      dispatch({ type: SET_POSTS, payload: [] });
+    });
+};
+
 // get next shrine posts for infinite scroll component
 export const getNextShrinePosts =
   (clickedButton, parameter, shrineName) => (dispatch) => {
@@ -339,26 +361,4 @@ export const unfollowShrine = (shrineId) => (dispatch) => {
       dispatch({ type: UNFOLLOW_SHRINE, payload: res.data });
     })
     .catch((err) => console.log(err.response.data));
-};
-
-// get user posts for user profile page
-export const getUserPosts = (username) => (dispatch) => {
-  // set loading state
-  dispatch({ type: SET_LOADING_COMPONENT_POSTS });
-
-  axios
-    .get(`/api/user/data/userposts/${username}`)
-    .then((res) => {
-      dispatch({
-        type: SET_POSTS,
-        payload: res.data,
-      });
-
-      // stop loading state
-      dispatch({ type: STOP_LOADING_COMPONENT_POSTS });
-    })
-    .catch((err) => {
-      console.error(err);
-      dispatch({ type: SET_POSTS, payload: [] });
-    });
 };

@@ -26,7 +26,7 @@ function UserComponent({ user }) {
     let mounted = true;
 
     if (mounted) {
-      dispatch(getUserPosts(user.username));
+      dispatch(getUserPosts(user.username, "new"));
     }
 
     return () => (mounted = false);
@@ -52,7 +52,7 @@ function UserComponent({ user }) {
     setButtonClicked("new");
 
     //get user authored posts
-    dispatch(getUserPosts(user.username));
+    dispatch(getUserPosts(user.username, "new"));
   };
 
   const savedButtonClicked = () => {
@@ -62,18 +62,27 @@ function UserComponent({ user }) {
 
   // function for getting the latest s posts
   const newButtonClick = () => {
+    // get latest user posts
+    dispatch(getUserPosts(user.username, "new"));
+
     // set buttonClicked state
     setButtonClicked("new");
   };
 
   // function for getting most liked shrine posts
   const topButtonClick = () => {
+    // get latest user posts
+    dispatch(getUserPosts(user.username, "top"));
+
     // set buttonClicked state
     setButtonClicked("top");
   };
 
   // function for getting most commented on shrine posts
   const spicyButtonClick = () => {
+    // get latest user posts
+    dispatch(getUserPosts(user.username, "spicy"));
+
     // set buttonClicked state
     setButtonClicked("spicy");
   };
