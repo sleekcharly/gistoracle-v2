@@ -7,6 +7,7 @@ import {
   SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL,
   SET_SUBSCRIBED_SHRINES,
   SET_USER,
+  SET_USER_PROFILE,
 } from "../types/userTypes";
 
 // initialize state for users
@@ -14,6 +15,7 @@ const initialState = {
   authenticated: false,
   loading: false,
   credentials: {},
+  userPageProfile: {},
   loadingConsecratedShrined: false,
   consecratedShrines: {},
   profileCredentials: {},
@@ -36,6 +38,9 @@ export default function userReducer(state = initialState, action) {
         ...state,
         ...action.payload,
       };
+
+    case SET_USER_PROFILE:
+      return { ...state, userPageProfile: action.payload };
     case SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL:
       return {
         ...state,

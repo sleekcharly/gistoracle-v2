@@ -4,6 +4,7 @@ import UserComponent from "../../components/user/UserComponent";
 import { analytics, db } from "../../firebase";
 import { initializeStore } from "../../redux/store";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../redux/types/uiTypes";
+import { SET_USER_PROFILE } from "../../redux/types/userTypes";
 import PageMeta from "../../utils/pageMeta";
 import { userAuthRefresh } from "../../utils/userFunction";
 
@@ -79,9 +80,13 @@ export async function getServerSideProps(context) {
     .where("username", "==", username)
     .limit(1)
     .get()
-    .then((data) => {
+    .then(async (data) => {
       if (data) {
         userData.credentials = data.docs[0].data();
+
+        // feed userdata to redux state user page profile
+        await dispatch({ type: SET_USER_PROFILE, payload: userData });
+
         return userData;
       }
     })

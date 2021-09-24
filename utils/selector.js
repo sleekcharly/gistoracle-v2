@@ -17,6 +17,15 @@ const categoryPostsSelector = (state) => state.data.posts;
 const shrinePostsCount = (state) => state.data.shrine.posts;
 const shrinePostsSelector = (state) => state.data.posts;
 
+// selectors for user posts
+const userPostsCount = (state) =>
+  state.user.userPageProfile.credentials.postCount;
+const userPostsSelector = (state) => state.data.posts;
+
+// selectors for saved user posts
+const savedPostsCount = (state) => state.user.savedPosts;
+const savedPostsSelector = (state) => state.data.savedPosts;
+
 // export function for home page infinite scroll funnctionality
 export const hasMorePostsSelector = createSelector(
   totalPostsCount,
@@ -44,4 +53,18 @@ export const hasMoreAuthPostsSelector = createSelector(
   infiniteScrollShrines,
   (subscribedShrines, infiniteScrollShrines) =>
     subscribedShrines.length > infiniteScrollShrines.length
+);
+
+// export function for saved posts infinite scroll functionality
+export const hasMoreSavedPostsSelector = createSelector(
+  savedPostsCount,
+  savedPostsSelector,
+  (postCounts, posts) => postCounts.length > posts.length
+);
+
+// export function for user page infinite scroll functionality
+export const hasMoreUserPostsSelector = createSelector(
+  userPostsCount,
+  userPostsSelector,
+  (postCounts, posts) => postCounts > posts.length
 );

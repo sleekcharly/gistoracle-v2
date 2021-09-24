@@ -36,6 +36,8 @@ import {
   SET_COMMENT_REPLY_FORM_ERRORS_5,
   CLEAR_COMMENT_REPLY_FORM_ERRORS_5,
   SET_LOADING_COMPONENT_POSTS,
+  SET_LOADING_USER_SAVED_POSTS,
+  STOP_LOADING_USER_SAVED_POSTS,
   STOP_LOADING_COMPONENT_POSTS,
 } from "../types/uiTypes";
 
@@ -62,6 +64,7 @@ const initialState = {
   commentReplyFormErrors4: null,
   commentReplyFormErrors5: null,
   loadingComponentPosts: false,
+  loadingSavedPosts: false,
 };
 
 export default function uiReducer(state = initialState, action) {
@@ -148,6 +151,10 @@ export default function uiReducer(state = initialState, action) {
       return { ...state, replySent5: true };
     case SET_LOADING_COMPONENT_POSTS:
       return { ...state, loadingComponentPosts: true };
+    case SET_LOADING_USER_SAVED_POSTS:
+      return { ...state, loadingSavedPosts: true };
+    case STOP_LOADING_USER_SAVED_POSTS:
+      return { ...state, loadingSavedPosts: false };
     case STOP_LOADING_COMPONENT_POSTS:
       return { ...state, loadingComponentPosts: false };
 

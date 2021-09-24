@@ -7,12 +7,27 @@ import {
 import { Skeleton } from "@material-ui/lab";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
-import { getUserPosts } from "../../redux/actions/dataActions";
+import {
+  getNextUserPosts,
+  getSavedPosts,
+  getUserPosts,
+} from "../../redux/actions/dataActions";
+import Posts from "../post/Posts";
+import { Card, CardHeader } from "@material-ui/core";
+import InfiniteScroll from "react-infinite-scroll-component";
+import {
+  hasMoreSavedPostsSelector,
+  hasMoreUserPostsSelector,
+} from "../../utils/selector";
+import Loader from "../../utils/loader";
 
 function UserComponent({ user }) {
   // set up component states
   const [buttonClicked, setButtonClicked] = useState("new");
   const [navButtonClicked, setNavButtonClicked] = useState("post");
+  const [savedPostsSection, setSavedPostsSection] = useState(false);
+  const [userPostsSection, setUserPostsSection] = useState(true);
+  const [postSlice, setPostSlice] = useState(10);
 
   // get currentUser object from auth context
   const { currentUser } = useAuth();
@@ -38,18 +53,35 @@ function UserComponent({ user }) {
       (state) => ({
         credentials: state.user.credentials,
         loadingComponentPosts: state.UI.loadingComponentPosts,
+        loadingSavedPosts: state.UI.loadingSavedPosts,
+        posts: state.data.posts,
+        savedPosts: state.data.savedPosts,
+        fetchingPosts: state.data.fetchingPosts,
+        hasMoreSavedPosts: hasMoreSavedPostsSelector(state),
+        hasMoreUserPosts: hasMoreUserPostsSelector(state),
       }),
       shallowEqual
     );
   };
 
   // destructure redux parameters
-  const { credentials, loadingComponentPosts } = useStateParameters();
+  const {
+    credentials,
+    loadingComponentPosts,
+    loadingSavedPosts,
+    posts,
+    savedPosts,
+    fetchingPosts,
+    hasMoreSavedPosts,
+    hasMoreUserPosts,
+  } = useStateParameters();
 
   // functions for handling clicked navigation buttons
   const postButtonClicked = () => {
     setNavButtonClicked("post");
     setButtonClicked("new");
+    setUserPostsSection(true);
+    setSavedPostsSection(false);
 
     //get user authored posts
     dispatch(getUserPosts(user.username, "new"));
@@ -58,6 +90,12 @@ function UserComponent({ user }) {
   const savedButtonClicked = () => {
     setNavButtonClicked("saved");
     setButtonClicked(null);
+    setSavedPostsSection(true);
+    setUserPostsSection(false);
+    setPostSlice(10);
+
+    //get user authored posts
+    dispatch(getSavedPosts(user.username));
   };
 
   // function for getting the latest s posts
@@ -86,6 +124,90 @@ function UserComponent({ user }) {
     // set buttonClicked state
     setButtonClicked("spicy");
   };
+
+  // load more user posts function for infinite scroll
+  const fetchPosts = () => {
+    // get the last item from posts
+    let lastItem = posts[posts.length - 1];
+
+    // get next posts
+    if (!fetchingPosts && buttonClicked === "new") {
+      dispatch(getNextUserPosts("new", lastItem?.createdAt, user.username));
+    } else if (!fetchingPosts && buttonClicked === "top") {
+      dispatch(getNextUserPosts("top", lastItem?.postId, user.username));
+    } else if (!fetchingPosts && buttonClicked === "spicy") {
+      dispatch(getNextUserPosts("spicy", lastItem?.postId, user.username));
+    }
+  };
+
+  // load more saved user posts for infinite scroll
+  const fetchSavedPosts = () => {
+    // set fetch slice number
+    const postsFetchNo = 10 + postSlice;
+
+    // get next posts
+    if (!fetchingPosts && navButtonClicked === "saved") {
+      dispatch(getNextUserSavedPosts(postsFetchNo));
+    }
+
+    // set new post slice
+    setPostSlice(postsFetchNo);
+  };
+
+  // set up mark up for posts
+  // skeleton array
+  let numbers = [0, 1, 2, 3, 4, 5, 6, 7];
+  let postsMarkup = !loadingComponentPosts
+    ? posts.map((post, index) => <Posts key={post.postId} post={post} />)
+    : numbers.map((number, i) => (
+        <Card key={i}>
+          <CardHeader
+            avatar={
+              <Skeleton
+                animation="wave"
+                variant="rect"
+                width={100}
+                height={70}
+              />
+            }
+            title={
+              <Skeleton
+                animation="wave"
+                height={15}
+                width="30%"
+                style={{ marginBottom: 6 }}
+              />
+            }
+            subheader={<Skeleton animation="wave" height={20} width="95%" />}
+          />
+        </Card>
+      ));
+
+  let savedPostsMarkup = !loadingSavedPosts
+    ? savedPosts.map((post, index) => <Posts key={post.postId} post={post} />)
+    : numbers.map((number, i) => (
+        <Card key={i}>
+          <CardHeader
+            avatar={
+              <Skeleton
+                animation="wave"
+                variant="rect"
+                width={100}
+                height={70}
+              />
+            }
+            title={
+              <Skeleton
+                animation="wave"
+                height={15}
+                width="30%"
+                style={{ marginBottom: 6 }}
+              />
+            }
+            subheader={<Skeleton animation="wave" height={20} width="95%" />}
+          />
+        </Card>
+      ));
 
   return (
     <div>
@@ -192,6 +314,52 @@ function UserComponent({ user }) {
             />
           )}
         </div>
+      )}
+
+      {/* render infinite scroll for posts */}
+      {savedPostsSection ? (
+        !loadingSavedPosts && savedPosts && savedPosts.length < 1 ? (
+          <div className="w-full h-[90vh] bg-[#f7eceb]">
+            <div className="text-center ml-auto mr-auto pt-11 mt-2">
+              <p className="text-gray-800 text-xl md:text-2xl lg:text-3xl">
+                😲You have no saved posts !
+              </p>
+            </div>
+          </div>
+        ) : (
+          <InfiniteScroll
+            dataLength={savedPosts.length}
+            next={fetchSavedPosts}
+            hasMore={hasMoreSavedPosts}
+            loader={<Loader />}
+            style={{ height: "100%", overflow: "visible" }}
+          >
+            <div>{savedPostsMarkup}</div>
+          </InfiniteScroll>
+        )
+      ) : !loadingComponentPosts && posts && posts.length < 1 ? (
+        <div className="w-full h-[90vh] bg-[#f7eceb]">
+          <div className="text-center ml-auto mr-auto pt-11 mt-2">
+            <p className="text-gray-800 text-xl md:text-2xl lg:text-3xl">
+              {credentials.username !== user.username
+                ? `😲 No posts by @${user.username}`
+                : "😲OMG!!!! ..... Seems no posts live here yet"}
+            </p>
+            <div className="cursor-pointer">
+              <p className="text-gray-800">create post</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={fetchPosts}
+          hasMore={hasMoreUserPosts}
+          loader={<Loader />}
+          style={{ height: "100%", overflow: "visible" }}
+        >
+          <div>{postsMarkup}</div>
+        </InfiniteScroll>
       )}
     </div>
   );

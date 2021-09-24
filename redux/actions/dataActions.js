@@ -7,6 +7,7 @@ import {
   SET_COMMENT_REPLY,
   SET_MORE_POSTS,
   SET_POSTS,
+  SET_SAVED_POSTS,
   SET_TOTAL_POSTS_COUNT,
   SET_POST_COMMENT,
   LIKE_POST,
@@ -15,14 +16,18 @@ import {
   SET_MORE_SHRINE_POSTS,
   FOLLOW_SHRINE,
   UNFOLLOW_SHRINE,
+  SET_MORE_SAVED_POSTS,
+  SET_MORE_USER_POSTS,
 } from "../types/dataTypes";
 import {
   CLEAR_CREATE_COMMENT_ERRORS,
   SET_CREATE_COMMENT_ERRORS,
   SET_LOADING_COMPONENT_POSTS,
+  SET_LOADING_USER_SAVED_POSTS,
   SET_REPLY_FORM_ERRORS,
   SET_REPLY_STATUS,
   STOP_LOADING_COMPONENT_POSTS,
+  STOP_LOADING_USER_SAVED_POSTS,
 } from "../types/uiTypes";
 import {
   ADD_USER_LIKES,
@@ -172,13 +177,72 @@ export const getUserPosts = (username, parameter) => (dispatch) => {
     });
 };
 
+// get user saved posts for user profile page
+export const getSavedPosts = (username) => (dispatch) => {
+  // set loading saved posts
+  dispatch({ type: SET_LOADING_USER_SAVED_POSTS });
+
+  // run action
+  axios
+    .get(`/api/user/data/savedposts/${username}`)
+    .then((res) => {
+      dispatch({ type: SET_SAVED_POSTS, payload: res.data });
+
+      // stop loading state
+      dispatch({ type: STOP_LOADING_USER_SAVED_POSTS });
+    })
+    .catch((err) => {
+      console.error(err.response.data);
+      dispatch({ type: SET_SAVED_POSTS, payload: [] });
+    });
+};
+
+// get next user posts
+export const getNextUserPosts =
+  (clickedButton, parameter, username) => (dispatch) => {
+    //  set loading state
+    dispatch({ type: FETCHING_MORE_POSTS });
+
+    // perform get more user posts action
+    axios
+      .get(
+        `/api/user/data/nextUserPosts/${clickedButton}/${parameter}/${username}`
+      )
+      .then((res) => {
+        // run dispatch action on user posts
+        dispatch({ type: SET_MORE_USER_POSTS, payload: res.data });
+      })
+      .catch((err) => {
+        console.error(err.response.data);
+        dispatch({ type: SET_MORE_USER_POSTS, payload: [] });
+      });
+  };
+
+// get next saved user posts for infiite scroll component
+export const getNextUserSavedPosts = (postsFetchNo) => (dispatch) => {
+  //  set loading state
+  dispatch({ type: FETCHING_MORE_POSTS });
+
+  // perform get more user saved posts action
+  axios
+    .get(`/api/user/data/nextSavedPosts/${postsFetchNo}`)
+    .then((res) => {
+      // run dispatch action on saved posts
+      dispatch({ type: SET_MORE_SAVED_POSTS, payload: res.data });
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      dispatch({ type: SET_MORE_SAVED_POSTS, payload: [] });
+    });
+};
+
 // get next shrine posts for infinite scroll component
 export const getNextShrinePosts =
   (clickedButton, parameter, shrineName) => (dispatch) => {
     //  set loading state
     dispatch({ type: FETCHING_MORE_POSTS });
 
-    //  perfoem get more posts action
+    //  perform get more posts action
     axios
       .get(
         `/api/posts/nextShrinePosts/${clickedButton}/${parameter}/${shrineName}`

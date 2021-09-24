@@ -22,6 +22,9 @@ import {
   SET_SHRINE,
   FOLLOW_SHRINE,
   UNFOLLOW_SHRINE,
+  SET_SAVED_POSTS,
+  SET_MORE_SAVED_POSTS,
+  SET_MORE_USER_POSTS,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -29,6 +32,7 @@ const initialState = {
   loadingPosts: false,
   fetchingPosts: false,
   posts: [],
+  savedPosts: [],
   post: {},
   category: {},
   totalPosts: 0,
@@ -84,6 +88,23 @@ export default function dataReducer(state = initialState, action) {
         posts: [...state.posts, ...action.payload],
         fetchingPosts: false,
       };
+    case SET_SAVED_POSTS:
+      return { ...state, savedPosts: action.payload };
+
+    case SET_MORE_SAVED_POSTS:
+      return {
+        ...state,
+        savedPosts: [...state.savedPosts, ...action.payload],
+        fetchingPosts: false,
+      };
+
+    case SET_MORE_USER_POSTS:
+      return {
+        ...state,
+        posts: [...state.posts, ...action.payload],
+        fetchingPosts: false,
+      };
+
     case SET_POST_COMMENTS:
       return {
         ...state,
