@@ -18,6 +18,8 @@ import {
   UNFOLLOW_SHRINE,
   SET_MORE_SAVED_POSTS,
   SET_MORE_USER_POSTS,
+  SAVE_POST,
+  UNSAVE_POST,
 } from "../types/dataTypes";
 import {
   CLEAR_CREATE_COMMENT_ERRORS,
@@ -31,7 +33,9 @@ import {
 } from "../types/uiTypes";
 import {
   ADD_USER_LIKES,
+  ADD_USER_SAVED_POST,
   REMOVE_USER_LIKE,
+  REMOVE_USER_SAVED_POST,
   SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL,
 } from "../types/userTypes";
 
@@ -395,6 +399,51 @@ export const unlikePost = (postId) => (dispatch) => {
     })
     .catch((err) => console.log(err));
 };
+
+// save a post to user page
+export const savePost = (postId) => (dispatch) => {
+  //run post save action
+  axios
+    .get(`/api/posts/savePost/${postId}`)
+    .then((res) => {
+      // log event on post saved
+      analytics().logEvent("post_saved", { postId: postId });
+
+      // run dispatch action
+      dispatch({ type: SAVE_POST, payload: res.data });
+
+      // run update of user saved posts register
+      let username = res.data.username;
+      let userSavedPost = { username: username, postId: postId };
+
+      console.log(userSavedPost);
+      // update user saved post
+      dispatch({ type: ADD_USER_SAVED_POST, payload: userSavedPost });
+    })
+    .catch((err) => console.error(err.message));
+};
+
+// unsave a post on user profile page
+export const unsavePost = (postId) => (dispatch) => {
+  axios
+    .get(`/api/posts/unsavePost/${postId}`)
+    .then((res) => {
+      // log analytics event on saved post
+      analytics().logEvent("post_unsaved", { postId: postId });
+
+      // run dispatch action
+      dispatch({ type: UNSAVE_POST, payload: res.data });
+
+      // run update of user saved posts register
+      let username = res.data.username;
+      let userSavedPost = { username: username, postId: postId };
+      // update user saved post
+      dispatch({ type: REMOVE_USER_SAVED_POST, payload: userSavedPost });
+    })
+    .catch((err) => console.error(err.response.data));
+};
+
+// unsave a post on user page
 
 // follow a shrine
 export const followShrine = (shrineId) => (dispatch) => {

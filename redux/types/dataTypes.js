@@ -25,6 +25,10 @@ export const SET_MORE_SHRINE_POSTS = "SET_MORE_SHRINE_POSTS";
 export const LIKE_POST = "LIKE_POST";
 export const UNLIKE_POST = "UNLIKE_POST";
 
+// save and un save post
+export const SAVE_POST = "SAVE_POST";
+export const UNSAVE_POST = "UNSAVE_POST";
+
 // follow and unfollow a shrine
 export const FOLLOW_SHRINE = "FOLLOW_SHRINE";
 export const UNFOLLOW_SHRINE = "UNFOLLOW_SHRINE";

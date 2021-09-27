@@ -25,6 +25,8 @@ import {
   SET_SAVED_POSTS,
   SET_MORE_SAVED_POSTS,
   SET_MORE_USER_POSTS,
+  SAVE_POST,
+  UNSAVE_POST,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -90,6 +92,17 @@ export default function dataReducer(state = initialState, action) {
       };
     case SET_SAVED_POSTS:
       return { ...state, savedPosts: action.payload };
+
+    case SAVE_POST:
+      return { ...state, savedPosts: [action.payload, ...state.savedPosts] };
+
+    case UNSAVE_POST:
+      return {
+        ...state,
+        savedPosts: state.savedPosts.filter(
+          (post) => post.postId !== action.payload.postId
+        ),
+      };
 
     case SET_MORE_SAVED_POSTS:
       return {

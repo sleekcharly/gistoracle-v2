@@ -2,7 +2,9 @@
 
 import {
   ADD_USER_LIKES,
+  ADD_USER_SAVED_POST,
   REMOVE_USER_LIKE,
+  REMOVE_USER_SAVED_POST,
   RESET_AUTH_SHRINES_FOR_INFINITE_SCROLL,
   SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL,
   SET_SUBSCRIBED_SHRINES,
@@ -69,6 +71,17 @@ export default function userReducer(state = initialState, action) {
       return {
         ...state,
         likes: state.likes.filter((like) => like.postId !== action.payload),
+      };
+
+    case ADD_USER_SAVED_POST:
+      return { ...state, savedPosts: [action.payload, ...state.savedPosts] };
+
+    case REMOVE_USER_SAVED_POST:
+      return {
+        ...state,
+        savedPosts: state.savedPosts.filter(
+          (post) => post.postId !== action.payload.postId
+        ),
       };
     default:
       return state;
