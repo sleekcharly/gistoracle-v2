@@ -459,12 +459,14 @@ function Header({ featuredNavCategories }) {
             >
               <MenuItem disableGutters>
                 <div className="flex ml-3">
-                  <span className="flex items-center justify-center space-x-1">
-                    <UserIcon className="h-5" />
-                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                      My Profile
-                    </p>
-                  </span>
+                  <NextLink href={`/user/${credentials.username}`} passHref>
+                    <span className="flex items-center justify-center space-x-1">
+                      <UserIcon className="h-5" />
+                      <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                        My Profile
+                      </p>
+                    </span>
+                  </NextLink>
                 </div>
               </MenuItem>
               <Divider />
@@ -636,12 +638,14 @@ function Header({ featuredNavCategories }) {
             >
               <MenuItem disableGutters>
                 <div className="flex ml-3">
-                  <span className="flex items-center justify-center space-x-1">
-                    <UserIcon className="h-5" />
-                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                      My Profile
-                    </p>
-                  </span>
+                  <NextLink href={`/user/${credentials.username}`} passHref>
+                    <span className="flex items-center justify-center space-x-1">
+                      <UserIcon className="h-5" />
+                      <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                        My Profile
+                      </p>
+                    </span>
+                  </NextLink>
                 </div>
               </MenuItem>
               <Divider />
