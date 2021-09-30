@@ -473,12 +473,14 @@ function Header({ featuredNavCategories }) {
 
               <MenuItem disableGutters>
                 <div className="flex  ml-3">
-                  <span className="flex items-center justify-center space-x-1">
-                    <CogIcon className="h-5" />
-                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                      UserSettings
-                    </p>
-                  </span>
+                  <NextLink href="/user/settings" passHref>
+                    <span className="flex items-center justify-center space-x-1">
+                      <CogIcon className="h-5" />
+                      <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                        UserSettings
+                      </p>
+                    </span>
+                  </NextLink>
                 </div>
               </MenuItem>
               <Divider />
@@ -652,12 +654,14 @@ function Header({ featuredNavCategories }) {
 
               <MenuItem disableGutters>
                 <div className="flex  ml-3">
-                  <span className="flex items-center justify-center space-x-1">
-                    <CogIcon className="h-5" />
-                    <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
-                      UserSettings
-                    </p>
-                  </span>
+                  <NextLink href="/user/settings" passHref>
+                    <span className="flex items-center justify-center space-x-1">
+                      <CogIcon className="h-5" />
+                      <p className="text-sm font-medium text-[#800000] dark:text-[#D7DADC]">
+                        UserSettings
+                      </p>
+                    </span>
+                  </NextLink>
                 </div>
               </MenuItem>
               <Divider />
