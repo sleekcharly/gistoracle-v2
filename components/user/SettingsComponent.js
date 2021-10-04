@@ -521,7 +521,7 @@ function SettngsComponent() {
               </DialogTitle>
 
               <DialogContent>
-                <p className="text-gray-600">
+                <p className="text-gray-600 mb-10">
                   To update your profile, please enter your password.
                 </p>
 
