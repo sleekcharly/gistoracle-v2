@@ -29,6 +29,12 @@ const tooLong = (string) => {
   else return false;
 };
 
+// helper function to limit length of displayName
+const displayNameTooLong = (string) => {
+  if (string.length > 35) return true;
+  else return false;
+};
+
 // helper function to ensure passwords are not shorter than 6 charcters
 const passwordShort = (string) => {
   if (string.length < 7) return true;
@@ -73,6 +79,13 @@ exports.validateProfileEditData = (data) => {
     formErrors.username = "Must not be empty !";
   }
 
+  if (tooLong(data.username))
+    errors.username = "Not more than 20 characters required !";
+
+  if (displayNameTooLong(data.displayName)) {
+    formErrors.displayName = "Not more than 35 characters required !";
+  }
+
   return {
     formErrors,
     valid: Object.keys(formErrors).length === 0 ? true : false,
@@ -93,6 +106,9 @@ exports.validateUserProfileData = (data) => {
     errors.username = "Must not be empty, username required";
   }
 
+  if (tooLong(data.username))
+    errors.username = "Not more than 20 characters required";
+
   return {
     errors,
     valid: Object.keys(errors).length === 0 ? true : false,
@@ -111,7 +127,7 @@ exports.validateChangePasswordData = (data) => {
   if (isEmpty(data.newPassword)) {
     passwordErrors.newPassword = "Please enter new password";
   } else if (data.newPassword !== data.newPassword2) {
-    // check to see if new password and confiem password match
+    // check to see if new password and confirm password match
     passwordErrors.newPassword = "Passwords do not match";
     passwordErrors.newPassword2 = "Passwords do not match";
   }

@@ -214,31 +214,8 @@ function SettngsComponent() {
     setErrors({});
     setFormErrors({});
 
-    // check and set errors if email is empty
-    if (!values.email) {
-      setErrors((errors) => ({
-        ...errors,
-        email: "Please enter your email",
-      }));
-      console.log(errors);
-    }
-
-    // check and set errors if username is empty
-    if (!values.username) {
-      setErrors((errors) => ({
-        ...errors,
-        username: "Please enter your email",
-      }));
-      console.log(errors);
-    }
-
-    // check for existing errors and return or proceed to open dialog
-    if (errors) {
-      return;
-    } else {
-      //open dialog
-      setVerifyPasswordOpen(true);
-    }
+    //open dialog
+    setVerifyPasswordOpen(true);
   };
 
   // handle closing of verification dialog
