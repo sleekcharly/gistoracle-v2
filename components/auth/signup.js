@@ -253,17 +253,6 @@ function Signup({
                     onChange={(e) => setPassword(e.target.value)}
                     name="password"
                     error={errors && errors.password ? true : false}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
                   />
 
                   <FormHelperText>

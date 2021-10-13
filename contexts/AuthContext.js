@@ -33,9 +33,6 @@ export function AuthProvider({ children }) {
   // define dispatch
   const dispatch = useDispatch();
 
-  // defne router
-  const router = useRouter();
-
   /* Firebase Authentication functions necessary for user authentication*/
   //signup function
   const signup = async (userDetails) => {
@@ -54,7 +51,7 @@ export function AuthProvider({ children }) {
     // pass new user details to validator
     const { valid, errors } = validateSignupData(newUser);
     if (!valid) {
-      dispatch({ type: SET_ERRORS, payload: errors });
+      dispatch({ type: SET_SIGNUP_ERRORS, payload: errors });
       return;
     }
 
@@ -90,11 +87,7 @@ export function AuthProvider({ children }) {
               username: newUser.username,
               email: newUser.email,
               createdAt: new Date().toISOString(),
-              imageUrl: `https://firebasestorage.googleapis.com/v0/b/${
-                process.env.NODE_ENV === "production"
-                  ? process.env.FIREBASE_STORAGE_BUCKET
-                  : process.env.FIREBASE_DEV_STORAGE_BUCKET
-              }/o/${noImg}?alt=media`,
+              imageUrl: `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/${noImg}?alt=media`,
               userId,
               about: "",
               displayName: "",
@@ -130,7 +123,7 @@ export function AuthProvider({ children }) {
                 dispatch({ type: CLEAR_SIGNUP_ERRORS });
 
                 //reload application page
-                router.push("/");
+                window.location.href = "/";
               })
               .catch((err) => {
                 console.log("server error: " + err.response.data);
@@ -168,7 +161,7 @@ export function AuthProvider({ children }) {
   };
 
   // function for logging in user
-  const login = (userDetails) => {
+  const login = async (userDetails) => {
     // clear login errors
     dispatch({ type: CLEAR_LOGIN_ERRORS });
 
@@ -180,11 +173,11 @@ export function AuthProvider({ children }) {
 
     //if any error exists return error
     if (!valid) {
-      dispatch({ type: SET_ERRORS, payload: errors });
+      dispatch({ type: SET_LOGIN_ERRORS, payload: errors });
       return;
     }
 
-    return auth
+    await auth
       .signInWithEmailAndPassword(user.email, user.password)
       .then((data) => {
         // log analytics event
@@ -218,8 +211,8 @@ export function AuthProvider({ children }) {
   };
 
   // logout function
-  const logout = () => {
-    return auth
+  const logout = async () => {
+    await auth
       .signOut()
       .then(() => {
         // log analytics event
@@ -234,6 +227,54 @@ export function AuthProvider({ children }) {
       .catch((err) => {
         console.error(err);
       });
+  };
+
+  // function to check correct password
+  const checkPassword = async (email, currentPassword) => {
+    // set credentials
+    var user = auth.currentUser;
+    var credential = dataStore.auth.EmailAuthProvider.credential(
+      email,
+      currentPassword
+    );
+
+    // reauthenticate user if current user exists
+    await user
+      .reauthenticateWithCredential(credential)
+      .then((data) => {
+        let passwordSuccess =
+          "password is authentic and user is reauthenticated";
+        return passwordSuccess;
+      })
+      .catch((err) => {
+        console.error(err);
+        let error = "Wrong password! please try again";
+        return error;
+      });
+  };
+
+  // function to deleting a user
+  const deleteUserCollection = async () => {
+    // set credentials
+    var user = auth.currentUser;
+
+    // delete user
+    await user.delete().then(() => {
+      //log analytics event
+      analytics().logEvent("user_account_deactivated");
+
+      // proceed with deleting user document in firebase
+      axios
+        .post("/api/user/settings/delete")
+        .then((res) => {
+          console.log(res.data);
+          return res.data;
+        })
+        .catch((err) => {
+          console.error(err);
+          return "failure to delete user collection";
+        });
+    });
   };
 
   // function to set up Authorization header.
@@ -259,6 +300,8 @@ export function AuthProvider({ children }) {
     signup,
     login,
     logout,
+    checkPassword,
+    deleteUserCollection,
   };
 
   return (

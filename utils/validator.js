@@ -79,6 +79,26 @@ exports.validateProfileEditData = (data) => {
   };
 };
 
+// validation for update user profile data
+exports.validateUserProfileData = (data) => {
+  let errors = {};
+
+  // check that username and email fields are not empty
+  if (isEmpty(data.email)) {
+    errors.email = "Must not be empty, Email required";
+  } else if (!isEmail(data.email)) {
+    errors.email =
+      "Hold on!! That looks like an address from space, enter valid email";
+  } else if (isEmpty(data.username)) {
+    errors.username = "Must not be empty, username required";
+  }
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0 ? true : false,
+  };
+};
+
 // validate change password data
 exports.validateChangePasswordData = (data) => {
   let passwordErrors = {};

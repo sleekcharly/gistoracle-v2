@@ -6,7 +6,7 @@ const handler = nc();
 handler.get(async (req, res) => {
   await db
     .collection("users")
-    .where("username", "==", req.params.username)
+    .where("username", "==", req.query.username)
     .limit(1)
     .get()
     .then((data) => {

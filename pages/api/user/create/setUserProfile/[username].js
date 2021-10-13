@@ -3,7 +3,7 @@ import { db } from "../../../../../utils/firebase/admin";
 
 const handler = nc();
 
-handler.get(async (req, res) => {
+handler.post(async (req, res) => {
   // extract user credentials
   let credentials = req.body;
 

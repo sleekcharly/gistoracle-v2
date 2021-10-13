@@ -26,5 +26,7 @@ if (!admin.apps.length) {
 
 // instantiate the firebase store
 const db = admin.firestore();
+// set storage
+const storage = admin.storage();
 
-module.exports = { admin, db };
+module.exports = { admin, db, storage };

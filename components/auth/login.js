@@ -196,7 +196,6 @@ function Login({ openLogin, handleLoginClose, handleSignupClickOpen }) {
                 {loading && (
                   <CircularProgress
                     size={30}
-                    color="#933a16"
                     className="absolute top-1 right-5"
                   />
                 )}
