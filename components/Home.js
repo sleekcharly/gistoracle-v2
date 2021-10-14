@@ -51,6 +51,8 @@ function HomeComponent() {
   // bring in authenticated user from auth context
   const { currentUser } = useAuth();
 
+  console.log(currentUser.Aa);
+
   // get dispatch hook
   const dispatch = useDispatch();
 
@@ -77,7 +79,7 @@ function HomeComponent() {
 
     // scroll to top
     window.scrollTo(0, 0);
-  }, []);
+  }, [currentUser.Aa]);
 
   // function for getting the latest user posts
   const newButtonClick = () => {
