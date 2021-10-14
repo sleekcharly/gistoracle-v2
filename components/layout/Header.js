@@ -203,7 +203,7 @@ function Header({ featuredNavCategories }) {
   return (
     <div className="sticky top-0 z-[1000] flex items-center bg-white py-2 px-2 lg:px-3 lg:py-1 shadow-lg dark:bg-gray-800 ">
       {/* Gist oracle logo */}
-      <NextLink href="/" passHref>
+      <a href="/">
         <div className="relative w-[75px] h-[35px] lg:w-[100px] lg:h-[40px] cursor-pointer">
           <Image
             src="/images/gistoracle_logo.png"
@@ -213,7 +213,7 @@ function Header({ featuredNavCategories }) {
             component="link"
           />
         </div>
-      </NextLink>
+      </a>
 
       {/* Navigation section */}
       <nav className="relative inline-block">
