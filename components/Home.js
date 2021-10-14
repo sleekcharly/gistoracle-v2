@@ -77,7 +77,7 @@ function HomeComponent() {
 
     // scroll to top
     window.scrollTo(0, 0);
-  }, [currentUser]);
+  }, []);
 
   // function for getting the latest user posts
   const newButtonClick = () => {

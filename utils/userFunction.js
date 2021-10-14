@@ -3,8 +3,9 @@ const { default: jwtDecode } = require("jwt-decode");
 const { useDispatch } = require("react-redux");
 const { useAuth } = require("../contexts/AuthContext");
 const { getUserData } = require("../redux/actions/userActions");
+const { getTailoredPosts } = require("../redux/actions/dataActions");
 
-exports.userAuthRefresh = () => {
+exports.userAuthRefresh = (page) => {
   // destructure current user;
   const { currentUser } = useAuth();
 
@@ -33,6 +34,9 @@ exports.userAuthRefresh = () => {
 
         // get user data from firestore
         dispatch(getUserData());
+
+        // reload get posts on home page
+        page === "home" && dispatch(getTailoredPosts("new"));
       });
     } else {
       // if token exists set user as authenticated and set authorization header

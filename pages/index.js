@@ -13,10 +13,12 @@ import HomeComponent from "../components/Home";
 import { useSnackbar } from "notistack";
 import { shallowEqual, useSelector } from "react-redux";
 import PageMeta from "../utils/pageMeta";
+import AppSidebar from "../components/layout/AppSidebar";
 
 export default function Home() {
+  const page = "home";
   // check for existing token and token expiration to maintain user authentication
-  userAuthRefresh();
+  userAuthRefresh(page);
 
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
 
@@ -50,7 +52,9 @@ export default function Home() {
           <HomeComponent />
         </main>
 
-        <aside className="w-[25%] hidden lg:block bg-white"></aside>
+        <aside className="w-[25%] hidden lg:block">
+          <AppSidebar page="home" />
+        </aside>
       </div>
     </Layout>
   );
