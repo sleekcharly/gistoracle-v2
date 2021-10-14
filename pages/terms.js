@@ -1,15 +1,20 @@
 import InfoHeader from "../components/layout/InfoHeader";
+import TermsComponent from "../components/TermsComponent";
 import PageMeta from "../utils/pageMeta";
 
 function Terms({ urlPath }) {
   return (
-    <div>
-      {/* <PageMeta
-        pageTitle="Welcome to Gistoracle - Africa's online community"
-        description="Gistoracle serves you endless discussions, articles, news and many more from a wide variety of communities we call shrines."
+    <div className="bg-[#f2f6f7]">
+      <PageMeta
+        pageTitle="Terms | Gistoracle"
+        description="Gistoracle provides tecnologies and services that build communities and enable people to engage with each other. Our terms govern your use of Gistoracle and other products. Please ensure to read it, because, by using Gistoracle, you consent to these terms."
         urlPath={urlPath}
-      /> */}
+        contentType="article"
+      />
       <InfoHeader page="terms" />
+
+      {/*  terms component */}
+      <TermsComponent />
     </div>
   );
 }

@@ -11,7 +11,7 @@ function About({ urlPath }) {
         urlPath={urlPath}
       />
       <InfoHeader page="about" />
-      <AboutComponent currentUrl={urlPath} />
+      <AboutComponent />
     </div>
   );
 }
