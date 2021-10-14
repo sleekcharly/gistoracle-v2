@@ -44,7 +44,14 @@ export default function Home() {
   return (
     <Layout>
       <PageMeta />
-      <HomeComponent />
+
+      <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
+        <main className="w-full flex-grow-1">
+          <HomeComponent />
+        </main>
+
+        <aside className="w-[25%] hidden lg:block bg-white"></aside>
+      </div>
     </Layout>
   );
 }

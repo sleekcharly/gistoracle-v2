@@ -23,7 +23,15 @@ function Post({ postData, postId, urlPath }) {
         urlPath={urlPath}
         contentType="article"
       />
-      <PostComponent postId={postId} currentUrl={urlPath} />
+
+      <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
+        <main className="w-full flex-grow-1">
+          {/* post page component */}
+          <PostComponent postId={postId} currentUrl={urlPath} />
+        </main>
+
+        <aside className="w-[25%] hidden lg:block bg-white"></aside>
+      </div>
     </Layout>
   );
 }

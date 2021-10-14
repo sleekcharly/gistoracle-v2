@@ -29,8 +29,14 @@ function User({ urlPath, user }) {
         }`}
       />
 
-      {/* page component */}
-      <UserComponent user={user} />
+      <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
+        <main className="w-full flex-grow-1">
+          {/* page component */}
+          <UserComponent user={user} />
+        </main>
+
+        <aside className="w-[25%] hidden lg:block bg-white"></aside>
+      </div>
     </Layout>
   );
 }

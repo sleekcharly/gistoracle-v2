@@ -24,11 +24,7 @@ function Layout({ children }) {
       <Header featuredNavCategories={featuredNavCategories} />
 
       {/* content */}
-      <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-8">
-        <main className="w-full flex-grow-1">{children}</main>
-
-        <footer className="w-[25%] hidden lg:block"></footer>
-      </div>
+      {children}
     </div>
   );
 }
