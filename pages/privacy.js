@@ -1,15 +1,19 @@
 import InfoHeader from "../components/layout/InfoHeader";
+import PrivacyComponent from "../components/PrivacyComponent";
 import PageMeta from "../utils/pageMeta";
 
 function Privacy({ urlPath }) {
   return (
-    <div>
-      {/* <PageMeta
-        pageTitle="Welcome to Gistoracle - Africa's online community"
-        description="Gistoracle serves you endless discussions, articles, news and many more from a wide variety of communities we call shrines."
+    <div className="bg-[#f2f6f7]">
+      <PageMeta
+        pageTitle="Privacy policy | Gistoracle"
+        description='Gistoracle recognizes that your privacy is very important, and this we take this seriously. Our privacy policy ("Privacy Policy")      describes our policies and procedures about, extraction, use, disclosure and sharing of your personal data when you use Gistoracle'
         urlPath={urlPath}
-      /> */}
+      />
       <InfoHeader page="privacy" />
+
+      {/* privacy component */}
+      <PrivacyComponent />
     </div>
   );
 }
