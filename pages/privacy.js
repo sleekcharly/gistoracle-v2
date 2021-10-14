@@ -9,6 +9,7 @@ function Privacy({ urlPath }) {
         pageTitle="Privacy policy | Gistoracle"
         description='Gistoracle recognizes that your privacy is very important, and this we take this seriously. Our privacy policy ("Privacy Policy")      describes our policies and procedures about, extraction, use, disclosure and sharing of your personal data when you use Gistoracle'
         urlPath={urlPath}
+        contentType="article"
       />
       <InfoHeader page="privacy" />
 

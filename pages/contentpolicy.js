@@ -1,15 +1,20 @@
+import ContentPolicyComponent from "../components/ContentPolicyComponent";
 import InfoHeader from "../components/layout/InfoHeader";
 import PageMeta from "../utils/pageMeta";
 
 function ContentPolicy({ urlPath }) {
   return (
-    <div>
-      {/* <PageMeta
-        pageTitle="Welcome to Gistoracle - Africa's online community"
-        description="Gistoracle serves you endless discussions, articles, news and many more from a wide variety of communities we call shrines."
+    <div className="bg-[#f2f6f7]">
+      <PageMeta
+        pageTitle="Content Policy | GistOracle"
+        description="Gistoracle is home to a vast network of communities. It is our belief that if people don't feel safe they can't engage each other. View our content policies"
         urlPath={urlPath}
-      /> */}
+        contentType="article"
+      />
       <InfoHeader page="contentpolicy" />
+
+      {/* content policy component */}
+      <ContentPolicyComponent />
     </div>
   );
 }
