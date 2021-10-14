@@ -206,7 +206,10 @@ function TermsComponent() {
               THE MAXIMUM EXTENT PERMITTED UNDER APPLICABLE LAW.
             </p>
 
-            <List aria-label="disclaimers and limitations of liability">
+            <List
+              aria-label="disclaimers and limitations of liability"
+              className="bg-[#f2f6f7]"
+            >
               <ListItem>
                 <p className="text-gray-700">
                   OUR SERVICES ARE AVAILABLE "AS-IS". YOU UNDERSATND AND AGREE
