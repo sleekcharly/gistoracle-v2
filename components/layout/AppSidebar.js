@@ -1,6 +1,7 @@
 import React from "react";
 import TopCatShrines from "../shrine/TopCatShrines";
 import TrendingShrines from "../shrine/TrendingShrines";
+import TopOracles from "../user/TopOracles";
 
 function AppSidebar() {
   return (
@@ -24,6 +25,9 @@ function AppSidebar() {
 
         {/* trending shrines */}
         <TrendingShrines />
+
+        {/* top oracles */}
+        <TopOracles />
       </div>
     </div>
   );
