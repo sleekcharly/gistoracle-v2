@@ -21,8 +21,6 @@ exports.userAuthRefresh = (page) => {
 
     // if token is expired, refresh token
     if (decodedToken.exp * 1000 < Date.now()) {
-      console.log("token is expired");
-
       currentUser.getIdToken().then((token) => {
         const FBIdToken = `Bearer ${token}`;
 
