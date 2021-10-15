@@ -2,6 +2,7 @@ import React from "react";
 import TopCatShrines from "../shrine/TopCatShrines";
 import TrendingShrines from "../shrine/TrendingShrines";
 import TopOracles from "../user/TopOracles";
+import Footer from "./Footer";
 
 function AppSidebar() {
   return (
@@ -28,6 +29,22 @@ function AppSidebar() {
 
         {/* top oracles */}
         <TopOracles />
+
+        {/* ad */}
+        <a
+          href="https://chat.whatsapp.com/ITfKMi2Xuxf6ytiUNfjPEf"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            src="/images/ads/juchag_fashion.jpg"
+            alt="Juchag fashion ad"
+            className="w-full h-auto rounded-sm"
+          />
+        </a>
+
+        {/* footer */}
+        <Footer />
       </div>
     </div>
   );
