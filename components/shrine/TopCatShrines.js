@@ -3,6 +3,7 @@ import { Divider } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
+import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 
 function TopCatShrines() {
   // set component states
@@ -64,7 +65,9 @@ function TopCatShrines() {
     return () => (mounted = false);
   }, [category]);
 
-  return (
+  return loadingShrines ? (
+    <SidebarSkeleton />
+  ) : (
     <div className="bg-white">
       {/* title */}
       <div className="bg-[#933a16] h-12 rounded-tl-sm rounded-tr-sm p-2 relative">
