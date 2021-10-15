@@ -44,7 +44,7 @@ function TrendingShrines() {
               key={shrine.shrineId}
               className="mb-3 flex items-center justify-between"
             >
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center space-x-1 flex-grow-1">
                 <img
                   src={
                     shrine.avatar ? shrine.avatar : "/images/shrineAvatar.png"
@@ -53,10 +53,10 @@ function TrendingShrines() {
                   className="w-7 h-7 md:w-8 md:h-8 rounded-full"
                 />
                 <div>
-                  <p className="text-xs md:text-sm text-gray-700">
+                  <p className="text-xs xl:text-sm text-gray-700">
                     {shrine.name}
                   </p>
-                  <p className="text-xs md:text-sm text-gray-700">
+                  <p className="text-xs xl:text-sm text-gray-700">
                     {numeral(shrine.followers).format("0a")}{" "}
                     {shrine.followers > 1 ? "followers" : "follower"}
                   </p>
@@ -65,7 +65,7 @@ function TrendingShrines() {
 
               {/* button */}
               <a href={`/shrine/${shrine.name}`}>
-                <button className="bg-[#933a16] text-white text-xs md:text-sm py-1 px-2 rounded-md hover:bg-[#800000] transition-all">
+                <button className="bg-[#933a16] text-white text-xs py-1 px-2 rounded-md hover:bg-[#800000] transition-all">
                   Explore
                 </button>
               </a>

@@ -1,3 +1,4 @@
+import { Divider } from "@material-ui/core";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
@@ -42,21 +43,27 @@ function TopOracles() {
       <div>
         {topOracles &&
           topOracles.map((oracle, i) => (
-            <div key={oracle.userId} className="flex items-center space-x-10">
-              <a href={`/user/${oracle.username}`}>
-                <img
-                  src={oracle.imageUrl}
-                  alt={
-                    oracle.displayName ? oracle.displayName : oracle.username
-                  }
-                  className="w-7 h-7 md:w-8 md:h-8 rounded-full"
-                />
-              </a>
+            <>
+              <div
+                key={oracle.userId}
+                className="flex items-center space-x-10 p-3"
+              >
+                <a href={`/user/${oracle.username}`}>
+                  <img
+                    src={oracle.imageUrl}
+                    alt={
+                      oracle.displayName ? oracle.displayName : oracle.username
+                    }
+                    className="w-7 h-7 md:w-8 md:h-8 rounded-full"
+                  />
+                </a>
 
-              <p className="text-gray-700 text-sm font-semibold">
-                {oracle.username}
-              </p>
-            </div>
+                <p className="text-gray-700 text-sm font-semibold">
+                  {oracle.username}
+                </p>
+              </div>
+              <Divider />
+            </>
           ))}
       </div>
     </div>

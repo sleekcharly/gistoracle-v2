@@ -80,31 +80,33 @@ function TopCatShrines() {
       <div>
         {topShrines &&
           topShrines.map((shrine, i) => (
-            <div key={shrine.shrineId}>
-              <div className="p-2 flex items-center space-x-3">
-                <span className="flex items-center space-x-1">
-                  <TrendingUp fontSize="small" color="secondary" />
-                  <a href={`/shrine/${shrine.name}`}>
-                    <img
-                      src={
-                        shrine.avatar
-                          ? shrine.avatar
-                          : "/images/shrineAvatar.png"
-                      }
-                      alt={shrine.name}
-                      className="w-7 h-7 md:w-8 md:h-8 rounded-full"
-                    />
-                  </a>
-                </span>
+            <>
+              <div key={shrine.shrineId}>
+                <div className="p-2 flex items-center space-x-3">
+                  <span className="flex items-center space-x-1">
+                    <TrendingUp fontSize="small" color="secondary" />
+                    <a href={`/shrine/${shrine.name}`}>
+                      <img
+                        src={
+                          shrine.avatar
+                            ? shrine.avatar
+                            : "/images/shrineAvatar.png"
+                        }
+                        alt={shrine.name}
+                        className="w-7 h-7 md:w-8 md:h-8 rounded-full"
+                      />
+                    </a>
+                  </span>
 
-                {/* shrine name */}
-                <a href={`/shrine/${shrine.name}`}>
-                  <p className="text-gray-700 text-sm">{shrine.name}</p>
-                </a>
+                  {/* shrine name */}
+                  <a href={`/shrine/${shrine.name}`}>
+                    <p className="text-gray-700 text-sm">{shrine.name}</p>
+                  </a>
+                </div>
               </div>
-            </div>
+              <Divider />
+            </>
           ))}
-        <Divider />
       </div>
     </div>
   );

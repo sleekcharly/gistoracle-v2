@@ -52,7 +52,7 @@ export default function Home() {
           <HomeComponent />
         </main>
 
-        <aside className="w-[25%] hidden lg:block">
+        <aside className="hidden w-[30%] min-w-max lg:block">
           <AppSidebar page="home" />
         </aside>
       </div>
