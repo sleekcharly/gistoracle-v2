@@ -1,4 +1,5 @@
 import React from "react";
+import NewShrine from "../shrine/NewShrine";
 import TopCatShrines from "../shrine/TopCatShrines";
 import TrendingShrines from "../shrine/TrendingShrines";
 import TopOracles from "../user/TopOracles";
@@ -29,6 +30,9 @@ function AppSidebar() {
 
         {/* top oracles */}
         <TopOracles />
+
+        {/* create new shrine component */}
+        <NewShrine />
 
         {/* ad */}
         <a
