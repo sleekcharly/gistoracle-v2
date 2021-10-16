@@ -1,5 +1,6 @@
 import React from "react";
 import CategoryComponent from "../../components/category/CategoryComponent";
+import AppSidebar from "../../components/layout/AppSidebar";
 import Layout from "../../components/layout/Layout";
 import { analytics, db } from "../../firebase";
 import { initializeStore } from "../../redux/store";
@@ -29,7 +30,12 @@ function Category({ category, urlPath }) {
           <CategoryComponent category={category} />
         </main>
 
-        <aside className="w-[25%] hidden lg:block bg-white"></aside>
+        <aside
+          id="sidebar"
+          className="hidden h-screen sticky top-[-1200px] xl:top-[-1500px] lg:block w-[45%] xl:w-[30%]"
+        >
+          <AppSidebar page="category" categoryId={category.categoryId} />
+        </aside>
       </div>
     </Layout>
   );

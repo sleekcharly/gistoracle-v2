@@ -56,7 +56,7 @@ export default function Home() {
           id="sidebar"
           className={`hidden h-screen sticky top-[-1200px] xl:top-[-1500px] lg:block w-[45%] xl:w-[30%] `}
         >
-          <AppSidebar page="home" />
+          <AppSidebar page={page} />
         </aside>
       </div>
     </Layout>

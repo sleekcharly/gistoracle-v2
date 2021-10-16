@@ -1,11 +1,11 @@
-import { TrendingUp } from "@material-ui/icons";
 import { Divider } from "@material-ui/core";
+import { TrendingUp } from "@material-ui/icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import SidebarSkeleton from "../skeletons/SidebarSkeleton";
 
-function TopCatShrines() {
+function CatPageTopShrines() {
   // set component states
   const [category, setCategory] = useState(null);
   const [topShrines, setTopShrines] = useState([]);
@@ -15,45 +15,39 @@ function TopCatShrines() {
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
-        featuredNavCategories: state.UI.featuredNavCategories,
+        catData: state.data.category,
       }),
       shallowEqual
     );
   };
 
   // destructure redux parameters
-  const { featuredNavCategories } = useStateParameters();
+  const { catData } = useStateParameters();
 
-  // get a random category
+  // set category to component state
   useEffect(() => {
     // subscribe
     let mounted = true;
 
-    let category =
-      featuredNavCategories &&
-      featuredNavCategories[
-        Math.floor(Math.random() * featuredNavCategories.length)
-      ];
+    // set category state
+    if (mounted) setCategory(catData);
 
-    if (mounted) setCategory(category);
-
+    // end subscription
     return () => (mounted = false);
-  }, [featuredNavCategories]);
+  }, [catData]);
 
-  //   get top category shrines
+  // get top shrines
   useEffect(() => {
     // subscribe
     let mounted = true;
 
-    // define loading state
+    // set loading state
     setLoadingShrines(true);
 
     // get and store top 5 category shrines in component state
     category &&
       axios
-        .get(
-          `/api/shrine/getTopCategoryShrines/${category.featuredNavCategoryId}`
-        )
+        .get(`/api/shrine/getTopCategoryShrines/${category.categoryId}`)
         .then((res) => {
           if (mounted) setTopShrines(res.data);
           setLoadingShrines(false);
@@ -114,4 +108,4 @@ function TopCatShrines() {
   );
 }
 
-export default TopCatShrines;
+export default CatPageTopShrines;

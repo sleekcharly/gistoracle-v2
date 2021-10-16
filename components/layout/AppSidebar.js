@@ -1,11 +1,13 @@
 import React from "react";
+import CatPageTopShrines from "../shrine/catPageTopCatShrines";
 import NewShrine from "../shrine/NewShrine";
+import ShrineInfo from "../shrine/ShrineInfo";
 import TopCatShrines from "../shrine/TopCatShrines";
 import TrendingShrines from "../shrine/TrendingShrines";
 import TopOracles from "../user/TopOracles";
 import Footer from "./Footer";
 
-function AppSidebar() {
+function AppSidebar({ page, categoryId }) {
   // go back to top function
   const handleBackToTopClick = () => {
     window.scrollTo(0, 0);
@@ -15,7 +17,13 @@ function AppSidebar() {
     <div>
       <div className="flex flex-col space-y-3">
         {/*  top category shrines */}
-        <TopCatShrines />
+        {page === "home" && <TopCatShrines />}
+
+        {/* top category shrines for category page */}
+        {page === "category" && <CatPageTopShrines categoryId={categoryId} />}
+
+        {/* shrine info */}
+        {page === "shrine" && <ShrineInfo component="shrineInfo" />}
 
         {/* ad */}
         <a
@@ -29,6 +37,9 @@ function AppSidebar() {
             className="w-full h-auto rounded-sm"
           />
         </a>
+
+        {/*  */}
+        {page === "shrine" && <TopCatShrines />}
 
         {/* trending shrines */}
         <TrendingShrines />
