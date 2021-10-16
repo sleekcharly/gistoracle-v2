@@ -44,24 +44,23 @@ function TopOracles() {
         {topOracles &&
           topOracles.map((oracle, i) => (
             <>
-              <div
+              <a
+                href={`/user/${oracle.username}`}
                 key={oracle.userId}
-                className="flex items-center space-x-10 p-3"
+                className="flex items-center space-x-2 xl:space-x-10 p-3"
               >
-                <a href={`/user/${oracle.username}`}>
-                  <img
-                    src={oracle.imageUrl}
-                    alt={
-                      oracle.displayName ? oracle.displayName : oracle.username
-                    }
-                    className="w-7 h-7 md:w-8 md:h-8 rounded-full"
-                  />
-                </a>
+                <img
+                  src={oracle.imageUrl}
+                  alt={
+                    oracle.displayName ? oracle.displayName : oracle.username
+                  }
+                  className="w-7 h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 xl:w-14 xl:h-14 rounded-full object-cover"
+                />
 
                 <p className="text-gray-700 text-sm font-semibold">
                   {oracle.username}
                 </p>
-              </div>
+              </a>
               <Divider />
             </>
           ))}

@@ -6,6 +6,11 @@ import TopOracles from "../user/TopOracles";
 import Footer from "./Footer";
 
 function AppSidebar() {
+  // go back to top function
+  const handleBackToTopClick = () => {
+    window.scrollTo(0, 0);
+  };
+
   return (
     <div>
       <div className="flex flex-col space-y-3">
@@ -49,6 +54,16 @@ function AppSidebar() {
 
         {/* footer */}
         <Footer />
+
+        {/* back to top button */}
+        <div className="text-center">
+          <button
+            className="text-sm text-white bg-[#933a16] py-1 px-2 rounded-md mt-5"
+            onClick={handleBackToTopClick}
+          >
+            Back to top
+          </button>
+        </div>
       </div>
     </div>
   );

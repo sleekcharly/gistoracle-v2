@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/layout/Layout";
 import { initializeStore } from "../redux/store";
 import { db } from "../firebase";
@@ -52,7 +52,10 @@ export default function Home() {
           <HomeComponent />
         </main>
 
-        <aside className="hidden w-[30%] min-w-max lg:block">
+        <aside
+          id="sidebar"
+          className={`hidden h-screen sticky top-[-1200px] xl:top-[-1500px] lg:block w-[45%] xl:w-[30%] `}
+        >
           <AppSidebar page="home" />
         </aside>
       </div>

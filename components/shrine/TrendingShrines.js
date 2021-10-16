@@ -40,11 +40,12 @@ function TrendingShrines() {
       <div>
         {trendingShrines &&
           trendingShrines.map((shrine, i) => (
-            <div
+            <a
               key={shrine.shrineId}
+              href={`/shrine/${shrine.name}`}
               className="mb-3 flex items-center justify-between"
             >
-              <div className="flex items-center space-x-1 flex-grow-1">
+              <div className="flex items-center space-x-1 xl:space-x-3 flex-grow-1">
                 <img
                   src={
                     shrine.avatar ? shrine.avatar : "/images/shrineAvatar.png"
@@ -64,12 +65,12 @@ function TrendingShrines() {
               </div>
 
               {/* button */}
-              <a href={`/shrine/${shrine.name}`}>
+              <div className="hidden xl:block">
                 <button className="bg-[#933a16] text-white text-xs py-1 px-2 rounded-md hover:bg-[#800000] transition-all">
                   Explore
                 </button>
-              </a>
-            </div>
+              </div>
+            </a>
           ))}
       </div>
     </div>

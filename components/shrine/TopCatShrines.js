@@ -82,7 +82,7 @@ function TopCatShrines() {
           topShrines.map((shrine, i) => (
             <>
               <div key={shrine.shrineId}>
-                <div className="p-2 flex items-center space-x-3">
+                <div className="p-2 flex items-center space-x-2 xl:space-x-3">
                   <span className="flex items-center space-x-1">
                     <TrendingUp fontSize="small" color="secondary" />
                     <a href={`/shrine/${shrine.name}`}>
@@ -100,7 +100,9 @@ function TopCatShrines() {
 
                   {/* shrine name */}
                   <a href={`/shrine/${shrine.name}`}>
-                    <p className="text-gray-700 text-sm">{shrine.name}</p>
+                    <p className="text-gray-700 text-xs xl:text-sm">
+                      {shrine.name}
+                    </p>
                   </a>
                 </div>
               </div>
