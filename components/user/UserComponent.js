@@ -212,20 +212,52 @@ function UserComponent({ user }) {
   return (
     <div>
       <div className="border-b-2 border-[#800000] border-opacity-80 p-2 bg-white rounded-sm flex space-x-6 h-[40px] items-center ">
-        <p
-          component="button"
-          onClick={postButtonClicked}
-          className={`cursor-pointer text-[#5c240e] rounded-lg hover:bg-[#a88e8d] hover:p-1 hover:text-white font-medium transition-all ${
-            navButtonClicked === "post" &&
-            "border-b-2 border-[#800000] border-opacity-60 p-[2px]"
-          }`}
-        >
-          {credentials.username === user.username
-            ? "CREATED POSTS"
-            : `POSTS by @${user.username}`}
-        </p>
+        {!loadingComponentPosts ? (
+          <p
+            component="button"
+            onClick={postButtonClicked}
+            className={`cursor-pointer text-[#5c240e] rounded-lg hover:bg-[#a88e8d] hover:p-1 hover:text-white font-medium transition-all ${
+              navButtonClicked === "post" &&
+              "border-b-2 border-[#800000] border-opacity-60 p-[2px]"
+            }`}
+          >
+            {credentials.username === user.username
+              ? "CREATED POSTS"
+              : `POSTS by @${user.username}`}
+          </p>
+        ) : (
+          <Skeleton
+            variant="rect"
+            animation="wave"
+            width={90}
+            height={20}
+            className="ml-2"
+          />
+        )}
 
-        {currentUser && user.username === credentials.username ? (
+        {!loadingComponentPosts ? (
+          currentUser && user.username === credentials.username ? (
+            <p
+              component="button"
+              onClick={savedButtonClicked}
+              className={`cursor-pointer text-[#5c240e] rounded-lg hover:bg-[#a88e8d] hover:p-1 hover:text-white font-medium transition-all ${
+                navButtonClicked === "saved" &&
+                "border-b-2 border-[#800000] border-opacity-60 p-[2px]"
+              }`}
+            >
+              SAVED POSTS
+            </p>
+          ) : null
+        ) : (
+          <Skeleton
+            variant="rect"
+            animation="wave"
+            width={90}
+            height={20}
+            className="ml-2"
+          />
+        )}
+        {/* {currentUser && user.username === credentials.username ? (
           <p
             component="button"
             onClick={savedButtonClicked}
@@ -236,7 +268,7 @@ function UserComponent({ user }) {
           >
             SAVED POSTS
           </p>
-        ) : null}
+        ) : null} */}
       </div>
 
       {/* filter navigation buttons */}
@@ -320,8 +352,8 @@ function UserComponent({ user }) {
       {savedPostsSection ? (
         !loadingSavedPosts && savedPosts && savedPosts.length < 1 ? (
           <div className="w-full h-[90vh] bg-[#f7eceb]">
-            <div className="text-center ml-auto mr-auto pt-11 mt-2">
-              <p className="text-gray-800 text-xl md:text-2xl lg:text-3xl">
+            <div className="text-center ml-auto mr-auto pt-32 mt-2">
+              <p className="text-gray-800 text-lg md:text-xl lg:text-2xl">
                 😲You have no saved posts !
               </p>
             </div>
@@ -339,8 +371,8 @@ function UserComponent({ user }) {
         )
       ) : !loadingComponentPosts && posts && posts.length < 1 ? (
         <div className="w-full h-[90vh] bg-[#f7eceb]">
-          <div className="text-center ml-auto mr-auto pt-11 mt-2">
-            <p className="text-gray-800 text-xl md:text-2xl lg:text-3xl">
+          <div className="text-center ml-auto mr-auto pt-32 mt-2">
+            <p className="text-gray-800 text-lg md:text-xl lg:text-2xl">
               {credentials.username !== user.username
                 ? `😲 No posts by @${user.username}`
                 : "😲OMG!!!! ..... Seems no posts live here yet"}
