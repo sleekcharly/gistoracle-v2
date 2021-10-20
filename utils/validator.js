@@ -16,7 +16,6 @@ const isEmail = (email) => {
 
 // helper function to check for special characters
 const specialChar = (string) => {
-  // eslint-disable-next-line no-useless-escape
   const regEx =
     /\`|\~|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\+|\=|\[|\{|\]|\}|\||\\|\'|\<|\,|\.|\>|\?|\/|""|\;|\:|\s/;
   if (string.match(regEx)) return true;
@@ -26,6 +25,12 @@ const specialChar = (string) => {
 // helper function to limit length of username string.
 const tooLong = (string) => {
   if (string.length > 20) return true;
+  else return false;
+};
+
+// helper function to limit length of shrine name string
+const shrineTooLong = (string) => {
+  if (string.length > 30) return true;
   else return false;
 };
 
@@ -101,7 +106,7 @@ exports.validateUserProfileData = (data) => {
     errors.email = "Must not be empty, Email required";
   } else if (!isEmail(data.email)) {
     errors.email =
-      "Hold on!! That looks like an address from space, enter valid email";
+      "Hold on!! That looks like an address from space, enter a valid email";
   } else if (isEmpty(data.username)) {
     errors.username = "Must not be empty, username required";
   }
@@ -164,6 +169,37 @@ exports.validateSignupData = (data) => {
   // check for white space in username
   if (specialChar(data.username))
     errors.username = "No special characters and spaces allowed !";
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0 ? true : false,
+  };
+};
+
+// validation for edited shrine details
+exports.validateEditedShrineData = (data) => {
+  let errors = {};
+
+  // check if field is empty
+  if (isEmpty(data.name)) {
+    errors.shrineName = "Must not be empty";
+  }
+
+  // check for white spaces and special characters in shrine name
+  if (!isEmpty(data.name) && specialChar(data.name)) {
+    errors.shrineName = "No special characters and spaces are allowed !";
+  }
+
+  // check if shrine name is more than 30 characters
+  if (!isEmpty(data.name) && shrineTooLong(data.name)) {
+    errors.shrineName = "Not more than 30 characters required!";
+  }
+
+  if (isEmpty(data.description)) {
+    errors.description = "Please fill in a description for your shrine";
+  }
+
+  console.log(errors);
 
   return {
     errors,

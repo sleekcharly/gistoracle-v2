@@ -20,6 +20,7 @@ import {
   SET_MORE_USER_POSTS,
   SAVE_POST,
   UNSAVE_POST,
+  SET_SHRINE,
 } from "../types/dataTypes";
 import {
   CLEAR_CREATE_COMMENT_ERRORS,
@@ -474,4 +475,18 @@ export const unfollowShrine = (shrineId) => (dispatch) => {
       dispatch({ type: UNFOLLOW_SHRINE, payload: res.data });
     })
     .catch((err) => console.log(err.response.data));
+};
+
+// get a single shrine
+export const getShrine = (shrineName) => (dispatch) => {
+  axios
+    .get(`/api/shrine/getShrine/${shrineName}`)
+    .then((res) => {
+      dispatch({ type: SET_SHRINE, payload: res.data });
+      // dispatch({ type: STOP_LOADING_SHRINE });
+    })
+    .catch((err) => {
+      // dispatch({ type: STOP_LOADING_SHRINE });
+      console.log(err);
+    });
 };

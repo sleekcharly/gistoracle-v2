@@ -2,6 +2,7 @@ import { CakeOutlined } from "@material-ui/icons";
 import dayjs from "dayjs";
 import { shallowEqual, useSelector } from "react-redux";
 import CreateShrinePost from "../post/CreateShrinePost";
+import EditShrine from "./EditShrine";
 
 function ShrineInfo({ component }) {
   // *** get redux state parameters ***//
@@ -9,13 +10,14 @@ function ShrineInfo({ component }) {
     return useSelector(
       (state) => ({
         shrine: state.data.shrine,
+        user: state.user.credentials,
       }),
       shallowEqual
     );
   };
 
   // destructure redux parameters
-  const { shrine } = useStateParameters();
+  const { shrine, user } = useStateParameters();
 
   return (
     <div className="relative bg-white rounded-md">
@@ -72,6 +74,13 @@ function ShrineInfo({ component }) {
       {component === "createPost" ? null : (
         <CreateShrinePost component={component} shrineName={shrine.name} />
       )}
+
+      {/* edit shrine button to open edit shrine dialog */}
+      {shrine.creator === user.username ? (
+        <div className="absolute top-[3%] right-[2%] lg:top-[2%] lg:right-[2%]">
+          <EditShrine shrine={shrine} />
+        </div>
+      ) : null}
     </div>
   );
 }
