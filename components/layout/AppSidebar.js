@@ -25,9 +25,13 @@ function AppSidebar({ page, categoryId, username }) {
 
         {/* shrine info */}
         {page === "shrine" && <ShrineInfo component="shrineInfo" />}
+        {page === "post" && <ShrineInfo component="post" />}
 
         {/* ad */}
-        {(page === "home" || page === "category" || page === "shrine") && (
+        {(page === "home" ||
+          page === "category" ||
+          page === "shrine" ||
+          page === "post") && (
           <a
             href="http://pingtelecoms.net/birdcontrol.php"
             target="_blank"
@@ -45,9 +49,10 @@ function AppSidebar({ page, categoryId, username }) {
         {page === "shrine" && <TopCatShrines />}
 
         {/* trending shrines */}
-        {(page === "home" || page === "category" || page === "shrine") && (
-          <TrendingShrines />
-        )}
+        {(page === "home" ||
+          page === "category" ||
+          page === "shrine" ||
+          page === "post") && <TrendingShrines />}
 
         {/* top oracles */}
         {(page === "home" || page === "category" || page === "shrine") && (
@@ -58,7 +63,7 @@ function AppSidebar({ page, categoryId, username }) {
         {page === "user" && <UserProfile username={username} />}
 
         {/* create new shrine component */}
-        <NewShrine />
+        {page !== "post" && <NewShrine />}
 
         {/* ad */}
         {page === "user" && (

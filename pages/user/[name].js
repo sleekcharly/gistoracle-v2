@@ -28,6 +28,7 @@ function User({ urlPath, user, username }) {
         } Gistoracle profile page. View posts and shrines created by ${
           user.displayName ? user.displayName : user.username
         }`}
+        thumbnail={user.imageUrl}
       />
 
       <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
@@ -38,7 +39,7 @@ function User({ urlPath, user, username }) {
 
         <aside
           id="sidebar"
-          className="hidden h-screen sticky top-[-1200px] xl:top-[-1500px] lg:block w-[45%] xl:w-[30%]"
+          className="hidden h-screen sticky top-[-800px] xl:top-[-870px] lg:block w-[45%] xl:w-[30%]"
         >
           <AppSidebar page="user" username={username} />
         </aside>

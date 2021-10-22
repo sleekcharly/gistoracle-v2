@@ -71,7 +71,7 @@ function ShrineInfo({ component }) {
       </div>
 
       {/* create post button */}
-      {component === "createPost" ? null : (
+      {component === "createPost" || component === "post" ? null : (
         <CreateShrinePost component={component} shrineName={shrine.name} />
       )}
 

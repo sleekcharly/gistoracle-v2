@@ -1,9 +1,14 @@
 import React from "react";
+import AppSidebar from "../../../../components/layout/AppSidebar";
 import Layout from "../../../../components/layout/Layout";
 import PostComponent from "../../../../components/post/PostComponent";
 import { db } from "../../../../firebase";
 import { initializeStore } from "../../../../redux/store";
-import { SET_POST, SET_POST_COMMENTS } from "../../../../redux/types/dataTypes";
+import {
+  SET_POST,
+  SET_POST_COMMENTS,
+  SET_SHRINE,
+} from "../../../../redux/types/dataTypes";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../../../redux/types/uiTypes";
 import PageMeta from "../../../../utils/pageMeta";
 import { userAuthRefresh } from "../../../../utils/userFunction";
@@ -30,7 +35,12 @@ function Post({ postData, postId, urlPath }) {
           <PostComponent postId={postId} currentUrl={urlPath} />
         </main>
 
-        <aside className="w-[25%] hidden lg:block bg-white"></aside>
+        <aside
+          id="sidebar"
+          className="hidden h-screen sticky top-[-800px] xl:top-[-870px] lg:block w-[45%] xl:w-[30%]"
+        >
+          <AppSidebar page="post" />
+        </aside>
       </div>
     </Layout>
   );
@@ -49,6 +59,10 @@ export async function getServerSideProps(context) {
 
   // define postData object
   let postData = {};
+
+  //   get shrine
+  let shrine = [];
+  let shrineData = {};
 
   // preload the featured nav categories  from firestore and redux store
   const reduxStore = initializeStore();
@@ -74,7 +88,7 @@ export async function getServerSideProps(context) {
     .catch((err) => console.error(err));
 
   //get post from firestore
-  const post = await db
+  await db
     .doc(`/posts/${postId}`)
     .get()
     .then((doc) => {
@@ -92,6 +106,20 @@ export async function getServerSideProps(context) {
       console.error("get post error: " + err);
       return;
     });
+
+  await db
+    .collection("shrines")
+    .where("name", "==", postData.shrineName)
+    .limit(1)
+    .get()
+    .then((data) => {
+      data.forEach((doc) => {
+        shrine.push({ shrineId: doc.id, ...doc.data() });
+      });
+
+      shrineData = shrine[0];
+    })
+    .catch((err) => console.error(err));
 
   // get post comments from firestore
   const comments = await db
@@ -116,6 +144,9 @@ export async function getServerSideProps(context) {
   // feed postdata to redux
   await dispatch({ type: SET_POST, payload: postData });
 
+  // feed shrine data to redux state
+  await dispatch({ type: SET_SHRINE, payload: shrineData });
+
   // feed featured navigation categories to redux state
   await dispatch({
     type: SET_FEATURED_NAV_CATEGORIES,
@@ -134,6 +165,7 @@ export async function getServerSideProps(context) {
       initialReduxState: reduxStore.getState(),
       postData: postData,
       postId: postId,
+      shrine: shrineData,
       urlPath: urlPath,
     },
   };

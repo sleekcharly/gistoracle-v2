@@ -22,6 +22,7 @@ function Shrine({ shrine, urlPath }) {
         pageTitle={`${shrine.name.toUpperCase()} shrine | Gistoracle`}
         urlPath={urlPath}
         description={shrine.description}
+        thumbnail={shrine.avatar ? shrine.avatar : null}
       />
 
       <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
