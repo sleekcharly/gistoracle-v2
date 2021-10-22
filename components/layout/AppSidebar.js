@@ -5,9 +5,10 @@ import ShrineInfo from "../shrine/ShrineInfo";
 import TopCatShrines from "../shrine/TopCatShrines";
 import TrendingShrines from "../shrine/TrendingShrines";
 import TopOracles from "../user/TopOracles";
+import UserProfile from "../user/UserProfile";
 import Footer from "./Footer";
 
-function AppSidebar({ page, categoryId }) {
+function AppSidebar({ page, categoryId, username }) {
   // go back to top function
   const handleBackToTopClick = () => {
     window.scrollTo(0, 0);
@@ -26,29 +27,53 @@ function AppSidebar({ page, categoryId }) {
         {page === "shrine" && <ShrineInfo component="shrineInfo" />}
 
         {/* ad */}
-        <a
-          href="http://pingtelecoms.net/birdcontrol.php"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img
-            src="/images/ads/pingtel_ad.jpg"
-            alt="Pingtel bird control ad"
-            className="w-full h-auto rounded-sm"
-          />
-        </a>
+        {(page === "home" || page === "category" || page === "shrine") && (
+          <a
+            href="http://pingtelecoms.net/birdcontrol.php"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              src="/images/ads/pingtel_ad.jpg"
+              alt="Pingtel bird control ad"
+              className="w-full h-auto rounded-sm"
+            />
+          </a>
+        )}
 
         {/*  */}
         {page === "shrine" && <TopCatShrines />}
 
         {/* trending shrines */}
-        <TrendingShrines />
+        {(page === "home" || page === "category" || page === "shrine") && (
+          <TrendingShrines />
+        )}
 
         {/* top oracles */}
-        <TopOracles />
+        {(page === "home" || page === "category" || page === "shrine") && (
+          <TopOracles />
+        )}
+
+        {/* user profile */}
+        {page === "user" && <UserProfile username={username} />}
 
         {/* create new shrine component */}
         <NewShrine />
+
+        {/* ad */}
+        {page === "user" && (
+          <a
+            href="http://pingtelecoms.net/birdcontrol.php"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <img
+              src="/images/ads/pingtel_ad.jpg"
+              alt="Pingtel bird control ad"
+              className="w-full h-auto rounded-sm"
+            />
+          </a>
+        )}
 
         {/* ad */}
         <a

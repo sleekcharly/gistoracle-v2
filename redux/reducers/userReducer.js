@@ -16,11 +16,10 @@ import {
 const initialState = {
   authenticated: false,
   loading: false,
+  profileLoading: false,
   credentials: {},
   userPageProfile: {},
   loadingConsecratedShrined: false,
-  consecratedShrines: {},
-  profileCredentials: {},
   likes: [],
   savedPosts: [],
   subscribedShrines: [],
@@ -43,6 +42,7 @@ export default function userReducer(state = initialState, action) {
 
     case SET_USER_PROFILE:
       return { ...state, userPageProfile: action.payload };
+
     case SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL:
       return {
         ...state,

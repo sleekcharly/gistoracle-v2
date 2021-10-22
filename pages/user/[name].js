@@ -1,6 +1,7 @@
 import React from "react";
 import Layout from "../../components/layout/Layout";
 import UserComponent from "../../components/user/UserComponent";
+import AppSidebar from "../../components/layout/AppSidebar";
 import { analytics, db } from "../../firebase";
 import { initializeStore } from "../../redux/store";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../redux/types/uiTypes";
@@ -8,7 +9,7 @@ import { SET_USER_PROFILE } from "../../redux/types/userTypes";
 import PageMeta from "../../utils/pageMeta";
 import { userAuthRefresh } from "../../utils/userFunction";
 
-function User({ urlPath, user }) {
+function User({ urlPath, user, username }) {
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
 
@@ -35,7 +36,12 @@ function User({ urlPath, user }) {
           <UserComponent user={user} />
         </main>
 
-        <aside className="w-[25%] hidden lg:block bg-white"></aside>
+        <aside
+          id="sidebar"
+          className="hidden h-screen sticky top-[-1200px] xl:top-[-1500px] lg:block w-[45%] xl:w-[30%]"
+        >
+          <AppSidebar page="user" username={username} />
+        </aside>
       </div>
     </Layout>
   );
@@ -79,22 +85,45 @@ export async function getServerSideProps(context) {
     payload: categories,
   });
 
-  // get user
+  // get user data
   let userData = {};
+
+  // user shrines from firestore collection
+  const userShrines = db.collection("shrines").where("creator", "==", username);
+
   await db
     .collection("users")
     .where("username", "==", username)
     .limit(1)
     .get()
-    .then(async (data) => {
-      if (data) {
-        userData.credentials = data.docs[0].data();
+    .then((data) => {
+      userData.credentials = data.docs[0].data();
 
-        // feed userdata to redux state user page profile
-        await dispatch({ type: SET_USER_PROFILE, payload: userData });
+      return userShrines.get();
+    })
+    .then((data) => {
+      // define empty shrinIds list
+      let shrineIds = [];
 
-        return userData;
-      }
+      // define consecrated shrines
+      let consecratedShrines = [];
+
+      //populate shrine ids with shrineIds from  data
+      data.forEach((doc) => {
+        shrineIds.push(doc.id);
+        consecratedShrines.push({
+          shrineId: doc.id,
+          ...doc.data(),
+        });
+      });
+
+      // update userData object
+      userData.credentials.createdShrines = shrineIds;
+      userData.credentials.consecratedShrines = consecratedShrines;
+    })
+    .then(async () => {
+      // feed userdata to redux state user page profile
+      await dispatch({ type: SET_USER_PROFILE, payload: userData });
     })
 
     .catch((err) => {
@@ -107,6 +136,7 @@ export async function getServerSideProps(context) {
       initialReduxState: reduxStore.getState(),
       urlPath: urlPath,
       user: userData.credentials,
+      username: username,
     },
   };
 }
