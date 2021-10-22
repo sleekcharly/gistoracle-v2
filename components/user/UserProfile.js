@@ -56,20 +56,6 @@ function UserProfile({ username }) {
     setOpenImage(false);
   };
 
-  // handle editing of profile picture
-  const handleEditPicture = () => {
-    const fileInput = document.getElementById("imageInput");
-    fileInput.click();
-  };
-
-  // handle Image Change
-  const handleImageChange = (event) => {
-    const image = event.target.files[0];
-    const formData = new FormData();
-    formData.append("image", image, image.name);
-    // this.props.uploadImage(formData, this.props.username);
-  };
-
   // handle display of consecrated button
   const handleConsecratedClick = () => {
     setConsecratedDisplay("hidden");
@@ -86,33 +72,13 @@ function UserProfile({ username }) {
   let profileMarkup = (
     <div className="bg-white rounded-sm p-5">
       <div className="relative">
-        <div className="text-center relative">
+        <div className="text-center">
           <img
             src={imageUrl}
             alt={username}
             onClick={handleImageOpen}
             className="cursor-pointer object-cover w-[75px] h-[75px] xl:w-[85px] xl:h-[85px] rounded-full mr-auto ml-auto"
           />
-
-          {/* image input */}
-          <input
-            type="file"
-            id="imageInput"
-            hidden="hidden"
-            onChange={handleImageChange}
-          />
-
-          {/* edit button */}
-          {username === userCredentials.username ? (
-            <div className="absolute top-[45px] right-[65px] 2xl:right-[34%]">
-              <MyButton
-                tip="Change profile picture"
-                onClick={handleEditPicture}
-              >
-                <Edit color="secondary" />
-              </MyButton>
-            </div>
-          ) : null}
 
           {/* display name */}
           {displayName && <p className="text-[#933a16] mt-1">{displayName}</p>}
@@ -192,6 +158,16 @@ function UserProfile({ username }) {
             </div>
           ) : null}
         </div>
+
+        {/* edit profile button */}
+        {username === userCredentials.username ? (
+          <a
+            href="/user/settings"
+            className="uppercase text-[#933a16] border border-[#933a16] rounded-md py-1 px-2 text-sm absolute top-1 right-1 hover:bg-[#933a16] hover:text-white transition-all"
+          >
+            edit
+          </a>
+        ) : null}
       </div>
 
       {/* Image preview */}
@@ -212,8 +188,6 @@ function UserProfile({ username }) {
           />
         </div>
       </Dialog>
-
-      {/* edit profile button */}
     </div>
   );
 
