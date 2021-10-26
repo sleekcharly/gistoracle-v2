@@ -275,15 +275,28 @@ function ShrineComponent({ shrine }) {
       </div>
 
       {/* content */}
-      <InfiniteScroll
-        dataLength={posts.length}
-        next={fetchPosts}
-        hasMore={hasMoreShrinePosts}
-        loader={<Loader />}
-        style={{ height: "100%", overflow: "visible" }}
-      >
-        <div>{postMarkup}</div>
-      </InfiniteScroll>
+      {!loadingComponentPosts && posts && posts.length < 1 ? (
+        <div className="w-full h-[90vh] bg-[#f7eceb]">
+          <div className="text-center ml-auto mr-auto pt-32 mt-2">
+            <p className="text-gray-800 text-lg md:text-xl lg:text-2xl">
+              "😲OMG!!!! ..... Seems no posts live here yet"
+            </p>
+            <div className="cursor-pointer">
+              <p className="text-gray-800">create post</p>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <InfiniteScroll
+          dataLength={posts.length}
+          next={fetchPosts}
+          hasMore={hasMoreShrinePosts}
+          loader={<Loader />}
+          style={{ height: "100%", overflow: "visible" }}
+        >
+          <div>{postMarkup}</div>
+        </InfiniteScroll>
+      )}
     </div>
   );
 }

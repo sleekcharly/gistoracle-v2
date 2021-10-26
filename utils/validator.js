@@ -28,12 +28,6 @@ const tooLong = (string) => {
   else return false;
 };
 
-// helper function to limit length of shrine name string
-const shrineTooLong = (string) => {
-  if (string.length > 30) return true;
-  else return false;
-};
-
 // helper function to limit length of displayName
 const displayNameTooLong = (string) => {
   if (string.length > 35) return true;
@@ -191,8 +185,8 @@ exports.validateEditedShrineData = (data) => {
   }
 
   // check if shrine name is more than 30 characters
-  if (!isEmpty(data.name) && shrineTooLong(data.name)) {
-    errors.shrineName = "Not more than 30 characters required!";
+  if (!isEmpty(data.name) && tooLong(data.name)) {
+    errors.shrineName = "Not more than 20 characters required!";
   }
 
   if (isEmpty(data.description)) {
@@ -200,6 +194,39 @@ exports.validateEditedShrineData = (data) => {
   }
 
   console.log(errors);
+
+  return {
+    errors,
+    valid: Object.keys(errors).length === 0 ? true : false,
+  };
+};
+
+// validation for new shine data
+exports.validateNewShrineData = (data) => {
+  let errors = {};
+
+  // check if the field is empty
+  if (isEmpty(data.categoryName)) {
+    errors.categoryName = "Please pick a category for your shrine";
+  }
+  if (isEmpty(data.name)) {
+    errors.shrineName = "Must not be empty";
+  }
+
+  // check if shrine name is more than 30 characters
+  if (!isEmpty(data.name) && tooLong(data.name)) {
+    errors.shrineName = "Not more than 20 characters required!";
+  }
+
+  // check if description is empty
+  if (isEmpty(data.description)) {
+    errors.description = "Please fill in a description for your shrine";
+  }
+
+  // check for white spaces and special characters in shrine name
+  if (!isEmpty(data.name) && specialChar(data.name)) {
+    errors.shrineName = "No special characters and spaces are allowed !";
+  }
 
   return {
     errors,

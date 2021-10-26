@@ -89,7 +89,7 @@ function Header({ featuredNavCategories }) {
   };
 
   // desktop more nav categories from data
-  const desktopNavCategories = Data.navCategories.slice(7);
+  const desktopNavCategories = Data.navCategories.slice(6);
 
   // define state parameters
   const [anchorEl, setAnchorEl] = React.useState(null);

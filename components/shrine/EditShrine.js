@@ -116,7 +116,7 @@ function EditShrine({ shrine }) {
 
           await axios
             .post(`/api/shrine/uploadAvatar/${shrineId}`, formData)
-            .then(async (res) => {
+            .then((res) => {
               analytics().logEvent("shrine_avatar_change");
 
               console.log(res.data.message);

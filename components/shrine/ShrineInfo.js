@@ -36,7 +36,7 @@ function ShrineInfo({ component }) {
           className="w-12 h-12 xl:w-20 xl:h-20 rounded-full object-cover"
         />
 
-        <p className="text-gray-700 font-semibold text-sm xl:text-lg">
+        <p className="text-gray-700 font-semibold text-sm 2xl:text-lg">
           {shrine.name}
         </p>
       </div>
