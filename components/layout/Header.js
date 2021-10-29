@@ -399,12 +399,12 @@ function Header({ featuredNavCategories }) {
       <div className="flex items-center ml-auto">
         {/* create post button */}
         {currentUser && (
-          <button
-            type="button"
-            className="inline-flex justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
+          <a
+            className="inline-flex justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50 cursor-pointer"
+            href="/post/new"
           >
             <PencilAltIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
-          </button>
+          </a>
         )}
 
         {/* logged in user options button */}

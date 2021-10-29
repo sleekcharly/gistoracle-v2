@@ -20,7 +20,7 @@ function ShrineInfo({ component }) {
   const { shrine, user } = useStateParameters();
 
   return (
-    <div className="relative bg-white rounded-md">
+    <div className="relative bg-white rounded-md border shadow-lg">
       {/* header */}
       <div className="text-white bg-[#cf5323] p-3 rounded-t-md">
         <p className="font-semibold text-base xl:text-lg" component="h1">

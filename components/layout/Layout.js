@@ -14,12 +14,12 @@ const useNavCategories = () => {
   );
 };
 
-function Layout({ children }) {
+function Layout({ page, children }) {
   // destructure featuredNavCategries from state
   const { featuredNavCategories } = useNavCategories();
 
   return (
-    <div className="min-h-screen">
+    <div className={`${page !== "post" && "min-h-screen"}`}>
       {/* Header */}
       <Header featuredNavCategories={featuredNavCategories} />
 
