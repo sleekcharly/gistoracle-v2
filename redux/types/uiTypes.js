@@ -16,6 +16,7 @@ export const SET_REPLY_STATUS_2 = "SET_REPLY_STATUS_2";
 export const SET_REPLY_STATUS_3 = "SET_REPLY_STATUS_3";
 export const SET_REPLY_STATUS_4 = "SET_REPLY_STATUS_4";
 export const SET_REPLY_STATUS_5 = "SET_REPLY_STATUS_5";
+export const SELECT_SHRINE = "SELECT_SHRINE";
 
 // error types
 export const SET_ERRORS = "SET_ERRORS";

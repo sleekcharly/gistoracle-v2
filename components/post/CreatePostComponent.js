@@ -19,6 +19,7 @@ import PostRules from "./PostRules";
 import slugify from "slugify";
 import axios from "axios";
 import { SET_SHRINE } from "../../redux/types/dataTypes";
+import { SELECT_SHRINE } from "../../redux/types/uiTypes";
 
 // dynamically import Suneditor
 const SunEditor = dynamic(() => import("suneditor-react"), {
@@ -85,6 +86,9 @@ function CreatePostComponent() {
 
             // update redux state
             dispatch({ type: SET_SHRINE, payload: res.data });
+
+            // set shrine selected status
+            dispatch({ type: SELECT_SHRINE });
           })
           .catch((err) => {
             console.log(err.message);

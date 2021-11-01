@@ -41,6 +41,7 @@ import {
   STOP_LOADING_COMPONENT_POSTS,
   LOADING_USER,
   STOP_LOADING_USER,
+  SELECT_SHRINE,
 } from "../types/uiTypes";
 
 const initialState = {
@@ -68,6 +69,7 @@ const initialState = {
   loadingComponentPosts: false,
   loadingSavedPosts: false,
   loadingUser: false,
+  shrineSelecected: false,
 };
 
 export default function uiReducer(state = initialState, action) {
@@ -138,6 +140,8 @@ export default function uiReducer(state = initialState, action) {
       return { ...state, resetPasswordStatus: action.payload };
     case CLEAR_RESET_PASSWORD_STATUS:
       return { ...state, resetPasswordStatus: null };
+    case SELECT_SHRINE:
+      return { ...state, shrineSelected: true };
 
     // loading status
     case SET_REPLY_STATUS:

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
 import PageMeta from "../../utils/pageMeta";
 import CreatePostComponent from "../../components/post/CreatePostComponent";
@@ -7,10 +7,40 @@ import { initializeStore } from "../../redux/store";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../redux/types/uiTypes";
 import { userAuthRefresh } from "../../utils/userFunction";
 import PostRules from "../../components/post/PostRules";
+import ShrineInfo from "../../components/shrine/ShrineInfo";
+import { shallowEqual, useSelector } from "react-redux";
 
 function NewPost({ urlPath }) {
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
+
+  // set state boolean to track
+  const [shrineSelected, setShrineSelected] = useState(false);
+
+  // *** get redux state parameters ***//
+  const useStateParameters = () => {
+    return useSelector(
+      (state) => ({
+        shrineIsSelected: state.UI.shrineSelected,
+      }),
+      shallowEqual
+    );
+  };
+
+  // destructure redux parameters
+  const { shrineIsSelected } = useStateParameters();
+
+  // watch for changes to selected shrine
+  useEffect(() => {
+    // start subscription
+    let mounted = true;
+
+    if (mounted) {
+      shrineIsSelected ? setShrineSelected(true) : setShrineSelected(false);
+    }
+
+    return () => (mounted = false);
+  }, [shrineIsSelected]);
 
   return (
     <Layout page="post">
@@ -23,6 +53,12 @@ function NewPost({ urlPath }) {
         </main>
 
         <aside id="sidebar" className="hidden lg:block w-[45%] xl:w-[30%]">
+          {/* show shrine info if selected */}
+          {shrineSelected && (
+            <div className="mb-5">
+              <ShrineInfo component="createPost" />
+            </div>
+          )}
           <PostRules />
         </aside>
       </div>
