@@ -20,6 +20,7 @@ import slugify from "slugify";
 import axios from "axios";
 import { SET_SHRINE } from "../../redux/types/dataTypes";
 import { SELECT_SHRINE } from "../../redux/types/uiTypes";
+import { analytics } from "../../firebase";
 
 // dynamically import Suneditor
 const SunEditor = dynamic(() => import("suneditor-react"), {
@@ -199,7 +200,30 @@ function CreatePostComponent() {
       categoryName: componentShrine.categoryName,
       categoryId: componentShrine.categoryId,
     };
+
+    console.log(postDetails);
+
+    // create post operation
+    axios
+      .post("/api/posts/create", postDetails)
+      .then(() => {
+        // log analytics on post creation
+        analytics().logEvent("create_post", { title: postDetails.title });
+
+        // clear errors
+        setErrors({});
+
+        setCreatingPost(false);
+
+        // go to category page
+        window.location.href = `/category/${postDetails.categoryName}`;
+      })
+      .catch((err) => {
+        setErrors(err.response.data);
+        setCreatingPost(false);
+      });
   };
+
   return (
     <div>
       {/* header */}

@@ -77,6 +77,8 @@ handler.post(async (req, res) => {
       metadata: { metadata: { contentType: "image/webp" } },
     };
 
+    const result = [];
+
     // run upload operation to storage bucket
     await admin
       .storage()
@@ -91,15 +93,13 @@ handler.post(async (req, res) => {
         const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/postThumbnails%2F${randNum}_600x600.webp?alt=media`;
 
         // create json file to be sent back to sunEditor
-        const result = [
-          {
-            url: imageUrl,
-            name: file.name,
-            size: file.size,
-          },
-        ];
+        const resultObject = {
+          url: imageUrl,
+          name: file.name,
+          size: file.size,
+        };
 
-        return res.status(200).json({ result });
+        result.push(resultObject);
       })
       .catch((err) => {
         console.error(err);
@@ -108,6 +108,10 @@ handler.post(async (req, res) => {
           errorMessage: "Image did not upload to server!",
         });
       });
+
+    console.log(result);
+
+    return res.status(200).json({ result });
   });
 
   req.pipe(busboy);
