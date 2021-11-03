@@ -10,6 +10,7 @@ handler.post(async (req, res) => {
   // install the busboy package
   // then require the following packages
   const BusBoy = require("busboy");
+  const sharp = require("sharp");
   const path = require("path");
   const os = require("os");
   const fs = require("fs");
@@ -20,9 +21,12 @@ handler.post(async (req, res) => {
   // initiate the event
   let imageFileName;
   let imageToBeUploaded = {};
+  let resizedImage = {};
+  let resizedImageFilename = {};
 
   // define a random number for naming the file stored on firebase storage
   const randNum = Math.round(Math.random() * 10000000000);
+  const randNum2 = Math.round(Math.random() * 10000000000);
 
   // listener for receipt of file
   busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
@@ -56,13 +60,16 @@ handler.post(async (req, res) => {
     const imageExtension = filename.split(".")[filename.split(".").length - 1];
 
     //establish image file name with random numeber and image extension
-    imageFileName = `${randNum}.${imageExtension}`;
+    imageFileName = `${randNum}.webp`;
+    resizedImageFilename = `${randNum2}.webp`;
 
     // establish image filepath
     const filepath = path.join(os.tmpdir(), imageFileName);
+    const resizedImageFilepath = path.join(os.tmpdir(), resizedImageFilename);
 
     //establish the image to be uploaded
     imageToBeUploaded = { filepath, mimetype };
+    resizedImage = { resizedImageFilepath, mimetype };
 
     // pipe the file
     file.pipe(fs.createWriteStream(filepath));
@@ -72,46 +79,52 @@ handler.post(async (req, res) => {
   busboy.on("finish", async () => {
     // set options for upload method
     const options = {
-      destination: `postThumbnails/${imageFileName}`,
+      destination: `postThumbnails/${resizedImageFilename}`,
       resumable: false,
       metadata: { metadata: { contentType: "image/webp" } },
     };
 
-    const result = [];
+    // run image resize and then upload to storage bucket
+    await sharp(imageToBeUploaded.filepath)
+      .resize(600, 600, { fit: "inside" })
+      .toFile(resizedImage.resizedImageFilepath)
+      .then((info) => {
+        // upload to firebase storage bucket
+        admin
+          .storage()
+          .bucket()
+          .upload(resizedImage.resizedImageFilepath, options)
+          .then(async (data) => {
+            let file = data[0];
 
-    // run upload operation to storage bucket
-    await admin
-      .storage()
-      .bucket()
-      .upload(imageToBeUploaded.filepath, options)
-      .then(async (data) => {
-        let file = data[0];
+            console.log("image uploaded to firebase storage");
 
-        console.log("image uploaded to firebase storage");
+            // define image url to be accessed by the client
+            const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/postThumbnails%2F${resizedImageFilename}?alt=media`;
 
-        // define image url to be accessed by the client
-        const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/postThumbnails%2F${randNum}_600x600.webp?alt=media`;
+            // create json file to be sent back to sunEditor
+            const result = {
+              url: imageUrl,
+              name: file.name,
+              size: file.size,
+            };
 
-        // create json file to be sent back to sunEditor
-        const resultObject = {
-          url: imageUrl,
-          name: file.name,
-          size: file.size,
-        };
+            console.log(result);
 
-        result.push(resultObject);
+            return res.status(200).json({ result });
+          })
+          .catch((err) => {
+            console.error(err);
+            return res.status(500).json({
+              error: err.code,
+              errorMessage: "Image did not upload to server!",
+            });
+          });
       })
       .catch((err) => {
         console.error(err);
-        return res.status(500).json({
-          error: err.code,
-          errorMessage: "Image did not upload to server!",
-        });
+        console.log("could not resize image");
       });
-
-    console.log(result);
-
-    return res.status(200).json({ result });
   });
 
   req.pipe(busboy);

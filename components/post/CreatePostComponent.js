@@ -137,7 +137,8 @@ function CreatePostComponent() {
     setBody(data);
   };
 
-  const handleImageUpload = (imageInfo, targetImgElement) => {
+  const handleImageUpload = (imageInfo, targetImgElement, state) => {
+    console.log(imageInfo);
     setPostThumbnails((arr) => [...arr, imageInfo ? imageInfo.src : ""]);
   };
 
