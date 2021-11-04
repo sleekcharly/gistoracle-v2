@@ -138,7 +138,6 @@ function CreatePostComponent() {
   };
 
   const handleImageUpload = (imageInfo, targetImgElement, state) => {
-    console.log(imageInfo);
     setPostThumbnails((arr) => [...arr, imageInfo ? imageInfo.src : ""]);
   };
 

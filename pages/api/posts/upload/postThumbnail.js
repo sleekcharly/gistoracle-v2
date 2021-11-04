@@ -103,11 +103,13 @@ handler.post(async (req, res) => {
             const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/postThumbnails%2F${resizedImageFilename}?alt=media`;
 
             // create json file to be sent back to sunEditor
-            const result = {
-              url: imageUrl,
-              name: file.name,
-              size: file.size,
-            };
+            const result = [
+              {
+                url: imageUrl,
+                name: file.name,
+                size: file.size,
+              },
+            ];
 
             console.log(result);
 
