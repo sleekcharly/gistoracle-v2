@@ -56,9 +56,6 @@ handler.post(async (req, res) => {
       });
     }
 
-    // get image Extension
-    const imageExtension = filename.split(".")[filename.split(".").length - 1];
-
     //establish image file name with random numeber and image extension
     imageFileName = `${randNum}.webp`;
     resizedImageFilename = `${randNum2}.webp`;

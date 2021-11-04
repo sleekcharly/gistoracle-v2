@@ -11,6 +11,7 @@ handler.post(async (req, res) => {
   // then require the following packages
   const BusBoy = require("busboy");
   const path = require("path");
+  const sharp = require("sharp");
   const os = require("os");
   const fs = require("fs");
 
@@ -20,9 +21,12 @@ handler.post(async (req, res) => {
   // initiate the event
   let imageFileName;
   let imageToBeUploaded = {};
+  let resizedImage = {};
+  let resizedImageFilename = {};
 
   // define a random number for naming the file stored on firebase storage
   const randNum = Math.round(Math.random() * 10000000000);
+  const randNum2 = Math.round(Math.random() * 10000000000);
 
   // listener for receipt of file
   busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
@@ -51,17 +55,17 @@ handler.post(async (req, res) => {
       });
     }
 
-    // get image Extension
-    const imageExtension = filename.split(".")[filename.split(".").length - 1];
-
     //establish image file name with random numeber and image extension
-    imageFileName = `${randNum}.${imageExtension}`;
+    imageFileName = `${randNum}.webp`;
+    resizedImageFilename = `${randNum2}.webp`;
 
     // establish image filepath
     const filepath = path.join(os.tmpdir(), imageFileName);
+    const resizedImageFilepath = path.join(os.tmpdir(), resizedImageFilename);
 
     //establish the image to be uploaded
     imageToBeUploaded = { filepath, mimetype };
+    resizedImage = { resizedImageFilepath, mimetype };
 
     // pipe the file
     file.pipe(fs.createWriteStream(filepath));
@@ -71,35 +75,47 @@ handler.post(async (req, res) => {
   busboy.on("finish", async () => {
     // set options for upload method
     const options = {
-      destination: `shrineAvatars/${imageFileName}`,
+      destination: `shrineAvatars/${resizedImageFilename}`,
       resumable: false,
       metadata: { metadata: { contentType: "image/webp" } },
     };
 
-    // run upload operation to storage bucket
-    await admin
-      .storage()
-      .bucket()
-      .upload(imageToBeUploaded.filepath, options)
-      .then(async (data) => {
-        console.log("image uploaded to firebase storage");
+    // run image resize and then upload to storage bucket
+    await sharp(imageToBeUploaded.filepath)
+      .resize(400, 400, { fit: "inside" })
+      .toFile(resizedImage.resizedImageFilepath)
+      .then((info) => {
+        // run upload operation to storage bucket
+        admin
+          .storage()
+          .bucket()
+          .upload(resizedImage.resizedImageFilepath, options)
+          .then(async () => {
+            console.log("image uploaded to firebase storage");
 
-        // define image url to be accessed by the client
-        const shrineAvatar = `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/shrineAvatars%2F${randNum}_600x600.webp?alt=media`;
+            // define image url to be accessed by the client
+            const shrineAvatar = `https://firebasestorage.googleapis.com/v0/b/${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/o/shrineAvatars%2F${resizedImageFilename}?alt=media`;
 
-        // log image url
-        console.log("url: " + shrineAvatar);
-
-        // update shrine collection with new shrineAvatar
-        const shrineRef = db.doc(`/shrines/${req.query.shrineId}`);
-        await shrineRef.update({ avatar: shrineAvatar });
-      })
-      .then(() => {
-        return res.status(200).json({ message: "Image uploaded successfully" });
+            // update shrine collection with new shrineAvatar
+            const shrineRef = db.doc(`/shrines/${req.query.shrineId}`);
+            await shrineRef.update({ avatar: shrineAvatar }).catch((err) => {
+              console.error(err);
+              console.log("could not update shrine document");
+            });
+          })
+          .then(() => {
+            return res
+              .status(200)
+              .json({ message: "Image uploaded successfully" });
+          })
+          .catch((err) => {
+            console.error(err);
+            return res.status(500).json({ error: err.code });
+          });
       })
       .catch((err) => {
         console.error(err);
-        return res.status(500).json({ error: err.code });
+        console.log("could not resize image");
       });
   });
 
