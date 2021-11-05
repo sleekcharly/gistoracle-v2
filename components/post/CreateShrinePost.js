@@ -5,7 +5,7 @@ function CreateShrinePost({ shrineName, component }) {
         onClick={() => {
           window.location.href = `/createPost/${shrineName}`;
         }}
-        className="text-sm  2xl:text-base text-gray-700 font-semibold bg-[#ccc8c8] w-40 rounded-md py-1 px-2 uppercase"
+        className="text-sm  2xl:text-base text-gray-700 font-semibold bg-[#ccc8c8] rounded-md py-1 px-2 uppercase"
       >
         {component === "shrineInfo" ? "Create post 🤠" : "Create one then 🤠"}
       </button>

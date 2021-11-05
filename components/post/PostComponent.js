@@ -134,8 +134,8 @@ function PostComponent({ postId, currentUrl }) {
   return (
     <article className="bg-white mt-[-8px] lg:mt-0 px-2 md:px-[55px] py-10 rounded-t-md">
       {/* post info section */}
-      <section className="mb-[20px] md:flex md:items-center md:space-x-4">
-        <div className="flex items-center justify-between lg:space-x-12     ">
+      <section className="mb-[20px]">
+        <div className="flex items-center justify-between lg:justify-start lg:space-x-12">
           <div className="flex flex-col space-y-2 lg:flex-row lg:items-center lg:space-x-4">
             {/* shrine name */}
             <div className="flex items-center">

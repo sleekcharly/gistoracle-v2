@@ -27,7 +27,7 @@ const SunEditor = dynamic(() => import("suneditor-react"), {
   ssr: false,
 });
 
-function CreatePostComponent() {
+function CreatePostComponent({ shrineName }) {
   // initialize form state
   const [openRules, setOpenRules] = useState(false);
   const [values, setValues] = useState({
@@ -73,6 +73,19 @@ function CreatePostComponent() {
     subscribedShrines.sort((a, b) => {
       return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
     });
+
+  // set shrine name to components state if context contains shrine name
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      shrineName &&
+        setValues((values) => ({
+          ...values,
+          shrineName: shrineName,
+        }));
+    }
+  }, []);
 
   //get shrine once shrine name is set
   useEffect(() => {

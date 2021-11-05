@@ -17,6 +17,7 @@ import {
 import Posts from "../post/Posts";
 import NextLink from "next/link";
 import ShrineFollowButton from "./shrineFollowButton";
+import CreateShrinePost from "../post/CreateShrinePost";
 
 function ShrineComponent({ shrine }) {
   // define componen't state
@@ -281,8 +282,8 @@ function ShrineComponent({ shrine }) {
             <p className="text-gray-800 text-lg md:text-xl lg:text-2xl">
               "😲OMG!!!! ..... Seems no posts live here yet"
             </p>
-            <div className="cursor-pointer">
-              <p className="text-gray-800">create post</p>
+            <div className="cursor-pointer mt-3">
+              <CreateShrinePost shrineName={shrine.name} />
             </div>
           </div>
         </div>
