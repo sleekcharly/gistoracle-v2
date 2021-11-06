@@ -27,6 +27,7 @@ import {
   SET_MORE_USER_POSTS,
   SAVE_POST,
   UNSAVE_POST,
+  DELETE_POST,
 } from "../types/dataTypes";
 
 // initialize state for users
@@ -167,6 +168,27 @@ export default function dataReducer(state = initialState, action) {
       return {
         ...state,
         shrine: action.payload,
+      };
+
+    case DELETE_POST:
+      if (state.posts) {
+        let postIndex = state.posts.findIndex(
+          (post) => post.postId === action.payload
+        );
+
+        state.posts.splice(postIndex, 1);
+      }
+
+      if (state.savedPosts) {
+        let savedPostIndex = state.savedPosts.findIndex(
+          (post) => post.postId === action.payload
+        );
+
+        state.savedPosts.splice(savedPostIndex, 1);
+      }
+
+      return {
+        ...state,
       };
     default:
       return state;

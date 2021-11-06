@@ -36,9 +36,8 @@ function CategoryComponent({ category }) {
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
-        posts: state.data.posts,
+        data: state.data,
         loadingComponentPosts: state.UI.loadingComponentPosts,
-        fetchingPosts: state.data.fetchingPosts,
         hasMoreCategoryPosts: hasMoreCategoryPostsSelector(state),
       }),
       shallowEqual
@@ -46,8 +45,11 @@ function CategoryComponent({ category }) {
   };
 
   // destructure darkMode
-  const { posts, loadingComponentPosts, fetchingPosts, hasMoreCategoryPosts } =
+  const { data, loadingComponentPosts, hasMoreCategoryPosts } =
     useStateParameters();
+
+  // define data parameters
+  const { fetchingPosts, posts } = data;
 
   // function for getting the latest category posts
   const newButtonClick = () => {

@@ -1,4 +1,9 @@
 import {
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
   Menu,
   MenuItem,
@@ -8,7 +13,7 @@ import {
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import React from "react";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
 import NextLink from "next/link";
 import { ChatAlt2Icon, CubeIcon, TrashIcon } from "@heroicons/react/solid";
@@ -16,15 +21,26 @@ import numeral from "numeral";
 import PostLikeButton from "./PostLikeButton";
 import PostSaveButton from "./PostSaveButton";
 import Report from "../user/Report";
-import { MoreHoriz } from "@material-ui/icons";
+import { Close, MoreHoriz } from "@material-ui/icons";
+import axios from "axios";
+import { analytics } from "../../firebase";
+import { useSnackbar } from "notistack";
+import { DELETE_POST } from "../../redux/types/dataTypes";
 
 function Posts({ post }) {
   // get theme for mediaquery
   const theme = useTheme();
 
+  // set dispatch object
+  const dispatch = useDispatch();
+
+  // setup snackbar from notistack
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+
   // set component state variables
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [deletingPost, setDeletingPost] = React.useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,13 +92,43 @@ function Posts({ post }) {
     setDialogOpen(true);
   };
 
-  const handleClose = () => {
+  const handleDialogClose = () => {
     setDialogOpen(false);
   };
 
   // handle error from images
   const addDefaultSrc = (ev) => {
     ev.target.src = "/images/post-thumbnail-placeholder.png";
+  };
+
+  // handle deleting of post
+  const handleDeletePost = async () => {
+    // set deleting state
+    setDeletingPost(true);
+
+    await axios
+      .delete(`/api/posts/delete/${postId}`)
+      .then((res) => {
+        // log analytics for post deletion
+        analytics().logEvent("post_delete", { postId: postId });
+
+        // run status snackbar
+        enqueueSnackbar(res.data, {
+          variant: "success",
+          preventDuplicate: true,
+        });
+      })
+      .then(() => {
+        dispatch({ type: DELETE_POST, payload: postId });
+
+        setDeletingPost(false);
+
+        handleDialogClose();
+      })
+      .catch((err) => {
+        console.error(err);
+        setDeletingPost(false);
+      });
   };
 
   return (
@@ -117,11 +163,57 @@ function Posts({ post }) {
           {/* post delete button */}
           {currentUser && username === credentials.username ? (
             <div className="flex items-center">
-              <button className="text-[#933a16] md:ml-5">
+              <button className="text-[#933a16] md:ml-5" onClick={handleDelete}>
                 <TrashIcon className="h-5" />
               </button>
             </div>
           ) : null}
+
+          {/* Detele post dialog */}
+          <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm">
+            <DialogTitle>
+              <div className="flex items-center">
+                <p className="flex-grow font-semibold text-black">
+                  Delete post?
+                </p>
+                <IconButton onClick={handleDialogClose}>
+                  <Close />
+                </IconButton>
+              </div>
+            </DialogTitle>
+
+            <DialogContent dividers>
+              <p className="text-black">
+                This action can't be undone. This post would be removed from
+                your profile and any shrine associated with it. Are you sure you
+                want to do this?
+              </p>
+            </DialogContent>
+
+            <DialogActions>
+              <div className="flex space-x-4">
+                <button
+                  className="border border-[#933a16] border-opacity-80 text-black px-4 py-2 w-auto rounded-md hover:bg-[#933a16] hover:text-white"
+                  onClick={handleDialogClose}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  className="bg-[#933a16] text-white px-4 py-2 w-auto rounded-md hover:bg-[#800000]"
+                  onClick={handleDeletePost}
+                >
+                  Delete
+                </button>
+
+                {deletingPost && (
+                  <div className="text-[#933a16]">
+                    <CircularProgress size={30} />
+                  </div>
+                )}
+              </div>
+            </DialogActions>
+          </Dialog>
         </div>
 
         {/* post title */}

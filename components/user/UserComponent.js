@@ -54,9 +54,7 @@ function UserComponent({ user }) {
         credentials: state.user.credentials,
         loadingComponentPosts: state.UI.loadingComponentPosts,
         loadingSavedPosts: state.UI.loadingSavedPosts,
-        posts: state.data.posts,
-        savedPosts: state.data.savedPosts,
-        fetchingPosts: state.data.fetchingPosts,
+        data: state.data,
         hasMoreSavedPosts: hasMoreSavedPostsSelector(state),
         hasMoreUserPosts: hasMoreUserPostsSelector(state),
       }),
@@ -66,15 +64,16 @@ function UserComponent({ user }) {
 
   // destructure redux parameters
   const {
+    data,
     credentials,
     loadingComponentPosts,
     loadingSavedPosts,
-    posts,
-    savedPosts,
-    fetchingPosts,
     hasMoreSavedPosts,
     hasMoreUserPosts,
   } = useStateParameters();
+
+  // define data parameters
+  const { fetchingPosts, posts, savedPosts } = data;
 
   // functions for handling clicked navigation buttons
   const postButtonClicked = () => {

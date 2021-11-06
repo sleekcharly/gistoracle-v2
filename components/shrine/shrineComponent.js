@@ -42,9 +42,8 @@ function ShrineComponent({ shrine }) {
   const useStateParameters = () => {
     return useSelector(
       (state) => ({
-        posts: state.data.posts,
+        data: state.data,
         loadingComponentPosts: state.UI.loadingComponentPosts,
-        fetchingPosts: state.data.fetchingPosts,
         hasMoreShrinePosts: hasMoreShrinePostsSelector(state),
       }),
       shallowEqual
@@ -52,8 +51,11 @@ function ShrineComponent({ shrine }) {
   };
 
   // destructure redux parameters
-  const { posts, loadingComponentPosts, fetchingPosts, hasMoreShrinePosts } =
+  const { data, loadingComponentPosts, hasMoreShrinePosts } =
     useStateParameters();
+
+  // define data parameters
+  const { fetchingPosts, posts } = data;
 
   // function for getting the latest shrine posts
   const newButtonClick = () => {

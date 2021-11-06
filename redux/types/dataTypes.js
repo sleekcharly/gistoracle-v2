@@ -20,6 +20,7 @@ export const SET_CATEGORY = "SET_CATEGORY";
 export const SET_MORE_CATEGORY_POSTS = "SET_MORE_CATEGORY_POSTS";
 export const SET_SHRINE = "SET_SHRINE";
 export const SET_MORE_SHRINE_POSTS = "SET_MORE_SHRINE_POSTS";
+export const DELETE_POST = "DELETE_POST";
 
 // like and unlike post
 export const LIKE_POST = "LIKE_POST";
