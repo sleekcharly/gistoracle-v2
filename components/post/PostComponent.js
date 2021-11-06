@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import {
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -42,6 +43,10 @@ import {
 import Report from "../user/Report";
 import NewComment from "../comments/newComment";
 import Comments from "../comments/Comments";
+import axios from "axios";
+import { analytics } from "../../firebase";
+import { useSnackbar } from "notistack";
+import { DELETE_POST } from "../../redux/types/dataTypes";
 // get suneditor without server side rendering
 const SunEditor = dynamic(() => import("suneditor-react"), { ssr: false });
 
@@ -49,12 +54,16 @@ function PostComponent({ postId, currentUrl }) {
   // bring in mui theme
   const theme = useTheme();
 
+  // setup snackbar from notistack
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+
   // set component state
   const [loadingPost, setLoadingPost] = useState(true);
   const [post, setPost] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   // set state for delete dialog component
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [deletingPost, setDeletingPost] = React.useState(false);
 
   // *** get redux state parameters ***//
   const useStateParameters = () => {
@@ -129,6 +138,38 @@ function PostComponent({ postId, currentUrl }) {
   // close delete dialog
   const handleDialogClose = () => {
     setDialogOpen(false);
+  };
+
+  // handle deleting of post
+  const handleDeletePost = async () => {
+    // set deleting state
+    setDeletingPost(true);
+
+    await axios
+      .delete(`/api/posts/delete/${postId}`)
+      .then((res) => {
+        // log analytics for post deletion
+        analytics().logEvent("post_delete", { postId: postId });
+
+        // run status snackbar
+        enqueueSnackbar(res.data, {
+          variant: "success",
+          preventDuplicate: true,
+        });
+      })
+      .then(() => {
+        dispatch({ type: DELETE_POST, payload: postId });
+
+        setDeletingPost(false);
+
+        handleDialogClose();
+
+        window.history.back();
+      })
+      .catch((err) => {
+        console.error(err);
+        setDeletingPost(false);
+      });
   };
 
   return (
@@ -223,10 +264,16 @@ function PostComponent({ postId, currentUrl }) {
 
                       <button
                         className="bg-[#933a16] text-white px-4 py-2 w-auto rounded-md hover:bg-[#800000]"
-                        //   onClick={handleSubmit}
+                        onClick={handleDeletePost}
                       >
                         Delete
                       </button>
+
+                      {deletingPost && (
+                        <div className="text-[#933a16] flex items-center">
+                          <CircularProgress size={30} />
+                        </div>
+                      )}
                     </div>
                   </DialogActions>
                 </Dialog>
