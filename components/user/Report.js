@@ -15,15 +15,17 @@ import {
   useMediaQuery,
   useTheme,
 } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useAuth } from "../../contexts/AuthContext";
 import { FlagIcon } from "@heroicons/react/outline";
 import { XIcon } from "@heroicons/react/solid";
 import Login from "../auth/login";
 import Signup from "../auth/signup";
 import { CLEAR_ERRORS } from "../../redux/types/uiTypes";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 
-function Report() {
+function Report({ postId, username, postTitle, userImage }) {
   // initialize component's state
   const [values, setValues] = useState({
     reason: "",
@@ -33,10 +35,25 @@ function Report() {
   const [signupOpen, setSignupOpen] = useState(false);
   const [loginOpen, setLoginOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
 
   // define dispatch
   const dispatch = useDispatch();
+
+  // setup snackbar from notistack
+  const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+
+  // *** get redux state parameters ***//
+  const useStateParameters = () => {
+    return useSelector(
+      (state) => ({
+        credentials: state.user.credentials,
+      }),
+      shallowEqual
+    );
+  };
+
+  // destructure data
+  const { credentials } = useStateParameters();
 
   // bring in auth context parameters
   const { login, signup, currentUser } = useAuth();
@@ -96,6 +113,49 @@ function Report() {
   const handleSignupClose = () => {
     setSignupOpen(false);
     dispatch({ type: CLEAR_ERRORS });
+  };
+
+  // handle rporting user
+  const handleSubmit = async (event) => {
+    // prevent default action
+    event.preventDefault();
+
+    // set submitting state
+    setSubmitting(true);
+
+    // set up report object
+    const report = {
+      postId: postId,
+      postCreator: username,
+      postTitle: postTitle,
+      postCreatorImage: userImage,
+      reporter: credentials.username,
+      reason: values.reason,
+      explanation: values.explanation ? values.explanation : values.reason,
+    };
+
+    // perform submission
+    await axios
+      .post(`/api/user/submitReport`, report)
+      .then((res) => {
+        // run status snackbar
+        enqueueSnackbar(res.data, {
+          variant: "success",
+          preventDuplicate: true,
+        });
+
+        setSubmitting(false);
+      })
+      .then(() => {
+        handleReportClose();
+      })
+      .catch((err) => {
+        // set loading state
+        setSubmitting(false);
+
+        console.error(err);
+        console.log(err.message);
+      });
   };
 
   return (
@@ -199,18 +259,17 @@ function Report() {
 
         <DialogActions>
           <button
-            className="relative p-2 bg-gray-200 rounded-lg hover:bg-red-50  hover:text-[#800000] hover:font-semibold"
+            className="mr-2 p-2 bg-gray-200 rounded-lg hover:bg-red-50  hover:text-[#800000] hover:font-semibold"
             disabled={!values.reason || submitting}
+            onClick={handleSubmit}
           >
             Submit
-            {submitting && (
-              <CircularProgress
-                color="secondary"
-                style={{ position: "absoute" }}
-                size={30}
-              />
-            )}
           </button>
+          {submitting && (
+            <div className="text-[#933a16]">
+              <CircularProgress size={30} />
+            </div>
+          )}
         </DialogActions>
       </Dialog>
 
