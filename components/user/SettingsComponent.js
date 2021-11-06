@@ -38,8 +38,9 @@ import { useRouter } from "next/router";
 import {
   validateProfileEditData,
   validateChangepasswordData,
+  validateChangePasswordData,
 } from "../../utils/validator";
-// bring in datastore
+// bring in .auth.EmailAuthProvider.credential(credentials.email, values.password)
 import { dataStore, storage, db } from "../../firebase";
 import axios from "axios";
 import { useSnackbar } from "notistack";
@@ -282,6 +283,9 @@ function SettngsComponent() {
       var user = currentUser;
       var userCredentials = dataStore.auth.EmailAuthProvider.credential(
         credentials.email,
+        values.password
+      ).auth.EmailAuthProvider.credential(
+        credentials.email,
         values.currentPassword
       );
 
@@ -447,6 +451,97 @@ function SettngsComponent() {
           }));
 
           setUpdating(false);
+        });
+    }
+  };
+
+  // handling changing of password
+  const handleSubmitPassword = async (event) => {
+    // prevent default form action
+    event.preventDefault();
+
+    // get authentication token from te local storage
+    const token = localStorage.FBIdToken;
+
+    // decode token
+    const decodedToken = jwtDecode(token);
+
+    // if token is expired logout user and return to homepage
+    if (decodedToken.exp * 1000 < Date.now()) {
+      logout();
+
+      // return to home page
+      router.push("/");
+    } else {
+      // proceed
+
+      // update state
+      setUpdatingPassword(true);
+      setErrors({});
+
+      // get passwords for validation
+      const userPasswords = {
+        currentPassword: values.password,
+        newPassword: values.password1,
+        newPassword2: values.password2,
+      };
+
+      // pass password for validation
+      const { valid, passwordErrors } =
+        validateChangePasswordData(userPasswords);
+      if (!valid) {
+        setErrors(passwordErrors);
+        setUpdatingPassword(false);
+
+        return;
+      }
+
+      // set use credentials
+      let user = currentUser;
+      let userCredentials = dataStore.auth.EmailAuthProvider.credential(
+        credentials.email,
+        values.password
+      );
+
+      // reauthenticate user before changing password
+      await user
+        .reauthenticateWithCredential(userCredentials)
+        .then(() => {
+          // update user password
+          user
+            .updatePassword(userPasswords.newPassword)
+            .then(() => {
+              // run status snackbar
+              enqueueSnackbar(`Password updated successfully`, {
+                variant: "success",
+                preventDuplicate: true,
+              });
+
+              setUpdatingPassword(false);
+            })
+            .catch((err) => {
+              console.error(err);
+
+              setErrors((errors) => ({
+                ...errors,
+                currentPassword:
+                  "Could not update password, Please try again in a few moments",
+              }));
+
+              setUpdatingPassword(false);
+            });
+        })
+        .catch((err) => {
+          console.error(err);
+
+          setErrors((errors) => ({
+            ...errors,
+            currentPassword: "Wrong password, Could not update password!",
+          }));
+
+          setUpdatingPassword(false);
+
+          return;
         });
     }
   };
@@ -737,7 +832,7 @@ function SettngsComponent() {
               Change password
             </p>
 
-            <form>
+            <form onSubmit={handleSubmitPassword}>
               <div className="mt-[40px] mb-8">
                 <p className="text-gray-400">Current password</p>
                 <TextField
@@ -787,7 +882,7 @@ function SettngsComponent() {
                 <div className="flex items-center justify-end space-x-2">
                   <CircularProgress size={20} />
                   <p className="text-xs text-[#933a16]">
-                    Updating your password...
+                    Updating your password ...
                   </p>
                 </div>
               ) : (
@@ -799,7 +894,10 @@ function SettngsComponent() {
                     Cancel
                   </button>
 
-                  <button className="text-white bg-[#933a16] hover:bg-[#800000] p-2 rounded-md">
+                  <button
+                    className="text-white bg-[#933a16] hover:bg-[#800000] p-2 rounded-md"
+                    type="submit"
+                  >
                     Update Profile
                   </button>
                 </div>
@@ -835,7 +933,9 @@ function SettngsComponent() {
             />
             <Tab
               icon={<LockOutlined />}
-              label="password"
+              label=",
+              newPassword: values.password1,
+              newPassword2: values.password2,"
               arial-label="change password"
               {...allyProps(2)}
               style={{ color: "gray" }}
