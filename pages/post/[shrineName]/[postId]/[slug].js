@@ -21,28 +21,29 @@ function Post({ postData, postId, urlPath }) {
   userAuthRefresh();
 
   return (
-    <Layout page="post" drawerPage="post">
+    <>
       <PageMeta
         pageTitle={title}
         thumbnail={postThumbnail}
         urlPath={urlPath}
         contentType="article"
       />
+      <Layout page="post" drawerPage="post">
+        <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
+          <main className="w-full flex-grow-1">
+            {/* post page component */}
+            <PostComponent postId={postId} currentUrl={urlPath} />
+          </main>
 
-      <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
-        <main className="w-full flex-grow-1">
-          {/* post page component */}
-          <PostComponent postId={postId} currentUrl={urlPath} />
-        </main>
-
-        <aside
-          id="sidebar"
-          className="hidden h-screen sticky top-[-800px] xl:top-[-870px] lg:block w-[45%] xl:w-[30%]"
-        >
-          <AppSidebar page="post" />
-        </aside>
-      </div>
-    </Layout>
+          <aside
+            id="sidebar"
+            className="hidden h-screen sticky top-[-800px] xl:top-[-870px] lg:block w-[45%] xl:w-[30%]"
+          >
+            <AppSidebar page="post" />
+          </aside>
+        </div>
+      </Layout>
+    </>
   );
 }
 
