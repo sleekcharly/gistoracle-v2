@@ -284,6 +284,7 @@ function EditPost() {
                     ],
                   ],
                   imageUploadHeader: { Authorization: token },
+                  defaultStyle: "font-family: verdana; font-size: 14px",
 
                   imageUploadUrl: "/api/posts/upload/postThumbnail",
                   imageAccept: ".jpg, .jpeg, .webp, .png, .tiff",

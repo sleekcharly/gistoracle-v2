@@ -51,7 +51,7 @@ function TrendingShrines() {
                     shrine.avatar ? shrine.avatar : "/images/shrineAvatar.png"
                   }
                   alt={`${shrine.name} shrine`}
-                  className="w-7 h-7 md:w-8 md:h-8 rounded-full"
+                  className="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover"
                 />
                 <div>
                   <p className="text-xs xl:text-sm text-gray-700">

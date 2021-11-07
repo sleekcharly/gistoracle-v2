@@ -93,7 +93,7 @@ function TopCatShrines() {
                             : "/images/shrineAvatar.png"
                         }
                         alt={shrine.name}
-                        className="w-7 h-7 md:w-8 md:h-8 rounded-full"
+                        className="w-8 h-8 md:w-9 md:h-9 rounded-full object-cover"
                       />
                     </a>
                   </span>
