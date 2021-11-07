@@ -36,33 +36,33 @@ function PageMeta({
 
   return (
     <Head>
-      <title>{title}</title>
-      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-      <meta property="type" content="website" />
-
-      <meta property="url" content={currentUrl} />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="robots" content="noodp" />
-      <meta property="title" content={title} />
-      <meta name="description" content={info} />
-      <meta property="image" content={image} />
+      {/* facebook meta */}
       <meta property="og:locale" content="en_US" />
       <meta property="og:type" content={pageType} />
       <meta property="og:title" content={title} />
       <meta property="og:image" content={image} />
       <meta property="og:image:secure_url" content={image} />
-      <meta property="og:hashtag" content={hashtag} />
       <meta content="image/*" property="og:image:type" />
+      <meta property="og:hashtag" content={hashtag} />
       <meta property="og:url" content={currentUrl} />
       <meta property="og:site_name" content="Gistoracle" />
       <meta property="og:description" content={info} />
-
       {/*Twitter meta*/}
       <meta name="twitter:card" content="summary" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={info} />
       <meta name="twitter:url" content={currentUrl} />
       <meta name="twitter:image" content={image} />
+
+      <title>{title}</title>
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta property="type" content="website" />
+      <meta property="url" content={currentUrl} />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <meta name="robots" content="noodp" />
+      <meta property="title" content={title} />
+      <meta name="description" content={info} />
+      <meta property="image" content={image} />
     </Head>
   );
 }
