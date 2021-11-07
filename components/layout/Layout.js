@@ -14,7 +14,14 @@ const useNavCategories = () => {
   );
 };
 
-function Layout({ page, pageComponent, drawerPage, children }) {
+function Layout({
+  page,
+  pageComponent,
+  drawerPage,
+  categoryId,
+  username,
+  children,
+}) {
   // destructure featuredNavCategries from state
   const { featuredNavCategories } = useNavCategories();
 
@@ -25,6 +32,8 @@ function Layout({ page, pageComponent, drawerPage, children }) {
         featuredNavCategories={featuredNavCategories}
         pageComponent={pageComponent}
         drawerPage={drawerPage}
+        categoryId={categoryId}
+        username={username}
       />
 
       {/* content */}

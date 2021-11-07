@@ -49,7 +49,13 @@ import { ChevronRight } from "@material-ui/icons";
 import AppSidebar from "./AppSidebar";
 import MyButton from "../MyButton";
 
-function Header({ featuredNavCategories, pageComponent, drawerPage }) {
+function Header({
+  featuredNavCategories,
+  pageComponent,
+  drawerPage,
+  categoryId,
+  username,
+}) {
   // *** get redux state parameters ***//
   // get server-side rendered darkmode state and UI status from redux state
   const useStateParameters = () => {
@@ -746,7 +752,12 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
 
                 {/* sidebar content */}
                 <div className="mt-10">
-                  <AppSidebar page={drawerPage} drawer={true} />
+                  <AppSidebar
+                    page={drawerPage}
+                    categoryId={categoryId ? categoryId : null}
+                    username={username ? username : null}
+                    drawer={true}
+                  />
                 </div>
               </div>
             </Drawer>
