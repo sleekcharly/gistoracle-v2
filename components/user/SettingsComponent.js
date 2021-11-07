@@ -941,10 +941,7 @@ function SettngsComponent() {
             />
             <Tab
               icon={<LockOutlined />}
-              label=",
-              newPassword: values.password1,
-              newPassword2: values.password2,"
-              arial-label="change password"
+              label="Password"
               {...allyProps(2)}
               style={{ color: "gray" }}
             />

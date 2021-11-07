@@ -740,7 +740,7 @@ function Header({
             </button>
 
             <Drawer anchor="right" open={openSidebar}>
-              <div className="w-full md:w-[320px]">
+              <div className="md:w-[320px]">
                 <div className="bg-[#933a16] fixed z-10 w-full h-[50px] pl-2">
                   <button
                     onClick={handleDrawerClose}
