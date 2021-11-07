@@ -21,7 +21,15 @@ import {
   UserCircleIcon,
 } from "@heroicons/react/solid";
 import Data from "../../utils/data";
-import { Avatar, Divider, Link, MenuItem, Switch } from "@material-ui/core";
+import {
+  Avatar,
+  Divider,
+  Drawer,
+  IconButton,
+  Link,
+  MenuItem,
+  Switch,
+} from "@material-ui/core";
 import { useTheme } from "next-themes";
 import Login from "../auth/login";
 import { useAuth } from "../../contexts/AuthContext";
@@ -37,8 +45,10 @@ import {
 import { useSnackbar } from "notistack";
 import algoliasearch from "algoliasearch";
 import Signup from "../auth/signup";
+import { ChevronRight } from "@material-ui/icons";
+import AppSidebar from "./AppSidebar";
 
-function Header({ featuredNavCategories }) {
+function Header({ featuredNavCategories, pageComponent, drawerPage }) {
   // *** get redux state parameters ***//
   // get server-side rendered darkmode state and UI status from redux state
   const useStateParameters = () => {
@@ -100,6 +110,7 @@ function Header({ featuredNavCategories }) {
   const [openSignup, setOpenSignup] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [searchResults, setSearchResults] = React.useState(null);
+  const [openSidebar, setOpenSidebar] = React.useState(false);
 
   // define algolia variables for full text search
   const ALGOLIA_APP_ID = process.env.NEXT_PUBLIC_ALGOLIA_APP_ID;
@@ -193,6 +204,16 @@ function Header({ featuredNavCategories }) {
     } catch {
       console.log("Failed to logout");
     }
+  };
+
+  // handle Opening of sidebar drawer
+  const handleDrawerOpen = () => {
+    setOpenSidebar(true);
+  };
+
+  // handle Closing sidebar drawer
+  const handleDrawerClose = () => {
+    setOpenSidebar(false);
   };
 
   // handle error from images
@@ -698,14 +719,36 @@ function Header({ featuredNavCategories }) {
         )}
 
         {/* sidebar pop-out button */}
-        <div className="ml-4">
-          <button
-            type="button"
-            className="inline-flex w-full lg:hidden px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
-          >
-            <ChevronDoubleLeftIcon className="h-4 text-[#800000] dark:text-[#D7DADC]" />
-          </button>
-        </div>
+        {pageComponent === "createPost" ? null : (
+          <div className="ml-4">
+            <button
+              type="button"
+              className="inline-flex w-full lg:hidden px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50"
+              onClick={handleDrawerOpen}
+              ari-label="open sidebar"
+            >
+              <ChevronDoubleLeftIcon className="h-4 text-[#800000] dark:text-[#D7DADC]" />
+            </button>
+
+            <Drawer anchor="right" open={openSidebar}>
+              <div className="w-full md:w-[320px]">
+                <div className="bg-[#933a16] fixed z-10 w-full h-[50px] pl-2">
+                  <button
+                    onClick={handleDrawerClose}
+                    className="bg-white mt-1 rounded-full p-1"
+                  >
+                    <ChevronRight />
+                  </button>
+                </div>
+
+                {/* sidebar content */}
+                <div className="mt-10">
+                  <AppSidebar page={drawerPage} drawer={true} />
+                </div>
+              </div>
+            </Drawer>
+          </div>
+        )}
       </div>
 
       <Login

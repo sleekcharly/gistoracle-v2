@@ -44,7 +44,7 @@ export default function Home() {
   }
 
   return (
-    <Layout>
+    <Layout drawerPage="home">
       <PageMeta />
 
       <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">

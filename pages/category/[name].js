@@ -17,7 +17,7 @@ function Category({ category, urlPath }) {
   analytics().logEvent(`${category.name}_page_view`);
 
   return (
-    <Layout page="category">
+    <Layout page="category" drawerPage="category">
       <PageMeta
         pageTitle={`${category.name.toUpperCase()} | Gistoracle`}
         urlPath={urlPath}

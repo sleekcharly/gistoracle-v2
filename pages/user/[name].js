@@ -17,7 +17,7 @@ function User({ urlPath, user, username }) {
   analytics().logEvent(`${user.username}profile_page_view`);
 
   return (
-    <Layout page="shrine">
+    <Layout page="shrine" drawerPage="user">
       <PageMeta
         pageTitle={`${
           user.displayName ? user.displayName : user.username

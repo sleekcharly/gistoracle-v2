@@ -21,7 +21,7 @@ function Post({ postData, postId, urlPath }) {
   userAuthRefresh();
 
   return (
-    <Layout page="post">
+    <Layout page="post" drawerPage="post">
       <PageMeta
         pageTitle={title}
         thumbnail={postThumbnail}

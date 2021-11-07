@@ -14,14 +14,18 @@ const useNavCategories = () => {
   );
 };
 
-function Layout({ page, children }) {
+function Layout({ page, pageComponent, drawerPage, children }) {
   // destructure featuredNavCategries from state
   const { featuredNavCategories } = useNavCategories();
 
   return (
     <div className={`${page !== "post" && "min-h-screen"}`}>
       {/* Header */}
-      <Header featuredNavCategories={featuredNavCategories} />
+      <Header
+        featuredNavCategories={featuredNavCategories}
+        pageComponent={pageComponent}
+        drawerPage={drawerPage}
+      />
 
       {/* content */}
       {children}

@@ -17,7 +17,7 @@ function Shrine({ shrine, urlPath }) {
   analytics().logEvent(`${shrine.name}_page_view`);
 
   return (
-    <Layout page="shrine">
+    <Layout page="shrine" drawerPage="shrine">
       <PageMeta
         pageTitle={`${shrine.name.toUpperCase()} shrine | Gistoracle`}
         urlPath={urlPath}

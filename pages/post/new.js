@@ -43,7 +43,7 @@ function NewPost({ urlPath }) {
   }, [shrineIsSelected]);
 
   return (
-    <Layout page="post">
+    <Layout page="post" pageComponent="createPost">
       <PageMeta pageTitle="Gistoracle | New post" urlPath={urlPath} />
 
       <div className="w-full mt-2 lg:w-[90%] 2xl:w-[80%] mr-auto ml-auto flex space-x-4 bg-white p-4">
