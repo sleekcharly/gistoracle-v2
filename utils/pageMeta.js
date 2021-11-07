@@ -1,9 +1,6 @@
 import React from "react";
 import Head from "next/head";
 
-// set logo
-const logo = "/images/gistoracle_logo.png";
-
 function PageMeta({
   urlPath,
   pageTitle,
@@ -19,7 +16,9 @@ function PageMeta({
   let title = pageTitle ? pageTitle : "Gistoracle - Africa's online community";
 
   // set image
-  let image = thumbnail ? thumbnail : logo;
+  let image = thumbnail
+    ? thumbnail
+    : "https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media";
 
   // set description
   let info = description
@@ -37,22 +36,20 @@ function PageMeta({
   return (
     <Head>
       {/* facebook meta */}
-      <meta property="og:locale" content="en_US" />
-      <meta property="og:type" content={pageType} />
-      <meta property="og:title" content={title} />
-      <meta property="og:image" content={image} />
-      <meta property="og:image:secure_url" content={image} />
-      <meta content="image/*" property="og:image:type" />
-      <meta property="og:hashtag" content={hashtag} />
-      <meta property="og:url" content={currentUrl} />
-      <meta property="og:site_name" content="Gistoracle" />
-      <meta property="og:description" content={info} />
+      <meta property="og:locale" content="en_US" key="ogLoacale" />
+      <meta property="og:type" content={pageType} key="ogType" />
+      <meta property="og:title" content={title} key="ogTitle" />
+      <meta property="og:image" content={image} key="ogImage" />
+      <meta property="og:hashtag" content={hashtag} key="ogHashtag" />
+      <meta property="og:url" content={currentUrl} key="ogUrl" />
+      <meta property="og:site_name" content="Gistoracle" key="ogSitename" />
+      <meta property="og:description" content={info} key="ogDescription" />
       {/*Twitter meta*/}
-      <meta name="twitter:card" content="summary" />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={info} />
-      <meta name="twitter:url" content={currentUrl} />
-      <meta name="twitter:image" content={image} />
+      <meta name="twitter:card" content="summary" key="twcard" />
+      <meta name="twitter:title" content={title} key="twTitle" />
+      <meta name="twitter:description" content={info} key="twDescription" />
+      <meta name="twitter:url" content={currentUrl} key="twUrl" />
+      <meta name="twitter:image" content={image} key="twImage" />
 
       <title>{title}</title>
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
