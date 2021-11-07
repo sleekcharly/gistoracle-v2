@@ -47,6 +47,7 @@ import algoliasearch from "algoliasearch";
 import Signup from "../auth/signup";
 import { ChevronRight } from "@material-ui/icons";
 import AppSidebar from "./AppSidebar";
+import MyButton from "../MyButton";
 
 function Header({ featuredNavCategories, pageComponent, drawerPage }) {
   // *** get redux state parameters ***//
@@ -421,10 +422,12 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
         {/* create post button */}
         {currentUser && (
           <a
-            className="inline-flex justify-center w-full px-2 py-2 bg-white dark:bg-gray-800 hover:bg-gray-50 cursor-pointer"
+            className="inline-flex justify-center w-full bg-white dark:bg-gray-800 hover:bg-gray-50 cursor-pointer"
             href="/post/new"
           >
-            <PencilAltIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
+            <MyButton tip="Create post">
+              <PencilAltIcon className="h-6 text-[#800000] dark:text-[#D7DADC]" />
+            </MyButton>
           </a>
         )}
 
@@ -518,7 +521,7 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
               </MenuItem>
               <Divider />
 
-              <MenuItem disableGutters>
+              {/* <MenuItem disableGutters>
                 <div className="flex space-x-5 ml-3">
                   <span className="flex items-center justify-center space-x-1">
                     <MoonIcon className="h-5" />
@@ -532,7 +535,7 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
                     size="small"
                   />
                 </div>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </div>
         )}
@@ -606,7 +609,7 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
               </MenuItem>
               <Divider />
 
-              <MenuItem disableGutters>
+              {/* <MenuItem disableGutters>
                 <div className="flex space-x-5 ml-3">
                   <span className="flex items-center justify-center space-x-1">
                     <MoonIcon className="h-5" />
@@ -620,7 +623,7 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
                     size="small"
                   />
                 </div>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </div>
         )}
@@ -699,7 +702,7 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
               </MenuItem>
               <Divider />
 
-              <MenuItem disableGutters>
+              {/* <MenuItem disableGutters>
                 <div className="flex space-x-5 ml-3">
                   <span className="flex items-center justify-center space-x-1">
                     <MoonIcon className="h-5" />
@@ -713,7 +716,7 @@ function Header({ featuredNavCategories, pageComponent, drawerPage }) {
                     size="small"
                   />
                 </div>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>{" "}
           </div>
         )}

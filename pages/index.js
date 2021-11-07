@@ -102,13 +102,13 @@ export async function getServerSideProps(context) {
   });
 
   // feed cookies to redux initial redux state
-  await dispatch({
-    type: parsedCookies
-      ? parsedCookies.darkMode === "ON"
-        ? DARK_MODE_ON
-        : DARK_MODE_OFF
-      : DARK_MODE_OFF,
-  });
+  //   await dispatch({
+  //     type: parsedCookies
+  //       ? parsedCookies.darkMode === "ON"
+  //         ? DARK_MODE_ON
+  //         : DARK_MODE_OFF
+  //       : DARK_MODE_OFF,
+  //   });
 
   return {
     props: {
