@@ -26,7 +26,8 @@ function MyApp({ Component, pageProps }) {
   const theme = createTheme(themeFile);
 
   return (
-    <ThemeProvider enableSystem={true} attribute="class">
+    // <ThemeProvider enableSystem={true} attribute="class"> for dark mode
+    <ThemeProvider>
       <MuiThemeProvider theme={theme}>
         <SnackbarProvider
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
