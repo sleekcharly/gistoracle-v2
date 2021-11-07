@@ -31,8 +31,6 @@ function PageMeta({
   // set content type
   let pageType = contentType ? contentType : "website";
 
-  console.log("title: " + title, "description: " + info, "image: " + image);
-
   return (
     <Head>
       {/* facebook meta */}

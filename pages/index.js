@@ -14,6 +14,7 @@ import { useSnackbar } from "notistack";
 import { shallowEqual, useSelector } from "react-redux";
 import PageMeta from "../utils/pageMeta";
 import AppSidebar from "../components/layout/AppSidebar";
+import Head from "next/head";
 
 export default function Home() {
   const page = "home";
@@ -44,22 +45,91 @@ export default function Home() {
   }
 
   return (
-    <Layout drawerPage="home">
-      <PageMeta />
+    <>
+      <Head>
+        {/* facebook meta */}
+        <meta property="og:type" content="website" key="homeType" />
+        <meta
+          property="og:title"
+          content="Gistoracle - Africa's online community"
+          key="homeTitle"
+        />
+        <meta
+          property="og:image"
+          content="https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media"
+          key="homeImage"
+        />
+        <meta property="og:hashtag" content="#Gistoracle" key="homeHashtag" />
+        <meta
+          property="og:url"
+          content="https://www.gistoracle.com"
+          key="homeogUrl"
+        />
+        <meta property="og:site_name" content="Gistoracle" key="ogSitename" />
+        <meta
+          property="og:description"
+          content="Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more."
+          key="homeOgDescription"
+        />
+        {/*Twitter meta*/}
+        <meta name="twitter:card" content="summary" key="twcard" />
+        <meta
+          name="twitter:title"
+          content="Gistoracle - Africa's online community"
+          key="homeTwTitle"
+        />
+        <meta
+          name="twitter:description"
+          content="Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more."
+          key="homeTwDescription"
+        />
+        <meta
+          name="twitter:url"
+          content="https://www.gistoracle.com"
+          key="homeTwUrl"
+        />
+        <meta
+          name="twitter:image"
+          content="https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media"
+          key="homeTwImage"
+        />
 
-      <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
-        <main className="w-full flex-grow-1">
-          <HomeComponent />
-        </main>
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta property="type" content="website" />
+        <meta property="url" content="https://www.gistoracle.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noodp" />
+        <meta
+          property="title"
+          content="Gistoracle - Africa's online community"
+        />
+        <meta
+          name="description"
+          content="Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more."
+        />
+        <meta
+          property="image"
+          content="https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media"
+        />
 
-        <aside
-          id="sidebar"
-          className={`hidden h-screen sticky top-[-1200px] xl:top-[-1500px] lg:block w-[45%] xl:w-[30%] `}
-        >
-          <AppSidebar page={page} />
-        </aside>
-      </div>
-    </Layout>
+        <title>Gistoracle - Africa's online community</title>
+      </Head>
+
+      <Layout drawerPage="home">
+        <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
+          <main className="w-full flex-grow-1">
+            <HomeComponent />
+          </main>
+
+          <aside
+            id="sidebar"
+            className={`hidden h-screen sticky top-[-1200px] xl:top-[-1500px] lg:block w-[45%] xl:w-[30%] `}
+          >
+            <AppSidebar page={page} />
+          </aside>
+        </div>
+      </Layout>
+    </>
   );
 }
 
