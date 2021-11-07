@@ -19,7 +19,7 @@ function PageMeta({
   let title = pageTitle ? pageTitle : "Gistoracle - Africa's online community";
 
   // set image
-  let image = thumbnail ? thumbnail : { logo };
+  let image = thumbnail ? thumbnail : logo;
 
   // set description
   let info = description
@@ -31,6 +31,8 @@ function PageMeta({
 
   // set content type
   let pageType = contentType ? contentType : "website";
+
+  console.log("title: " + title, "description: " + info, "image: " + image);
 
   return (
     <Head>
