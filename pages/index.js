@@ -16,7 +16,12 @@ import PageMeta from "../utils/pageMeta";
 import AppSidebar from "../components/layout/AppSidebar";
 import Head from "next/head";
 
-export default function Home({metaImage, metaTitle, metaDescription, metaUrl, }) {
+export default function Home({
+  metaImage,
+  metaTitle,
+  metaDescription,
+  metaUrl,
+}) {
   const page = "home";
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh(page);
@@ -46,75 +51,6 @@ export default function Home({metaImage, metaTitle, metaDescription, metaUrl, })
 
   return (
     <>
-      <Head>
-        {/* facebook meta */}
-        <meta property="og:type" content="website" key="homeType" />
-        <meta
-          property="og:title"
-          content={metaTitle}
-          key="homeTitle"
-        />
-        <meta
-          property="og:image"
-          content={metaImage}
-          key="homeImage"
-        />
-        <meta property="og:hashtag" content="#Gistoracle" key="homeHashtag" />
-        <meta
-          property="og:url"
-          content={metaUrl}
-          key="homeogUrl"
-        />
-        <meta property="og:site_name" content="Gistoracle" key="ogSitename" />
-        <meta
-          property="og:description"
-          content={metaDescription}
-          key="homeOgDescription"
-        />
-        {/*Twitter meta*/}
-        <meta name="twitter:card" content="summary" key="twcard" />
-        <meta
-          name="twitter:title"
-          content={metaTitle}
-          key="homeTwTitle"
-        />
-        <meta
-          name="twitter:description"
-          content={metaDescription}
-          key="homeTwDescription"
-        />
-        <meta
-          name="twitter:url"
-          content={metaUrl}
-          key="homeTwUrl"
-        />
-        <meta
-          name="twitter:image"
-          content={metaImage}
-          key="homeTwImage"
-        />
-
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta property="type" content="website" />
-        <meta property="url" content={metaUrl} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="robots" content="noodp" />
-        <meta
-          property="title"
-          content={metaTitle}
-        />
-        <meta
-          name="description"
-          content={metaDescription}
-        />
-        <meta
-          property="image"
-          content={metaImage}
-        />
-
-        <title>Gistoracle - Africa's online community</title>
-      </Head>
-
       <Layout drawerPage="home">
         <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
           <main className="w-full flex-grow-1">
@@ -143,10 +79,12 @@ export async function getServerSideProps(context) {
   const parsedCookies = cookies && cookie.parse(cookies);
 
   // define meta infomation
-  const metaImage = "https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media"
-  const metaTitle = "Gistoracle - Africa's online community"
-  const metaUrl = "https://www.gistoracle.com"
-  const metaDescription = "Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more."
+  const metaImage =
+    "https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media";
+  const metaTitle = "Gistoracle - Africa's online community";
+  const metaUrl = "https://www.gistoracle.com";
+  const metaDescription =
+    "Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more.";
 
   // preload the featured nav categories  from firestore and redux store
   const reduxStore = initializeStore();
@@ -193,7 +131,7 @@ export async function getServerSideProps(context) {
       metaTitle: metaTitle,
       metaUrl: metaUrl,
       metaDescription: metaDescription,
-      metaImage: metaImage
+      metaImage: metaImage,
     },
   };
 }
