@@ -37,7 +37,6 @@ import { useRouter } from "next/router";
 // bring in validators
 import {
   validateProfileEditData,
-  validateChangepasswordData,
   validateChangePasswordData,
 } from "../../utils/validator";
 // bring in .auth.EmailAuthProvider.credential(credentials.email, values.password)
@@ -518,6 +517,15 @@ function SettngsComponent() {
               });
 
               setUpdatingPassword(false);
+
+              setValue(0);
+
+              setValues((values) => ({
+                ...values,
+                password: "",
+                password1: "",
+                password2: "",
+              }));
             })
             .catch((err) => {
               console.error(err);
