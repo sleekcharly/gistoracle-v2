@@ -1,4 +1,4 @@
-import { DefaultSeo, NextSeo } from "next-seo";
+import { DefaultSeo } from "next-seo";
 import "tailwindcss/tailwind.css";
 import "../styles.css";
 import { ThemeProvider } from "next-themes";
@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }) {
   return (
     // <ThemeProvider enableSystem={true} attribute="class"> for dark mode
     <ThemeProvider>
-      <NextSeo
+      <DefaultSeo
         title={metaTitle}
         description={metaDescription}
         canonical={metaUrl}
