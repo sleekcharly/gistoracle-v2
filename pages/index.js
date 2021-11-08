@@ -51,6 +51,42 @@ export default function Home({
 
   return (
     <>
+      <Head>
+        {/* facebook meta */}
+        <meta property="og:type" content="website" key="homeType" />
+        <meta property="og:title" content={metaTitle} key="homeTitle" />
+        <meta property="og:image" content={metaImage} key="homeImage" />
+        <meta property="og:hashtag" content="#Gistoracle" key="homeHashtag" />
+        <meta property="og:url" content={metaUrl} key="homeogUrl" />
+        <meta property="og:site_name" content="Gistoracle" key="ogSitename" />
+        <meta
+          property="og:description"
+          content={metaDescription}
+          key="homeOgDescription"
+        />
+        {/*Twitter meta*/}
+        <meta name="twitter:card" content="summary" key="twcard" />
+        <meta name="twitter:title" content={metaTitle} key="homeTwTitle" />
+        <meta
+          name="twitter:description"
+          content={metaDescription}
+          key="homeTwDescription"
+        />
+        <meta name="twitter:url" content={metaUrl} key="homeTwUrl" />
+        <meta name="twitter:image" content={metaImage} key="homeTwImage" />
+
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta property="type" content="website" />
+        <meta property="url" content={metaUrl} />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="robots" content="noodp" />
+        <meta property="title" content={metaTitle} />
+        <meta name="description" content={metaDescription} />
+        <meta property="image" content={metaImage} />
+
+        <title>Gistoracle - Africa's online community</title>
+      </Head>
+
       <Layout drawerPage="home">
         <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
           <main className="w-full flex-grow-1">

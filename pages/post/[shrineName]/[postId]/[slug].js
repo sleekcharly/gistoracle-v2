@@ -24,49 +24,32 @@ function Post({ postData, postId, urlPath }) {
   return (
     <>
       <Head>
+        <title>{title}</title>
+
         {/* facebook meta */}
-        <meta property="og:type" content="website" key="postType" />
-        <meta property="og:title" content={title} key="postTitle" />
-        <meta property="og:image" content={postThumbnail} key="postImage" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:image" content={postThumbnail} />
         <meta
           property="og:url"
           content={`https://www.gistoracle.com${urlPath}`}
-          key="postogUrl"
         />
-        <meta
-          property="og:description"
-          content={`Created by ${username}`}
-          key="postOgDescription"
-        />
+        <meta property="og:description" content={`Created by ${username}`} />
         {/*Twitter meta*/}
-        <meta name="twitter:title" content={title} key="postTwTitle" />
-        <meta
-          name="twitter:description"
-          content={`Created by ${username}`}
-          key="postTwDescription"
-        />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={`Created by ${username}`} />
         <meta
           name="twitter:url"
           content={`https://www.gistoracle.com${urlPath}`}
-          key="postTwUrl"
         />
-        <meta name="twitter:image" content={postThumbnail} key="postTwImage" />
+        <meta name="twitter:image" content={postThumbnail} />
 
-        <meta
-          property="url"
-          content={`https://www.gistoracle.com${urlPath}`}
-          key="post"
-        />
-        <meta property="title" content={title} key="postTitle" />
-        <meta
-          name="description"
-          content={`Created by ${username}`}
-          key="postDescription"
-        />
-        <meta property="image" content={postThumbnail} key="postImage" />
-
-        <title>{title}</title>
+        <meta property="url" content={`https://www.gistoracle.com${urlPath}`} />
+        <meta property="title" content={title} />
+        <meta name="description" content={`Created by ${username}`} />
+        <meta property="image" content={postThumbnail} />
       </Head>
+
       <Layout page="post" drawerPage="post">
         <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
           <main className="w-full flex-grow-1">
