@@ -32,33 +32,34 @@ function PageMeta({
   let pageType = contentType ? contentType : "website";
 
   return (
-    <Head>
-      {/* facebook meta */}
-      <meta property="og:locale" content="en_US" key="ogLoacale" />
-      <meta property="og:type" content={pageType} key="ogType" />
-      <meta property="og:title" content={title} key="ogTitle" />
-      <meta property="og:image" content={image} key="ogImage" />
-      <meta property="og:hashtag" content={hashtag} key="ogHashtag" />
-      <meta property="og:url" content={currentUrl} key="ogUrl" />
-      <meta property="og:site_name" content="Gistoracle" key="ogSitename" />
-      <meta property="og:description" content={info} key="ogDescription" />
-      {/*Twitter meta*/}
-      <meta name="twitter:card" content="summary" key="twcard" />
-      <meta name="twitter:title" content={title} key="twTitle" />
-      <meta name="twitter:description" content={info} key="twDescription" />
-      <meta name="twitter:url" content={currentUrl} key="twUrl" />
-      <meta name="twitter:image" content={image} key="twImage" />
+    // <Head>
+    //   {/* facebook meta */}
+    //   <meta property="og:locale" content="en_US" key="ogLoacale" />
+    //   <meta property="og:type" content={pageType} key="ogType" />
+    //   <meta property="og:title" content={title} key="ogTitle" />
+    //   <meta property="og:image" content={image} key="ogImage" />
+    //   <meta property="og:hashtag" content={hashtag} key="ogHashtag" />
+    //   <meta property="og:url" content={currentUrl} key="ogUrl" />
+    //   <meta property="og:site_name" content="Gistoracle" key="ogSitename" />
+    //   <meta property="og:description" content={info} key="ogDescription" />
+    //   {/*Twitter meta*/}
+    //   <meta name="twitter:card" content="summary" key="twcard" />
+    //   <meta name="twitter:title" content={title} key="twTitle" />
+    //   <meta name="twitter:description" content={info} key="twDescription" />
+    //   <meta name="twitter:url" content={currentUrl} key="twUrl" />
+    //   <meta name="twitter:image" content={image} key="twImage" />
 
-      <title>{title}</title>
-      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-      <meta property="type" content="website" />
-      <meta property="url" content={currentUrl} />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <meta name="robots" content="noodp" />
-      <meta property="title" content={title} />
-      <meta name="description" content={info} />
-      <meta property="image" content={image} />
-    </Head>
+    //   <title>{title}</title>
+    //   <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+    //   <meta property="type" content="website" />
+    //   <meta property="url" content={currentUrl} />
+    //   <meta name="viewport" content="width=device-width, initial-scale=1" />
+    //   <meta name="robots" content="noodp" />
+    //   <meta property="title" content={title} />
+    //   <meta name="description" content={info} />
+    //   <meta property="image" content={image} />
+    // </Head>
+    <div></div>
   );
 }
 
