@@ -1,7 +1,6 @@
 import { NextSeo } from "next-seo";
 import AboutComponent from "../components/AboutComponent";
 import InfoHeader from "../components/layout/InfoHeader";
-import PageMeta from "../utils/pageMeta";
 
 function About({ urlPath }) {
   return (
@@ -9,9 +8,9 @@ function About({ urlPath }) {
       <NextSeo
         title="Welcome to Gistoracle - Africa's online community"
         description="Gistoracle serves you endless discussions, articles, news and many more from a wide variety of communities we call shrines."
-        canonical={`https://www.gistoracle.com${urlPath}`}
+        canonical="https://www.gistoracle.com/about"
         openGraph={{
-          url: `https://www.gistoracle.com${urlPath}`,
+          url: "https://www.gistoracle.com/about",
           title: "Welcome to Gistoracle - Africa's online community",
           description:
             "Gistoracle serves you endless discussions, articles, news and many more from a wide variety of communities we call shrines.",
@@ -31,14 +30,3 @@ function About({ urlPath }) {
 }
 
 export default About;
-
-// get server side props with SSG
-export async function getStaticProps(context) {
-  // get page url
-  const urlPath = context.resolvedUrl;
-  return {
-    props: {
-      urlPath: urlPath,
-    },
-  };
-}
