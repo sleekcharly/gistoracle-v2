@@ -12,22 +12,61 @@ import {
 import { SET_FEATURED_NAV_CATEGORIES } from "../../../../redux/types/uiTypes";
 import PageMeta from "../../../../utils/pageMeta";
 import { userAuthRefresh } from "../../../../utils/userFunction";
+import Head from "next/head";
 
 function Post({ postData, postId, urlPath }) {
   // destructure post items
-  const { title, postThumbnail } = postData;
+  const { title, postThumbnail, username } = postData;
 
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
 
   return (
     <>
-      <PageMeta
-        pageTitle={title}
-        thumbnail={postThumbnail}
-        urlPath={urlPath}
-        contentType="article"
-      />
+      <Head>
+        {/* facebook meta */}
+        <meta property="og:type" content="website" key="postType" />
+        <meta property="og:title" content={title} key="postTitle" />
+        <meta property="og:image" content={postThumbnail} key="postImage" />
+        <meta
+          property="og:url"
+          content={`https://www.gistoracle.com${urlPath}`}
+          key="postogUrl"
+        />
+        <meta
+          property="og:description"
+          content={`Created by ${username}`}
+          key="postOgDescription"
+        />
+        {/*Twitter meta*/}
+        <meta name="twitter:title" content={title} key="postTwTitle" />
+        <meta
+          name="twitter:description"
+          content={`Created by ${username}`}
+          key="postTwDescription"
+        />
+        <meta
+          name="twitter:url"
+          content={`https://www.gistoracle.com${urlPath}`}
+          key="postTwUrl"
+        />
+        <meta name="twitter:image" content={postThumbnail} key="postTwImage" />
+
+        <meta
+          property="url"
+          content={`https://www.gistoracle.com${urlPath}`}
+          key="post"
+        />
+        <meta property="title" content={title} key="postTitle" />
+        <meta
+          name="description"
+          content={`Created by ${username}`}
+          key="postDescription"
+        />
+        <meta property="image" content={postThumbnail} key="postImage" />
+
+        <title>{title}</title>
+      </Head>
       <Layout page="post" drawerPage="post">
         <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
           <main className="w-full flex-grow-1">
