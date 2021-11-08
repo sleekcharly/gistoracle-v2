@@ -16,12 +16,7 @@ import { shallowEqual, useSelector } from "react-redux";
 import PageMeta from "../utils/pageMeta";
 import AppSidebar from "../components/layout/AppSidebar";
 
-export default function Home({
-  metaImage,
-  metaTitle,
-  metaDescription,
-  metaUrl,
-}) {
+export default function Home() {
   const page = "home";
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh(page);
@@ -51,24 +46,6 @@ export default function Home({
 
   return (
     <>
-      <NextSeo
-        title={metaTitle}
-        description={metaDescription}
-        canonical={metaUrl}
-        openGraph={{
-          url: metaUrl,
-          title: metaTitle,
-          description: metaDescription,
-          images: [{ url: metaImage }],
-          site_name: "Gistoracle",
-          type: "website",
-        }}
-        twitter={{
-          site: "@gistoracle",
-          cardType: "summary",
-        }}
-      />
-
       <Layout drawerPage="home">
         <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
           <main className="w-full flex-grow-1">
@@ -95,14 +72,6 @@ export async function getServerSideProps(context) {
   // get cookies from browser
   const cookies = context.req.headers.cookie;
   const parsedCookies = cookies && cookie.parse(cookies);
-
-  // define meta infomation
-  const metaImage =
-    "https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media";
-  const metaTitle = "Gistoracle - Africa's online community";
-  const metaUrl = "https://www.gistoracle.com";
-  const metaDescription =
-    "Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more.";
 
   // preload the featured nav categories  from firestore and redux store
   const reduxStore = initializeStore();
@@ -146,10 +115,6 @@ export async function getServerSideProps(context) {
     props: {
       //session,
       initialReduxState: reduxStore.getState(),
-      metaTitle: metaTitle,
-      metaUrl: metaUrl,
-      metaDescription: metaDescription,
-      metaImage: metaImage,
     },
   };
 }

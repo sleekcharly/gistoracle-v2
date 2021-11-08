@@ -1,3 +1,4 @@
+import { NextSeo } from "next-seo";
 import React from "react";
 import AppSidebar from "../../../../components/layout/AppSidebar";
 import Layout from "../../../../components/layout/Layout";
@@ -23,32 +24,23 @@ function Post({ postData, postId, urlPath }) {
 
   return (
     <>
-      <Head>
-        <title>{`${title}`}</title>
-
-        {/* facebook meta */}
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={`${title}`} />
-        <meta property="og:image" content={`${postThumbnail}`} />
-        <meta
-          property="og:url"
-          content={`https://www.gistoracle.com${urlPath}`}
-        />
-        <meta property="og:description" content={`Created by ${username}`} />
-        {/*Twitter meta*/}
-        <meta name="twitter:title" content={`${title}`} />
-        <meta name="twitter:description" content={`Created by ${username}`} />
-        <meta
-          name="twitter:url"
-          content={`https://www.gistoracle.com${urlPath}`}
-        />
-        <meta name="twitter:image" content={`${postThumbnail}`} />
-
-        <meta property="url" content={`https://www.gistoracle.com${urlPath}`} />
-        <meta property="title" content={`${title}`} />
-        <meta name="description" content={`Created by ${username}`} />
-        <meta property="image" content={`${title}`} />
-      </Head>
+      <NextSeo
+        title={title}
+        description={`Created by ${username}`}
+        canonical={`https://www.gistoracle.com${urlPath}`}
+        openGraph={{
+          url: `https://www.gistoracle.com${urlPath}`,
+          title: title,
+          description: `Created by ${username}`,
+          images: [{ url: postThumbnail }],
+          site_name: "Gistoracle",
+          type: "website",
+        }}
+        twitter={{
+          site: "@gistoracle",
+          cardType: "summary",
+        }}
+      />
 
       <Layout page="post" drawerPage="post">
         <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">
