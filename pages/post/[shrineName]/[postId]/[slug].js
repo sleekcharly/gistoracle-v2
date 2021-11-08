@@ -24,30 +24,30 @@ function Post({ postData, postId, urlPath }) {
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>{`${title}`}</title>
 
         {/* facebook meta */}
         <meta property="og:type" content="website" />
-        <meta property="og:title" content={title} />
-        <meta property="og:image" content={postThumbnail} />
+        <meta property="og:title" content={`${title}`} />
+        <meta property="og:image" content={`${postThumbnail}`} />
         <meta
           property="og:url"
           content={`https://www.gistoracle.com${urlPath}`}
         />
         <meta property="og:description" content={`Created by ${username}`} />
         {/*Twitter meta*/}
-        <meta name="twitter:title" content={title} />
+        <meta name="twitter:title" content={`${title}`} />
         <meta name="twitter:description" content={`Created by ${username}`} />
         <meta
           name="twitter:url"
           content={`https://www.gistoracle.com${urlPath}`}
         />
-        <meta name="twitter:image" content={postThumbnail} />
+        <meta name="twitter:image" content={`${postThumbnail}`} />
 
         <meta property="url" content={`https://www.gistoracle.com${urlPath}`} />
-        <meta property="title" content={title} />
+        <meta property="title" content={`${title}`} />
         <meta name="description" content={`Created by ${username}`} />
-        <meta property="image" content={postThumbnail} />
+        <meta property="image" content={`${title}`} />
       </Head>
 
       <Layout page="post" drawerPage="post">
