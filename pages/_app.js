@@ -1,3 +1,4 @@
+import { DefaultSeo } from "next-seo";
 import "tailwindcss/tailwind.css";
 import "../styles.css";
 import { ThemeProvider } from "next-themes";
@@ -25,9 +26,34 @@ function MyApp({ Component, pageProps }) {
   // create Application theme
   const theme = createTheme(themeFile);
 
+  // define meta infomation
+  const metaImage =
+    "https://firebasestorage.googleapis.com/v0/b/gistoracle-28360.appspot.com/o/Gist%20oracle%20tranparent%20background.png?alt=media";
+  const metaTitle = "Gistoracle - Africa's online community";
+  const metaUrl = "https://www.gistoracle.com";
+  const metaDescription =
+    "Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more.";
+
   return (
     // <ThemeProvider enableSystem={true} attribute="class"> for dark mode
     <ThemeProvider>
+      <DefaultSeo
+        title={metaTitle}
+        description={metaDescription}
+        canonical={metaUrl}
+        openGraph={{
+          url: metaUrl,
+          title: metaTitle,
+          description: metaDescription,
+          images: [{ url: metaImage }],
+          site_name: "Gistoracle",
+          type: "website",
+        }}
+        twitter={{
+          site: "@gistoracle",
+          cardType: "summary",
+        }}
+      />
       <MuiThemeProvider theme={theme}>
         <SnackbarProvider
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
