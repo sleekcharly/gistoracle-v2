@@ -37,29 +37,29 @@ function MyApp({ Component, pageProps }) {
   return (
     // <ThemeProvider enableSystem={true} attribute="class"> for dark mode
     <ThemeProvider>
-      <DefaultSeo
-        title={metaTitle}
-        description={metaDescription}
-        canonical={metaUrl}
-        openGraph={{
-          url: metaUrl,
-          title: metaTitle,
-          description: metaDescription,
-          images: [{ url: metaImage }],
-          site_name: "Gistoracle",
-          type: "website",
-        }}
-        twitter={{
-          site: "@gistoracle",
-          cardType: "summary",
-        }}
-      />
       <MuiThemeProvider theme={theme}>
         <SnackbarProvider
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
           <Provider store={store}>
             <AuthProvider>
+              <DefaultSeo
+                title={metaTitle}
+                description={metaDescription}
+                canonical={metaUrl}
+                openGraph={{
+                  url: metaUrl,
+                  title: metaTitle,
+                  description: metaDescription,
+                  images: [{ url: metaImage }],
+                  site_name: "Gistoracle",
+                  type: "website",
+                }}
+                twitter={{
+                  site: "@gistoracle",
+                  cardType: "summary",
+                }}
+              />
               <Component {...pageProps} />
             </AuthProvider>
           </Provider>
