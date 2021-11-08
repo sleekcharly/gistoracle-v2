@@ -25,14 +25,14 @@ function Post({ postData, postId, urlPath }) {
   return (
     <>
       <NextSeo
-        title={title}
-        description={`Created by ${username}`}
+        title={postData.title}
+        description={`Created by ${postData.username}`}
         canonical={`https://www.gistoracle.com${urlPath}`}
         openGraph={{
           url: `https://www.gistoracle.com${urlPath}`,
-          title: title,
-          description: `Created by ${username}`,
-          images: [{ url: postThumbnail }],
+          title: postData.title,
+          description: `Created by ${postData.username}`,
+          images: [{ url: postData.postThumbnail }],
           site_name: "Gistoracle",
           type: "website",
         }}
