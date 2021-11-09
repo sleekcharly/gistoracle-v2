@@ -1,5 +1,5 @@
 import { NextSeo } from "next-seo";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AppSidebar from "../../../../components/layout/AppSidebar";
 import Layout from "../../../../components/layout/Layout";
 import PostComponent from "../../../../components/post/PostComponent";
@@ -11,16 +11,38 @@ import {
   SET_SHRINE,
 } from "../../../../redux/types/dataTypes";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../../../redux/types/uiTypes";
-import PageMeta from "../../../../utils/pageMeta";
 import { userAuthRefresh } from "../../../../utils/userFunction";
-import Head from "next/head";
+import { useRouter } from "next/router";
 
 function Post({ postData, postId, urlPath }) {
-  // destructure post items
-  const { title, postThumbnail, username } = postData;
+  const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState(false);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const handleStart = () => {
+      setPageLoading(true);
+    };
+    const handleComplete = () => {
+      setPageLoading(false);
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+  }, [router]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      !pageLoading && setToken(localStorage.FBIdToken);
+    }
+  }, [pageLoading]);
 
   // check for existing token and token expiration to maintain user authentication
-  userAuthRefresh();
+  token && userAuthRefresh();
 
   return (
     <>

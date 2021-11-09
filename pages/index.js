@@ -15,11 +15,39 @@ import { useSnackbar } from "notistack";
 import { shallowEqual, useSelector } from "react-redux";
 import PageMeta from "../utils/pageMeta";
 import AppSidebar from "../components/layout/AppSidebar";
+import { useRouter } from "next/router";
 
 export default function Home() {
+  const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState(false);
+  const [token, setToken] = useState(null);
+
   const page = "home";
+
+  useEffect(() => {
+    const handleStart = () => {
+      setPageLoading(true);
+    };
+    const handleComplete = () => {
+      setPageLoading(false);
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+  }, [router]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      !pageLoading && setToken(localStorage.FBIdToken);
+    }
+  }, [pageLoading]);
+
   // check for existing token and token expiration to maintain user authentication
-  userAuthRefresh(page);
+  userAuthRefresh(page, token);
 
   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
 

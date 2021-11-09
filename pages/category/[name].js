@@ -1,4 +1,6 @@
-import React from "react";
+import { NextSeo } from "next-seo";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import CategoryComponent from "../../components/category/CategoryComponent";
 import AppSidebar from "../../components/layout/AppSidebar";
 import Layout from "../../components/layout/Layout";
@@ -10,11 +12,37 @@ import PageMeta from "../../utils/pageMeta";
 import { userAuthRefresh } from "../../utils/userFunction";
 
 function Category({ category, urlPath }) {
+  const router = useRouter();
+
+  const [pageLoading, setPageLoading] = useState(false);
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const handleStart = () => {
+      setPageLoading(true);
+    };
+    const handleComplete = () => {
+      setPageLoading(false);
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+  }, [router]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      !pageLoading && setToken(localStorage.FBIdToken);
+    }
+  }, [pageLoading]);
+
   // check for existing token and token expiration to maintain user authentication
-  userAuthRefresh();
+  token && userAuthRefresh();
 
   //   log analytics event
-  analytics().logEvent(`${category.name}_page_view`);
+  token && analytics().logEvent(`${category.name}_page_view`);
 
   return (
     <Layout
@@ -22,10 +50,21 @@ function Category({ category, urlPath }) {
       drawerPage="category"
       categoryId={category.categoryId}
     >
-      <PageMeta
-        pageTitle={`${category.name.toUpperCase()} | Gistoracle`}
-        urlPath={urlPath}
+      <NextSeo
+        title={`${category.name.toUpperCase()} | Gistoracle`}
         description={category.description}
+        canonical={`https://www.gistoracle.com${urlPath}`}
+        openGraph={{
+          url: `https://www.gistoracle.com${urlPath}`,
+          title: `${category.name.toUpperCase()} | Gistoracle`,
+          description: category.description,
+          site_name: "Gistoracle",
+          type: "website",
+        }}
+        twitter={{
+          site: "@gistoracle",
+          cardType: "summary",
+        }}
       />
 
       <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">

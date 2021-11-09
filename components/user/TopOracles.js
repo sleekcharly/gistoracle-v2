@@ -43,10 +43,9 @@ function TopOracles() {
       <div>
         {topOracles &&
           topOracles.map((oracle, i) => (
-            <>
+            <div key={oracle.userId}>
               <a
                 href={`/user/${oracle.username}`}
-                key={oracle.userId}
                 className="flex items-center space-x-2 xl:space-x-10 p-3"
               >
                 <img
@@ -62,7 +61,7 @@ function TopOracles() {
                 </p>
               </a>
               <Divider />
-            </>
+            </div>
           ))}
       </div>
     </div>

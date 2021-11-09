@@ -2,17 +2,13 @@ import axios from "axios";
 import React, { useContext, useState, useEffect, createContext } from "react";
 import { auth, dataStore, analytics } from "../firebase";
 import {
-  CLEAR_ERRORS,
   CLEAR_LOGIN_ERRORS,
   CLEAR_SIGNUP_ERRORS,
-  SET_ERRORS,
   SET_LOGIN_ERRORS,
   SET_SIGNUP_ERRORS,
 } from "../redux/types/uiTypes";
-import { useStore } from "../redux/store";
 import { validateLoginData, validateSignupData } from "../utils/validator";
-import { useSelector, useDispatch } from "react-redux";
-import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 // define components authentication context
 const AuthContext = createContext();
@@ -28,7 +24,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
 
   // define loading state
-  const [loading, setLoading] = useState(false);
+  //   const [loading, setLoading] = useState(false);
 
   // define dispatch
   const dispatch = useDispatch();
@@ -284,25 +280,11 @@ export function AuthProvider({ children }) {
     axios.defaults.headers.common["Authorization"] = FBIdToken;
   };
 
-  // monitor router change
-  //   useEffect(() => {
-  //     const handleStart = () => {
-  //       setLoading(true);
-  //     };
-  //     const handleComplete = () => {
-  //       setLoading(false);
-  //     };
-
-  //     router.events.on("routeChangeStart", handleStart);
-  //     router.events.on("routeChangeComplete", handleComplete);
-  //     router.events.on("routeChangeError", handleComplete);
-  //   }, [router]);
-
   // useEffect to track authentication changes and set current user
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
-      setLoading(false);
+      //   setLoading(false);
     });
 
     return unsubscribe;
@@ -318,9 +300,5 @@ export function AuthProvider({ children }) {
     deleteUserCollection,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

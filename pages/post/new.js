@@ -1,3 +1,4 @@
+import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
 import PageMeta from "../../utils/pageMeta";
@@ -9,13 +10,39 @@ import { userAuthRefresh } from "../../utils/userFunction";
 import PostRules from "../../components/post/PostRules";
 import ShrineInfo from "../../components/shrine/ShrineInfo";
 import { shallowEqual, useSelector } from "react-redux";
+import { useRouter } from "next/router";
 
 function NewPost({ urlPath }) {
-  // check for existing token and token expiration to maintain user authentication
-  userAuthRefresh();
+  const router = useRouter();
 
+  const [pageLoading, setPageLoading] = useState(false);
+  const [token, setToken] = useState(null);
   // set state boolean to track
   const [shrineSelected, setShrineSelected] = useState(false);
+
+  useEffect(() => {
+    const handleStart = () => {
+      setPageLoading(true);
+    };
+    const handleComplete = () => {
+      setPageLoading(false);
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleComplete);
+    router.events.on("routeChangeError", handleComplete);
+  }, [router]);
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) {
+      !pageLoading && setToken(localStorage.FBIdToken);
+    }
+  }, [pageLoading]);
+
+  // check for existing token and token expiration to maintain user authentication
+  token && userAuthRefresh();
 
   // *** get redux state parameters ***//
   const useStateParameters = () => {
@@ -44,12 +71,25 @@ function NewPost({ urlPath }) {
 
   return (
     <Layout page="post" pageComponent="createPost">
-      <PageMeta pageTitle="Gistoracle | New post" urlPath={urlPath} />
+      <NextSeo
+        title="Gistoracle | New post"
+        canonical={`https://www.gistoracle.com${urlPath}`}
+        openGraph={{
+          url: `https://www.gistoracle.com${urlPath}`,
+          title: "Gistoracle | New post",
+          site_name: "Gistoracle",
+          type: "website",
+        }}
+        twitter={{
+          site: "@gistoracle",
+          cardType: "summary",
+        }}
+      />
 
       <div className="w-full mt-2 lg:w-[90%] 2xl:w-[80%] mr-auto ml-auto flex space-x-4 bg-white p-4">
         <main className="w-full flex-grow-1">
           {/* post page component */}
-          <CreatePostComponent />
+          {token && <CreatePostComponent />}
         </main>
 
         <aside id="sidebar" className="hidden lg:block w-[45%] xl:w-[30%]">

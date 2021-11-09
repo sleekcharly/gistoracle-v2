@@ -80,8 +80,8 @@ function TopCatShrines() {
       <div>
         {topShrines &&
           topShrines.map((shrine, i) => (
-            <>
-              <div key={shrine.shrineId}>
+            <div key={shrine.shrineId}>
+              <div>
                 <div className="p-2 flex items-center space-x-2 xl:space-x-3">
                   <span className="flex items-center space-x-1">
                     <TrendingUp fontSize="small" color="secondary" />
@@ -107,7 +107,7 @@ function TopCatShrines() {
                 </div>
               </div>
               <Divider />
-            </>
+            </div>
           ))}
       </div>
     </div>

@@ -5,7 +5,9 @@ const { useAuth } = require("../contexts/AuthContext");
 const { getUserData } = require("../redux/actions/userActions");
 const { getTailoredPosts } = require("../redux/actions/dataActions");
 
-exports.userAuthRefresh = (page, token) => {
+exports.userAuthRefresh = (page) => {
+  // get the authentication token form  the local storage
+  const token = localStorage.FBIdToken;
   // destructure current user;
   const { currentUser } = useAuth();
 

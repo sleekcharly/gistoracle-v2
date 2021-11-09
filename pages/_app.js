@@ -37,7 +37,7 @@ function MyApp({ Component, pageProps }) {
   return (
     // <ThemeProvider enableSystem={true} attribute="class"> for dark mode
     <ThemeProvider>
-      {/* <DefaultSeo
+      <DefaultSeo
         title={metaTitle}
         description={metaDescription}
         canonical={metaUrl}
@@ -53,7 +53,7 @@ function MyApp({ Component, pageProps }) {
           site: "@gistoracle",
           cardType: "summary",
         }}
-      /> */}
+      />
       <MuiThemeProvider theme={theme}>
         <SnackbarProvider
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
