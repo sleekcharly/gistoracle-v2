@@ -1,3 +1,4 @@
+import { NextSeo } from "next-seo";
 import InfoHeader from "../components/layout/InfoHeader";
 import PrivacyComponent from "../components/PrivacyComponent";
 import PageMeta from "../utils/pageMeta";
@@ -5,11 +6,22 @@ import PageMeta from "../utils/pageMeta";
 function Privacy({ urlPath }) {
   return (
     <div className="bg-[#f2f6f7]">
-      <PageMeta
-        pageTitle="Privacy policy | Gistoracle"
+      <NextSeo
+        title="Privacy policy | Gistoracle"
         description='Gistoracle recognizes that your privacy is very important, and this we take this seriously. Our privacy policy ("Privacy Policy")      describes our policies and procedures about, extraction, use, disclosure and sharing of your personal data when you use Gistoracle'
-        urlPath={urlPath}
-        contentType="article"
+        canonical={`https://www.gistoracle.com${urlPath}`}
+        openGraph={{
+          url: `https://www.gistoracle.com${urlPath}`,
+          title: "Privacy policy | Gistoracle",
+          description:
+            'Gistoracle recognizes that your privacy is very important, and this we take this seriously. Our privacy policy ("Privacy Policy")      describes our policies and procedures about, extraction, use, disclosure and sharing of your personal data when you use Gistoracle',
+          site_name: "Gistoracle",
+          type: "article",
+        }}
+        twitter={{
+          site: "@gistoracle",
+          cardType: "summary",
+        }}
       />
       <InfoHeader page="privacy" />
 

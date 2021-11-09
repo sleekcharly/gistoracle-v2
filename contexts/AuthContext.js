@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
 
   // define loading state
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // define dispatch
   const dispatch = useDispatch();
@@ -283,6 +283,20 @@ export function AuthProvider({ children }) {
     localStorage.setItem("FBIdToken", FBIdToken);
     axios.defaults.headers.common["Authorization"] = FBIdToken;
   };
+
+  // monitor router change
+  //   useEffect(() => {
+  //     const handleStart = () => {
+  //       setLoading(true);
+  //     };
+  //     const handleComplete = () => {
+  //       setLoading(false);
+  //     };
+
+  //     router.events.on("routeChangeStart", handleStart);
+  //     router.events.on("routeChangeComplete", handleComplete);
+  //     router.events.on("routeChangeError", handleComplete);
+  //   }, [router]);
 
   // useEffect to track authentication changes and set current user
   useEffect(() => {

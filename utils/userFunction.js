@@ -5,12 +5,9 @@ const { useAuth } = require("../contexts/AuthContext");
 const { getUserData } = require("../redux/actions/userActions");
 const { getTailoredPosts } = require("../redux/actions/dataActions");
 
-exports.userAuthRefresh = (page) => {
+exports.userAuthRefresh = (page, token) => {
   // destructure current user;
   const { currentUser } = useAuth();
-
-  // get the authentication token from the local storage
-  const token = localStorage.FBIdToken;
 
   // set dispatch
   const dispatch = useDispatch();
