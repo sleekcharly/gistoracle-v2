@@ -243,7 +243,7 @@ function SettngsComponent() {
   // handle submission of  edited profile
   const handleSubmit = async () => {
     // get authorization token from local storage
-    const token = localStorage.FBIdToken;
+    const token = typeof window !== "undefined" && localStorage.FBIdToken;
 
     // decode token
     const decodedToken = jwtDecode(token);
@@ -460,7 +460,7 @@ function SettngsComponent() {
     event.preventDefault();
 
     // get authentication token from te local storage
-    const token = localStorage.FBIdToken;
+    const token = typeof window !== "undefined" && localStorage.FBIdToken;
 
     // decode token
     const decodedToken = jwtDecode(token);
@@ -557,11 +557,7 @@ function SettngsComponent() {
   return (
     <div>
       {/* header */}
-      <SettingsHeader
-        logout={logout}
-        currentUser={currentUser}
-        credentials={credentials}
-      />
+      <SettingsHeader logout={logout} credentials={credentials} />
 
       {/* main body for larger devices*/}
       <section className="hidden lg:block bg-gradient-to-r from-[#212c39] via-[#121e3d] to-[#323552] bg-no-repeat">

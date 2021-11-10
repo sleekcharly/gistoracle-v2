@@ -42,7 +42,8 @@ function CreatePostComponent({ shrineName }) {
   const [componentShrine, setComponentShrine] = useState(null);
 
   // get Authorization token from browser local storage
-  const token = window.localStorage.getItem("FBIdToken");
+  const token =
+    typeof window !== "undefined" && window.localStorage.getItem("FBIdToken");
 
   // set dispatch
   const dispatch = useDispatch();

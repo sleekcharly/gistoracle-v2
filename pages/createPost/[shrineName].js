@@ -1,7 +1,6 @@
 import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
 import Layout from "../../components/layout/Layout";
-import PageMeta from "../../utils/pageMeta";
 import CreatePostComponent from "../../components/post/CreatePostComponent";
 import { db } from "../../firebase";
 import { initializeStore } from "../../redux/store";
@@ -10,39 +9,13 @@ import { userAuthRefresh } from "../../utils/userFunction";
 import PostRules from "../../components/post/PostRules";
 import ShrineInfo from "../../components/shrine/ShrineInfo";
 import { shallowEqual, useSelector } from "react-redux";
-import { useRouter } from "next/router";
 
 function CreatePost({ urlPath, shrineName }) {
-  const router = useRouter();
-
-  const [pageLoading, setPageLoading] = useState(false);
-  const [token, setToken] = useState(null);
   // set state boolean to track
   const [shrineSelected, setShrineSelected] = useState(false);
 
-  useEffect(() => {
-    const handleStart = () => {
-      setPageLoading(true);
-    };
-    const handleComplete = () => {
-      setPageLoading(false);
-    };
-
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
-  }, [router]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      !pageLoading && setToken(localStorage.FBIdToken);
-    }
-  }, [pageLoading]);
-
   // check for existing token and token expiration to maintain user authentication
-  token && userAuthRefresh();
+  userAuthRefresh();
 
   // *** get redux state parameters ***//
   const useStateParameters = () => {

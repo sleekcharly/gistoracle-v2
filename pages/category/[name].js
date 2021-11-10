@@ -1,6 +1,5 @@
 import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import CategoryComponent from "../../components/category/CategoryComponent";
 import AppSidebar from "../../components/layout/AppSidebar";
 import Layout from "../../components/layout/Layout";
@@ -8,41 +7,20 @@ import { analytics, db } from "../../firebase";
 import { initializeStore } from "../../redux/store";
 import { SET_CATEGORY } from "../../redux/types/dataTypes";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../redux/types/uiTypes";
-import PageMeta from "../../utils/pageMeta";
 import { userAuthRefresh } from "../../utils/userFunction";
 
 function Category({ category, urlPath }) {
-  const router = useRouter();
-
-  const [pageLoading, setPageLoading] = useState(false);
-  const [token, setToken] = useState(null);
-
-  useEffect(() => {
-    const handleStart = () => {
-      setPageLoading(true);
-    };
-    const handleComplete = () => {
-      setPageLoading(false);
-    };
-
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
-  }, [router]);
-
+  //   log analytics event
   useEffect(() => {
     let mounted = true;
 
-    if (mounted) {
-      !pageLoading && setToken(localStorage.FBIdToken);
-    }
-  }, [pageLoading]);
+    if (mounted) analytics().logEvent(`${category.name}_page_view`);
+
+    return () => (mounted = false);
+  }, []);
 
   // check for existing token and token expiration to maintain user authentication
-  token && userAuthRefresh();
-
-  //   log analytics event
-  token && analytics().logEvent(`${category.name}_page_view`);
+  userAuthRefresh();
 
   return (
     <Layout

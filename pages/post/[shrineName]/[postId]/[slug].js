@@ -15,34 +15,8 @@ import { userAuthRefresh } from "../../../../utils/userFunction";
 import { useRouter } from "next/router";
 
 function Post({ postData, postId, urlPath }) {
-  const router = useRouter();
-
-  const [pageLoading, setPageLoading] = useState(false);
-  const [token, setToken] = useState(null);
-
-  useEffect(() => {
-    const handleStart = () => {
-      setPageLoading(true);
-    };
-    const handleComplete = () => {
-      setPageLoading(false);
-    };
-
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
-  }, [router]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      !pageLoading && setToken(localStorage.FBIdToken);
-    }
-  }, [pageLoading]);
-
   // check for existing token and token expiration to maintain user authentication
-  token && userAuthRefresh();
+  userAuthRefresh();
 
   return (
     <>

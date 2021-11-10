@@ -10,39 +10,13 @@ import { userAuthRefresh } from "../../utils/userFunction";
 import PostRules from "../../components/post/PostRules";
 import ShrineInfo from "../../components/shrine/ShrineInfo";
 import { shallowEqual, useSelector } from "react-redux";
-import { useRouter } from "next/router";
 
 function NewPost({ urlPath }) {
-  const router = useRouter();
-
-  const [pageLoading, setPageLoading] = useState(false);
-  const [token, setToken] = useState(null);
   // set state boolean to track
   const [shrineSelected, setShrineSelected] = useState(false);
 
-  useEffect(() => {
-    const handleStart = () => {
-      setPageLoading(true);
-    };
-    const handleComplete = () => {
-      setPageLoading(false);
-    };
-
-    router.events.on("routeChangeStart", handleStart);
-    router.events.on("routeChangeComplete", handleComplete);
-    router.events.on("routeChangeError", handleComplete);
-  }, [router]);
-
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      !pageLoading && setToken(localStorage.FBIdToken);
-    }
-  }, [pageLoading]);
-
   // check for existing token and token expiration to maintain user authentication
-  token && userAuthRefresh();
+  userAuthRefresh();
 
   // *** get redux state parameters ***//
   const useStateParameters = () => {
@@ -88,8 +62,7 @@ function NewPost({ urlPath }) {
 
       <div className="w-full mt-2 lg:w-[90%] 2xl:w-[80%] mr-auto ml-auto flex space-x-4 bg-white p-4">
         <main className="w-full flex-grow-1">
-          {/* post page component */}
-          {token && <CreatePostComponent />}
+          <CreatePostComponent />
         </main>
 
         <aside id="sidebar" className="hidden lg:block w-[45%] xl:w-[30%]">

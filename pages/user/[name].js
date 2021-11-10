@@ -1,4 +1,5 @@
-import React from "react";
+import { NextSeo } from "next-seo";
+import React, { useEffect } from "react";
 import Layout from "../../components/layout/Layout";
 import UserComponent from "../../components/user/UserComponent";
 import AppSidebar from "../../components/layout/AppSidebar";
@@ -6,7 +7,6 @@ import { analytics, db } from "../../firebase";
 import { initializeStore } from "../../redux/store";
 import { SET_FEATURED_NAV_CATEGORIES } from "../../redux/types/uiTypes";
 import { SET_USER_PROFILE } from "../../redux/types/userTypes";
-import PageMeta from "../../utils/pageMeta";
 import { userAuthRefresh } from "../../utils/userFunction";
 
 function User({ urlPath, user, username }) {
@@ -14,21 +14,51 @@ function User({ urlPath, user, username }) {
   userAuthRefresh();
 
   //   log analytics event
-  analytics().logEvent(`${user.username}profile_page_view`);
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) analytics().logEvent(`${user.username}profile_page_view`);
+
+    return () => (mounted = false);
+  }, []);
 
   return (
     <Layout page="shrine" drawerPage="user" username={username}>
-      <PageMeta
-        pageTitle={`${
+      <NextSeo
+        title={`${
           user.displayName ? user.displayName : user.username
         } | Gistoracle`}
-        urlPath={urlPath}
         description={`${
           user.displayName ? user.displayName : user.username
         } Gistoracle profile page. View posts and shrines created by ${
           user.displayName ? user.displayName : user.username
         }`}
-        thumbnail={user.imageUrl}
+        canonical={`https://www.gistoracle.com${urlPath}`}
+        openGraph={{
+          url: `https://www.gistoracle.com${urlPath}`,
+          title: `${
+            user.displayName ? user.displayName : user.username
+          } | Gistoracle`,
+          description: `${
+            user.displayName ? user.displayName : user.username
+          } Gistoracle profile page. View posts and shrines created by ${
+            user.displayName ? user.displayName : user.username
+          }`,
+          images: [
+            {
+              url: user.imageUrl,
+              width: 400,
+              height: 400,
+              alt: user.displayName ? user.displayName : user.username,
+            },
+          ],
+          site_name: "Gistoracle",
+          type: "website",
+        }}
+        twitter={{
+          site: "@gistoracle",
+          cardType: "summary",
+        }}
       />
 
       <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">

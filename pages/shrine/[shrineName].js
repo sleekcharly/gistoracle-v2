@@ -1,4 +1,5 @@
-import React from "react";
+import { NextSeo } from "next-seo";
+import React, { useEffect } from "react";
 import AppSidebar from "../../components/layout/AppSidebar";
 import Layout from "../../components/layout/Layout";
 import ShrineComponent from "../../components/shrine/shrineComponent";
@@ -10,19 +11,43 @@ import PageMeta from "../../utils/pageMeta";
 import { userAuthRefresh } from "../../utils/userFunction";
 
 function Shrine({ shrine, urlPath }) {
+  //   log analytics event
+  useEffect(() => {
+    let mounted = true;
+
+    if (mounted) analytics().logEvent(`${shrine.name}_page_view`);
+
+    return () => (mounted = false);
+  }, []);
+
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
 
-  //   log analytics event
-  analytics().logEvent(`${shrine.name}_page_view`);
-
   return (
     <Layout page="shrine" drawerPage="shrine">
-      <PageMeta
-        pageTitle={`${shrine.name.toUpperCase()} shrine | Gistoracle`}
-        urlPath={urlPath}
+      <NextSeo
+        title={`${shrine.name.toUpperCase()} shrine | Gistoracle`}
         description={shrine.description}
-        thumbnail={shrine.avatar ? shrine.avatar : null}
+        canonical={`https://www.gistoracle.com${urlPath}`}
+        openGraph={{
+          url: `https://www.gistoracle.com${urlPath}`,
+          title: `${shrine.name.toUpperCase()} shrine | Gistoracle`,
+          description: shrine.description,
+          images: [
+            {
+              url: shrine.avatar ? shrine.avatar : "/images/shrineAvatar.png",
+              width: 400,
+              height: 400,
+              alt: `${shrine.name} avatar`,
+            },
+          ],
+          site_name: "Gistoracle",
+          type: "website",
+        }}
+        twitter={{
+          site: "@gistoracle",
+          cardType: "summary",
+        }}
       />
 
       <div className="w-full mt-2 lg:w-[97%] mr-auto ml-auto flex space-x-4">

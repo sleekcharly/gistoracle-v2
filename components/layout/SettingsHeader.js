@@ -5,21 +5,13 @@ import { Avatar, Menu, MenuItem } from "@material-ui/core";
 import { ArrowDropDown } from "@material-ui/icons";
 import { LogoutIcon, MenuIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
+import { auth } from "../../firebase";
+import axios from "axios";
+import { analytics } from "../../firebase";
 
-function SettingsHeader({ logout, currentUser, credentials }) {
+function SettingsHeader({ logout, credentials }) {
   // define router
   const router = useRouter();
-
-  // check if user is loged in or redirect to home page
-  useEffect(() => {
-    let mounted = true;
-
-    if (mounted) {
-      !currentUser && router.push("/");
-    }
-
-    return () => (mounted = false);
-  }, []);
 
   // define component state
   const [anchorEl, setAnchorEl] = useState(null);
@@ -36,14 +28,22 @@ function SettingsHeader({ logout, currentUser, credentials }) {
 
   // handler for calling the logout function
   const handleLogout = async () => {
-    try {
-      console.log("user is logged out");
-
-      await logout();
-      router.push("/");
-    } catch {
-      console.log("Failed to logout");
-    }
+    await auth
+      .signOut()
+      .then(() => {
+        // log analytics event
+        analytics().logEvent("logout");
+      })
+      .then(() => {
+        // delete authorization headers
+        typeof window !== "undefined" && localStorage.removeItem("FBIdToken");
+        delete axios.defaults.headers.common["Authorization"];
+        router.push("/");
+      })
+      .catch((err) => {
+        console.error(err);
+        console.log("Failed to logout");
+      });
   };
 
   return (

@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
 
   // define loading state
-  //   const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // define dispatch
   const dispatch = useDispatch();
@@ -284,7 +284,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setCurrentUser(user);
-      //   setLoading(false);
+      setLoading(false);
     });
 
     return unsubscribe;
@@ -298,6 +298,7 @@ export function AuthProvider({ children }) {
     logout,
     checkPassword,
     deleteUserCollection,
+    loading,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
