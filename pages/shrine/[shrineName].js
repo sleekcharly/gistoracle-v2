@@ -44,6 +44,9 @@ function Shrine({ shrine, urlPath }) {
           site_name: "Gistoracle",
           type: "website",
         }}
+        facebook={{
+          appId: "648521896142401",
+        }}
         twitter={{
           site: "@gistoracle",
           cardType: "summary",

@@ -53,6 +53,9 @@ function CreatePost({ urlPath, shrineName }) {
           site_name: "Gistoracle",
           type: "website",
         }}
+        facebook={{
+          appId: "648521896142401",
+        }}
         twitter={{
           site: "@gistoracle",
           cardType: "summary",
