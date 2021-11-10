@@ -376,9 +376,15 @@ function UserComponent({ user }) {
                 ? `😲 No posts by @${user.username}`
                 : "😲OMG!!!! ..... Seems no posts live here yet"}
             </p>
-            <div className="cursor-pointer">
-              <p className="text-gray-800">create post</p>
-            </div>
+
+            <button
+              onClick={() => {
+                window.location.href = "/post/new";
+              }}
+              className="text-sm  2xl:text-base text-gray-700 font-semibold bg-[#ccc8c8] rounded-md py-1 px-2 uppercase mt-3"
+            >
+              Create post 🤠
+            </button>
           </div>
         </div>
       ) : (
