@@ -47,11 +47,13 @@ handler.get(async (req, res) => {
             postData.saves--;
             return postDocument.update({
               saves: postData.saves,
+              userId: req.user.uid,
             });
           })
           .then(() => {
             return userRef.update({
               savedPosts: admin.firestore.FieldValue.increment(-1),
+              userId: req.user.uid,
             });
           })
           .then(() => {

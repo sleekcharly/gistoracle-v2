@@ -98,10 +98,12 @@ handler.post(async (req, res) => {
 
             // update shrine collection with new shrineAvatar
             const shrineRef = db.doc(`/shrines/${req.query.shrineId}`);
-            await shrineRef.update({ avatar: shrineAvatar }).catch((err) => {
-              console.error(err);
-              console.log("could not update shrine document");
-            });
+            await shrineRef
+              .update({ avatar: shrineAvatar, userId: req.user.uid })
+              .catch((err) => {
+                console.error(err);
+                console.log("could not update shrine document");
+              });
           })
           .then(() => {
             return res

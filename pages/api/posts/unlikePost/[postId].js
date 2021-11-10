@@ -40,7 +40,10 @@ handler.get(async (req, res) => {
           .delete()
           .then(() => {
             postData.likes--;
-            return postDocument.update({ likes: postData.likes });
+            return postDocument.update({
+              likes: postData.likes,
+              userId: req.user.uid,
+            });
           })
           .then(() => {
             return db
@@ -60,6 +63,7 @@ handler.get(async (req, res) => {
 
             userRef.update({
               vibrations: admin.firestore.FieldValue.increment(-0.15),
+              userId: req.user.uid,
             });
 
             return res.json(postData);

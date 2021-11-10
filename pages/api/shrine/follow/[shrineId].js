@@ -85,6 +85,7 @@ handler.get(async (req, res) => {
             const userRef = db.doc(`/users/${userId[0]}`);
             batch.update(userRef, {
               vibrations: admin.firestore.FieldValue.increment(0.2),
+              userId: req.user.userId,
               shrines: admin.firestore.FieldValue.arrayUnion(
                 req.query.shrineId
               ),
@@ -94,6 +95,7 @@ handler.get(async (req, res) => {
             const shrineRef = db.doc(`/shrines/${req.query.shrineId}`);
             batch.update(shrineRef, {
               users: admin.firestore.FieldValue.arrayUnion(req.user.userId),
+              userId: req.user.userId,
             });
 
             // run batch operation

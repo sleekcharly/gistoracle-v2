@@ -25,6 +25,7 @@ handler.post(async (req, res) => {
     categoryName: req.body.categoryName,
     shrineName: req.body.shrineName,
     postThumbnail: req.body.postThumbnail ? req.body.postThumbnail : "",
+    userId: req.user.uid,
   };
 
   // create new post document
@@ -36,7 +37,7 @@ handler.post(async (req, res) => {
       await db
         .collection("posts")
         .doc(doc.id)
-        .update({ postId: doc.id })
+        .update({ postId: doc.id, userId: req.user.uid })
         .then(async () => {
           // get firebase admin object
           const admin = require("firebase-admin");
@@ -45,7 +46,10 @@ handler.post(async (req, res) => {
           await db
             .collection("shrines")
             .doc(newPost.shrineId)
-            .update({ postIds: admin.firestore.FieldValue.arrayUnion(doc.id) })
+            .update({
+              postIds: admin.firestore.FieldValue.arrayUnion(doc.id),
+              userId: req.user.uid,
+            })
             .then(() => {
               return res.status(200).json("post created successfully");
             })

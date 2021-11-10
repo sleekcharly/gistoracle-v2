@@ -13,6 +13,7 @@ handler.post(async (req, res) => {
     body: req.body.body,
     postId: req.body.postId,
     postThumbnail: req.body.postThumbnail,
+    userId: req.user.uid,
   };
 
   // update post document
@@ -23,6 +24,7 @@ handler.post(async (req, res) => {
       body: editedPost.body,
       slug: editedPost.slug,
       postThumbnail: editedPost.postThumbnail,
+      userId: editedPost.userId,
     })
     .then(() => {
       return res.status(200).json("Post updated successfully");

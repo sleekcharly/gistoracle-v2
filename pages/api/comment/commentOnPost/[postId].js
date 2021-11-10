@@ -25,6 +25,7 @@ handler.post(async (req, res) => {
     username: req.user.username,
     userImage: req.user.imageUrl,
     comments: 0,
+    userId: req.user.uid,
   };
 
   // run comment on post operation
@@ -65,12 +66,14 @@ handler.post(async (req, res) => {
           const postRef = db.doc(`/posts/${req.query.postId}`);
           batch.update(postRef, {
             commentCount: admin.firestore.FieldValue.increment(1),
+            userId: req.user.uid,
           });
 
           // update user collection
           const userRef = db.doc(`/users/${userId[0]}`);
           batch.update(userRef, {
             vibrations: admin.firestore.FieldValue.increment(0.2),
+            userId: req.user.uid,
           });
 
           return batch.commit();

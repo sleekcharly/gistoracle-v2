@@ -35,10 +35,17 @@ handler.get(async (req, res) => {
       if (data.empty) {
         return db
           .collection("postLikes")
-          .add({ postId: req.query.postId, username: req.user.username })
+          .add({
+            postId: req.query.postId,
+            username: req.user.username,
+            userId: req.user.uid,
+          })
           .then(() => {
             postData.likes++;
-            return postDocument.update({ likes: postData.likes });
+            return postDocument.update({
+              likes: postData.likes,
+              userId: req.user.uid,
+            });
           })
           .then(() => {
             return db
@@ -58,6 +65,7 @@ handler.get(async (req, res) => {
 
             userRef.update({
               vibrations: admin.firestore.FieldValue.increment(0.15),
+              userId: req.user.uid,
             });
 
             return res.json(postData);

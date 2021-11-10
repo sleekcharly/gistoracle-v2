@@ -22,6 +22,7 @@ handler.post(async (req, res) => {
     categoryName: req.body.categoryName,
     categoryId: null,
     description: req.body.description,
+    userId: req.user.uid,
   };
 
   const { valid, errors } = validateNewShrineData(newShrine);

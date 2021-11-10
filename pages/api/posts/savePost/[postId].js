@@ -43,18 +43,23 @@ handler.get(async (req, res) => {
           .add({
             postId: req.query.postId,
             username: req.user.username,
+            userId: req.user.uid,
           })
           .then(() => {
             // check to see if a saves field exists
             postData.saves ? postData.saves++ : (postData.saves = 1);
 
             // check to see if a saves field exist in the document and then update the post document in cloud
-            return postDocument.set({ saves: postData.saves }, { merge: true });
+            return postDocument.set(
+              { saves: postData.saves, userId: req.user.uid },
+              { merge: true }
+            );
           })
           .then(() => {
             // increment savedPosts field in user database
             return userRef.update({
               savedPosts: admin.firestore.FieldValue.increment(1),
+              userId: req.user.uid,
             });
           })
           .then(() => {

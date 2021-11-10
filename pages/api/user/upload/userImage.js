@@ -113,7 +113,7 @@ handler.post(async (req, res) => {
 
                 await db
                   .doc(`/users/${userId[0]}`)
-                  .update({ imageUrl })
+                  .update({ imageUrl, userId: req.user.uid })
                   .then(() => {
                     console.log("user collection updated successfully");
                   })

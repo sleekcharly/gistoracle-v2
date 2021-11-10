@@ -12,6 +12,7 @@ handler.post(async (req, res) => {
   const editedShrine = {
     name: req.body.name,
     description: req.body.description,
+    userId: req.user.uid,
   };
 
   // get currentShrineName

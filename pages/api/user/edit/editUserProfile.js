@@ -63,6 +63,7 @@ handler.post(async (req, res) => {
       newUserDetails.displayName = userDetails.displayName;
       newUserDetails.about = userDetails.about;
       newUserDetails.email = userDetails.email;
+      newUserDetails.userId = req.user.uid;
 
       // update user details from derived user id
       await db
