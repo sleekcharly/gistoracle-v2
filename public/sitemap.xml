@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url> <loc>https://gistoracle.com/</loc> </url>
+<url> <loc>https://gistoracle.com/category/news</loc> </url>
+<url> <loc>https://gistoracle.com/category/sports</loc> </url>
+<url> <loc>https://gistoracle.com/category/politics</loc> </url>
+<url> <loc>https://gistoracle.com/category/technology</loc> </url>
+<url> <loc>https://gistoracle.com/category/style</loc> </url>
+<url> <loc>https://gistoracle.com/category/health</loc> </url>
+<url> <loc>https://gistoracle.com/about</loc> </url>
+<url> <loc>https://gistoracle.com/privacy</loc> </url>
+<url> <loc>https://gistoracle.com/contentPolicy</loc> </url>
+<url> <loc>https://gistoracle.com/terms</loc> </url>
+<url> <loc>https://gistoracle.com/settings</loc> </url>
+</urlset>
