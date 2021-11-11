@@ -416,7 +416,7 @@ function CreatePostComponent({ shrineName }) {
                 placeholder: "Please type here...",
                 stickyToolbar: 60,
                 imageUploadHeader: { Authorization: token },
-                defaultStyle: "font-family: verdana; font-size: 20px",
+                defaultStyle: "font-family: verdana; font-size: 16px",
 
                 imageUploadUrl: "/api/posts/upload/postThumbnail",
                 imageAccept: ".jpg, .jpeg, .webp, .png, .tiff",

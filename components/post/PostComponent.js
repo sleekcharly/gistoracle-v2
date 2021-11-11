@@ -308,6 +308,10 @@ function PostComponent({ postId, currentUrl }) {
                 disable={true}
                 showToolbar={false}
                 height="auto"
+                setOptions={{
+                  defaultStyle: "font-family: verdana; font-size: 16px",
+                  showPathLabel: false,
+                }}
               />
             </div>
           ) : (
