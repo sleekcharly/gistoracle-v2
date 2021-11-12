@@ -173,7 +173,11 @@ export async function getServerSideProps(context) {
               userId: userData.credentials.userId,
             };
 
-            db.doc("/userSiteData").set(siteData);
+            db.collection("userSiteData")
+              .add(siteData)
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
           }
         })
         .catch((err) => console.error(err));
