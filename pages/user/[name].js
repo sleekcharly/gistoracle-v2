@@ -165,7 +165,7 @@ export async function getServerSideProps(context) {
         .where("userName", "==", username)
         .limit(1)
         .get()
-        .then((data) => {
+        .then(async (data) => {
           if (!data) {
             let siteData = {
               userName: username,
@@ -173,8 +173,12 @@ export async function getServerSideProps(context) {
               userId: userData.credentials.userId,
             };
 
-            db.collection("userSiteData")
+            await db
+              .collection("userSiteData")
               .add(siteData)
+              .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+              })
               .catch((error) => {
                 console.error("Error adding document: ", error);
               });
