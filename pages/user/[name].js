@@ -173,9 +173,7 @@ export async function getServerSideProps(context) {
               userId: userData.credentials.userId,
             };
 
-            db.doc("/userSiteData")
-              .set(siteData)
-              .catch((Err) => console.error(err));
+            db.doc("/userSiteData").set(siteData);
           }
         })
         .catch((err) => console.error(err));
