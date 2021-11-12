@@ -7,7 +7,7 @@ const Sitemap = () => {};
 
 export default Sitemap;
 
-export const getServerSideProps = ({ res }) => {
+export const getServerSideProps = async ({ res }) => {
   // set base url
   const baseUrl = {
     development: "http://localhost:5000",
