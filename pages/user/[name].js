@@ -166,7 +166,9 @@ export async function getServerSideProps(context) {
         .limit(1)
         .get()
         .then(async (data) => {
-          if (!data) {
+          if (data) {
+            console.log("site data exists");
+          } else {
             let siteData = {
               userName: username,
               updatedAt: new Date().toISOString(),
