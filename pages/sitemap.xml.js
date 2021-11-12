@@ -1,6 +1,7 @@
 // generatine a sitemap page for crawlers
 import React from "react";
 import fs from "fs";
+import { db } from "../firebase";
 
 const Sitemap = () => {};
 
@@ -26,6 +27,48 @@ export const getServerSideProps = ({ res }) => {
     .map((staticPagePath) => {
       return `${baseUrl}/${staticPagePath}`;
     });
+
+  // set dynamic shrine pages
+  const shrinePageData = await db
+    .collection("shrineSiteData")
+    .get()
+    .then((data) => {
+      let pageData = [];
+      data.forEach((doc) => {
+        pageData.push({ ...doc.data() });
+      });
+
+      return pageData;
+    })
+    .catch((err) => console.error(err));
+
+  // set dynamic user pages
+  const userPageData = await db
+    .collection("userSiteData")
+    .get()
+    .then((data) => {
+      let pageData = [];
+      data.forEach((doc) => {
+        pageData.push({ ...doc.data() });
+      });
+
+      return pageData;
+    })
+    .catch((err) => console.error(err));
+
+  // set dynamic post pages
+  const postPageData = await db
+    .collection("postSiteData")
+    .get()
+    .then((data) => {
+      let pageData = [];
+      data.forEach((doc) => {
+        pageData.push({ ...doc.data() });
+      });
+
+      return pageData;
+    })
+    .catch((err) => console.error(err));
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
@@ -233,6 +276,42 @@ export const getServerSideProps = ({ res }) => {
             <changefreq>monthly</changefreq>
             <priority>1.0</priority>
         </url>
+
+        ${shrinePageData
+          .map(({ name, updatedAt }) => {
+            return `
+            <url> 
+                <loc>${baseUrl}/shrine/${name}</loc> 
+                <lastmod>${updatedAt}</lastmod>
+                <changefreq>hourly</changefreq>
+                <priority>1.0</priority>
+            </url>`;
+          })
+          .join("")}
+
+          ${userPageData
+            .map(({ userName, updatedAt }) => {
+              return `
+                <url> 
+                    <loc>${baseUrl}/user/${userName}</loc> 
+                    <lastmod>${updatedAt}</lastmod>
+                    <changefreq>monthly</changefreq>
+                    <priority>1.0</priority>
+                </url>`;
+            })
+            .join("")}
+
+            ${postPageData
+              .map(({ shrineName, postId, slug, updatedAt }) => {
+                return `
+                <url> 
+                    <loc>${baseUrl}/post/${shrineName}/${postId}/${slug}</loc> 
+                    <lastmod>${updatedAt}</lastmod>
+                    <changefreq>monthly</changefreq>
+                    <priority>1.0</priority>
+                </url>`;
+              })
+              .join("")}
     
     </urlset>`;
 
