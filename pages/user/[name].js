@@ -159,6 +159,27 @@ export async function getServerSideProps(context) {
       // feed userdata to redux state user page profile
       await dispatch({ type: SET_USER_PROFILE, payload: userData });
     })
+    .then(async () => {
+      await db
+        .collection("userSiteData")
+        .where("userName", "==", username)
+        .limit(1)
+        .get()
+        .then((data) => {
+          if (!data) {
+            let siteData = {
+              userName: username,
+              updatedAt: new Date().toISOString(),
+              userId: userData.credentials.userId,
+            };
+
+            db.doc("/userSiteData")
+              .set(siteData)
+              .catch((Err) => console.error(err));
+          }
+        })
+        .catch((err) => console.error(err));
+    })
 
     .catch((err) => {
       console.error(err);
