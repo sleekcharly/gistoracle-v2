@@ -144,7 +144,36 @@ export async function getServerSideProps(context) {
 
       shrineData.followersData = followers;
     })
-    .catch((err) => console.lerror(err));
+    .catch((err) => console.error(err));
+
+  // perform sitemap operation
+  await db
+    .collection("shrineSiteData")
+    .where("name", "==", shrineName)
+    .limit(1)
+    .get()
+    .then(async (data) => {
+      if (data.docs[0]) {
+        console.log("site data exists");
+      } else {
+        let siteData = {
+          name: shrineName,
+          updatedAt: new Date().toISOString(),
+          userId: shrineData.userId,
+        };
+
+        await db
+          .collection("shrineSiteData")
+          .add(siteData)
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+          });
+      }
+    })
+    .catch((err) => console.error(err));
 
   // feed shrine data to redux state
   await dispatch({ type: SET_SHRINE, payload: shrineData });
