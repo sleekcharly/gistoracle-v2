@@ -20,9 +20,17 @@ export const getServerSideProps = async ({ res }) => {
       { development: "pages", production: "./" }[process.env.NODE_ENV]
     )
     .filter((staticPage) => {
-      return !["_app.js", "_document.js", "sitemap.xml.js"].includes(
-        staticPage
-      );
+      return ![
+        "_app.js",
+        "_document.js",
+        "sitemap.xml.js",
+        ".env.development",
+        ".next",
+        "___next_launcher.js",
+        "___vc_bridge.js",
+        "node_modules",
+        "package.json",
+      ].includes(staticPage);
     })
     .map((staticPagePath) => {
       return `${baseUrl}/${staticPagePath}`;
