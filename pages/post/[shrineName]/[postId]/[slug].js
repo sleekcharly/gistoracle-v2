@@ -155,6 +155,35 @@ export async function getServerSideProps(context) {
       console.log(err.message);
     });
 
+  // perform sitemap operation
+  await db
+    .collection("postSiteData")
+    .where("postId", "==", postData.postId)
+    .limit(1)
+    .get()
+    .then(async (data) => {
+      if (data.docs[0]) {
+        console.log("site data exists");
+      } else {
+        await db
+          .collection("postSiteData")
+          .add({
+            postId: postData.postId,
+            shrineName: postData.shrineName,
+            slug: postData.slug,
+            updatedAt: new Date().toISOString(),
+            userId: postData.userId,
+          })
+          .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+          });
+      }
+    })
+    .catch((err) => console.error(err));
+
   // feed postdata to redux
   await dispatch({ type: SET_POST, payload: postData });
 
