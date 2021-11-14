@@ -23,7 +23,32 @@ handler.post(async (req, res) => {
         userId.push(doc.id);
       });
 
-      console.log(userId);
+      // delete page data for sitemap
+      await db
+        .collection("userSiteData")
+        .where("userId", "==", req.user.uid)
+        .limit(1)
+        .get()
+        .then(async (data) => {
+          let siteId = [];
+
+          data.forEach((doc) => {
+            siteId.push(doc.id);
+          });
+
+          await db
+            .collection("userSiteData")
+            .doc(siteId[0])
+            .delete()
+            .then(() => {
+              console.log("Document deleted");
+            })
+            .catch((error) => {
+              console.error("Error deleting document", error);
+            });
+        })
+        .catch((err) => console.error(err));
+
       // delete user profile in database
       await db
         .doc(`/users/${userId[0]}`)

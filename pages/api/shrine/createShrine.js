@@ -57,6 +57,35 @@ handler.post(async (req, res) => {
 
             newShrine.categoryId = categoryId[0];
 
+            // perform sitemap operation
+            await db
+              .collection("shrineSiteData")
+              .where("name", "==", newShrine.name)
+              .limit(1)
+              .get()
+              .then(async (data) => {
+                if (data.docs[0]) {
+                  console.log("site data exists");
+                } else {
+                  let siteData = {
+                    name: newShrine.name,
+                    updatedAt: new Date().toISOString(),
+                    userId: req.user.uid,
+                  };
+
+                  await db
+                    .collection("shrineSiteData")
+                    .add(siteData)
+                    .then((docRef) => {
+                      console.log("Document written with ID: ", docRef.id);
+                    })
+                    .catch((error) => {
+                      console.error("Error adding document: ", error);
+                    });
+                }
+              })
+              .catch((err) => console.error(err));
+
             // add new shrine to shrines collection in database
             await db
               .collection("shrines")

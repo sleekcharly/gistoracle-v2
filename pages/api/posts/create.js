@@ -33,6 +33,35 @@ handler.post(async (req, res) => {
     .collection("posts")
     .add(newPost)
     .then(async (doc) => {
+      // set page data for sitemap
+      await db
+        .collection("postSiteData")
+        .where("postId", "==", doc.id)
+        .limit(1)
+        .get()
+        .then(async (data) => {
+          if (data.docs[0]) {
+            console.log("site data exists");
+          } else {
+            await db
+              .collection("postSiteData")
+              .add({
+                postId: doc.id,
+                shrineName: newPost.shrineName,
+                slug: newPost.slug,
+                updatedAt: new Date().toISOString(),
+                userId: req.user.uid,
+              })
+              .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+              })
+              .catch((error) => {
+                console.error("Error adding document: ", error);
+              });
+          }
+        })
+        .catch((err) => console.error(err));
+
       // set postId field
       await db
         .collection("posts")

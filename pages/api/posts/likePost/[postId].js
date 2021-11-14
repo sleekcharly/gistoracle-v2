@@ -54,13 +54,43 @@ handler.get(async (req, res) => {
               .limit(1)
               .get();
           })
-          .then((data) => {
+          .then(async (data) => {
             //   get userId
             let userId = [];
             data.forEach((doc) => {
               userId.push(doc.id);
             });
 
+            // update page data for sitemap
+            await db
+              .collection("postSiteData")
+              .where("postId", "==", req.query.postId)
+              .limit(1)
+              .get()
+              .then(async (data) => {
+                let siteId = [];
+
+                data.forEach((doc) => {
+                  siteId.push(doc.id);
+                });
+
+                await db
+                  .collection("postSiteData")
+                  .doc(siteId[0])
+                  .update({
+                    updatedAt: new Date().toISOString(),
+                    userId: req.user.uid,
+                  })
+                  .then(() => {
+                    console.log("Document updated");
+                  })
+                  .catch((error) => {
+                    console.error("Error updating document", error);
+                  });
+              })
+              .catch((err) => console.error(err));
+
+            // get reference to user
             const userRef = db.doc(`/users/${userId[0]}`);
 
             userRef.update({

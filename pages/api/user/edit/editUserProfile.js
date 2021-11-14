@@ -65,6 +65,36 @@ handler.post(async (req, res) => {
       newUserDetails.email = userDetails.email;
       newUserDetails.userId = req.user.uid;
 
+      // update page data for sitemap
+      await db
+        .collection("userSiteData")
+        .where("userName", "==", req.user.username)
+        .limit(1)
+        .get()
+        .then(async (data) => {
+          let siteId = [];
+
+          data.forEach((doc) => {
+            siteId.push(doc.id);
+          });
+
+          await db
+            .collection("userSiteData")
+            .doc(siteId[0])
+            .update({
+              updatedAt: new Date().toISOString(),
+              userName: newUserDetails.username,
+              userId: req.user.uid,
+            })
+            .then(() => {
+              console.log("Document updated");
+            })
+            .catch((error) => {
+              console.error("Error updating document", error);
+            });
+        })
+        .catch((err) => console.error(err));
+
       // update user details from derived user id
       await db
         .doc(`/users/${userId[0]}`)
