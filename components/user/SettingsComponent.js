@@ -250,8 +250,6 @@ function SettngsComponent() {
 
     // if token is expired logout user and return to homepage
     if (decodedToken.exp * 1000 < Date.now()) {
-      logout();
-
       // return to home page
       router.push("/");
     } else {
@@ -281,9 +279,6 @@ function SettngsComponent() {
       // set credentials
       var user = currentUser;
       var userCredentials = dataStore.auth.EmailAuthProvider.credential(
-        credentials.email,
-        values.password
-      ).auth.EmailAuthProvider.credential(
         credentials.email,
         values.currentPassword
       );
