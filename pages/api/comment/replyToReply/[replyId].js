@@ -48,7 +48,7 @@ handler.post(async (req, res) => {
         .limit(1)
         .get();
     })
-    .then((data) => {
+    .then(async (data) => {
       let userId = [];
       data.forEach((doc) => {
         userId.push(doc.id);
