@@ -52,7 +52,7 @@ handler.get(async (req, res) => {
               .limit(1)
               .get();
           })
-          .then((data) => {
+          .then(async (data) => {
             //   get userId
             let userId = [];
             data.forEach((doc) => {
