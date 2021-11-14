@@ -87,6 +87,12 @@ function MyApp({ Component, pageProps }) {
                     site: "@gistoracle",
                     cardType: "summary",
                   }}
+                  additionalMetaTags={[
+                    {
+                      property: "facebook-domain-verification",
+                      content: "z42jagycnlqtpdw8qpzsl5990n4wrq",
+                    },
+                  ]}
                 />
                 <Component {...pageProps} />
               </AuthProvider>
