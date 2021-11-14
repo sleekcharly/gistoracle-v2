@@ -11,8 +11,6 @@ function Settings() {
 
   // destructure user objects
   const { currentUser, loading } = useAuth();
-  console.log(currentUser);
-  console.log(loading);
 
   // check for existing token and token expiration to maintain user authentication
   userAuthRefresh();
