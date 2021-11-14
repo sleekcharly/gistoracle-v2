@@ -91,7 +91,12 @@ export const getServerSideProps = async ({ res }) => {
         </url>`;
       })
       .join("")}
-
+        <url>
+            <loc>https://www.gistoracle.com/</loc>
+            <lastmod>${new Date().toISOString()}</lastmod>
+            <changefreq>always</changefreq>
+            <priority>1.0</priority>
+        </url>
         <url> 
             <loc>https://gistoracle.com/category/news</loc> 
             <lastmod>${new Date().toISOString()}</lastmod>
