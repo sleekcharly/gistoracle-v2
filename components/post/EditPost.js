@@ -169,7 +169,7 @@ function EditPost() {
         setEditingPost(false);
 
         // go to category page
-        window.location.href = `/post/${editedPostDetails.shrineName}/${editedPostDetails.postId}/${editedPostDetails.slug}`;
+        window.location.href = `/post/${shrineName}/${editedPostDetails.postId}/${editedPostDetails.slug}`;
       })
       .catch((err) => {
         console.error(err);
