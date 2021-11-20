@@ -79,6 +79,20 @@ function MyApp({ Component, pageProps }) {
             `,
         }}
       />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gtag.GA_TRACKING_ID}', {
+                page_path: window.location.pathname,
+                });
+            `,
+        }}
+      />
       {/* <ThemeProvider enableSystem={true} attribute="class"> for dark mode */}
       <ThemeProvider>
         <MuiThemeProvider theme={theme}>
