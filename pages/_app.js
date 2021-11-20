@@ -13,6 +13,8 @@ import themeFile from "../utils/theme";
 import { createTheme, MuiThemeProvider } from "@material-ui/core";
 import Loader from "../utils/loader";
 import { useRouter } from "next/router";
+import Script from "next/script";
+import * as gtag from "../utils/gtag";
 
 function MyApp({ Component, pageProps }) {
   // set router
@@ -57,50 +59,71 @@ function MyApp({ Component, pageProps }) {
     "Gistoracle is home to a wide range of communities offering juicy news, discussions, gossips, articles and many more.";
 
   return (
-    // <ThemeProvider enableSystem={true} attribute="class"> for dark mode
-    <ThemeProvider>
-      <MuiThemeProvider theme={theme}>
-        <SnackbarProvider
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        >
-          <Provider store={store}>
-            {pageLoading ? (
-              <Loader />
-            ) : (
-              <AuthProvider>
-                <DefaultSeo
-                  title={metaTitle}
-                  description={metaDescription}
-                  canonical={metaUrl}
-                  openGraph={{
-                    url: metaUrl,
-                    title: metaTitle,
-                    description: metaDescription,
-                    images: [{ url: metaImage }],
-                    site_name: "Gistoracle",
-                    type: "website",
-                  }}
-                  facebook={{
-                    appId: "648521896142401",
-                  }}
-                  twitter={{
-                    site: "@gistoracle",
-                    cardType: "summary",
-                  }}
-                  additionalMetaTags={[
-                    {
-                      property: "facebook-domain-verification",
-                      content: "z42jagycnlqtpdw8qpzsl5990n4wrq",
-                    },
-                  ]}
-                />
-                <Component {...pageProps} />
-              </AuthProvider>
-            )}
-          </Provider>
-        </SnackbarProvider>
-      </MuiThemeProvider>
-    </ThemeProvider>
+    <>
+      {/* Global Site Tag (gtag.js) - Google Analytics */}
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+      />
+      <Script
+        id="gtag-init"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gtag.GA_TRACKING_ID}', {
+                page_path: window.location.pathname,
+                });
+            `,
+        }}
+      />
+      {/* <ThemeProvider enableSystem={true} attribute="class"> for dark mode */}
+      <ThemeProvider>
+        <MuiThemeProvider theme={theme}>
+          <SnackbarProvider
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Provider store={store}>
+              {pageLoading ? (
+                <Loader />
+              ) : (
+                <AuthProvider>
+                  <DefaultSeo
+                    title={metaTitle}
+                    description={metaDescription}
+                    canonical={metaUrl}
+                    openGraph={{
+                      url: metaUrl,
+                      title: metaTitle,
+                      description: metaDescription,
+                      images: [{ url: metaImage }],
+                      site_name: "Gistoracle",
+                      type: "website",
+                    }}
+                    facebook={{
+                      appId: "648521896142401",
+                    }}
+                    twitter={{
+                      site: "@gistoracle",
+                      cardType: "summary",
+                    }}
+                    additionalMetaTags={[
+                      {
+                        property: "facebook-domain-verification",
+                        content: "z42jagycnlqtpdw8qpzsl5990n4wrq",
+                      },
+                    ]}
+                  />
+                  <Component {...pageProps} />
+                </AuthProvider>
+              )}
+            </Provider>
+          </SnackbarProvider>
+        </MuiThemeProvider>
+      </ThemeProvider>
+    </>
   );
 }
 
