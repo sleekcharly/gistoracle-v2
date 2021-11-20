@@ -63,7 +63,7 @@ function MyApp({ Component, pageProps }) {
       {/* Global Site Tag (gtag.js) - Google Analytics */}
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-79K8JMZJ2Q`}
+        src={`https://www.googletagmanager.com/gtag/js?id=UA-196549940-1`}
       />
       <Script
         id="gtag-init"
@@ -73,7 +73,7 @@ function MyApp({ Component, pageProps }) {
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', 'G-79K8JMZJ2Q', {
+                gtag('config', '${gtag.GA_TRACKING_ID}', {
                 page_path: window.location.pathname,
                 });
             `,
