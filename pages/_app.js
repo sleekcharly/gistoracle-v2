@@ -73,7 +73,7 @@ function MyApp({ Component, pageProps }) {
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
                 gtag('js', new Date());
-                gtag('config', '${gtag.GA_TRACKING_ID}', {
+                gtag('config', 'UA-196549940-1', {
                 page_path: window.location.pathname,
                 });
             `,
