@@ -22,25 +22,31 @@ function MyApp({ Component, pageProps }) {
   const [pageLoading, setPageLoading] = useState(false);
 
   //initiate google analytics
-  useEffect(() => {
-    if (process.env.NODE_ENV === "production") {
-      analytics();
-    }
-  }, []);
+  //   useEffect(() => {
+  //     if (process.env.NODE_ENV === "production") {
+  //       analytics();
+  //     }
+  //   }, []);
 
   // take action on route change
   useEffect(() => {
     const handleStart = () => {
       setPageLoading(true);
+      if (process.env.NODE_ENV === "production") {
+        analytics();
+      }
     };
     const handleComplete = () => {
       setPageLoading(false);
+      if (process.env.NODE_ENV === "production") {
+        analytics();
+      }
     };
 
     router.events.on("routeChangeStart", handleStart);
     router.events.on("routeChangeComplete", handleComplete);
     router.events.on("routeChangeError", handleComplete);
-  }, [router]);
+  }, [router.events]);
 
   // define redux store
   const store = useStore(pageProps.initialReduxState);
