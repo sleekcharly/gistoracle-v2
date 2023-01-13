@@ -10,6 +10,7 @@ export default function Home() {
 
   // establish snackbar utility
   //   const { closeSnackbar, enqueueSnackbar } = useSnackbar();
+
   return (
     <div data-testid="root">
       <p>Hello</p>
