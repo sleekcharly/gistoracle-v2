@@ -1,0 +1,69 @@
+/** UI reducer types **/
+
+export const SET_FEATURED_NAV_CATEGORIES: string =
+  'SET_FEATURED_NAV_CATEGORIES';
+// light and dark mode
+export const DARK_MODE_ON: string = 'DARK_MODE_ON';
+export const DARK_MODE_OFF: string = 'DARK_MODE_OFF';
+
+// status types
+export const SET_STATUS: string = 'SET_STATUS';
+export const CLEAR_STATUS: string = 'CLEAR_STATUS';
+export const SET_RESET_PASSWORD_STATUS: string = 'SET_RESET_PASSWORD_STATUS';
+export const CLEAR_RESET_PASSWORD_STATUS: string =
+  'CLEAR_RESET_PASSWORD_STATUS';
+export const SET_REPLY_STATUS: string = 'SET_REPLY_STATUS';
+export const SET_REPLY_STATUS_1: string = 'SET_REPLY_STATUS_1';
+export const SET_REPLY_STATUS_2: string = 'SET_REPLY_STATUS_2';
+export const SET_REPLY_STATUS_3: string = 'SET_REPLY_STATUS_3';
+export const SET_REPLY_STATUS_4: string = 'SET_REPLY_STATUS_4';
+export const SET_REPLY_STATUS_5: string = 'SET_REPLY_STATUS_5';
+export const SELECT_SHRINE: string = 'SELECT_SHRINE';
+
+// error types
+export const SET_ERRORS: string = 'SET_ERRORS';
+export const CLEAR_ERRORS: string = 'CLEAR_ERRORS';
+export const SET_LOGIN_ERRORS: string = 'SET_LOGIN_ERRORS';
+export const CLEAR_LOGIN_ERRORS: string = 'CLEAR_LOGIN_ERRORS';
+export const SET_SIGNUP_ERRORS: string = 'SET_SIGNUP_ERRORS';
+export const CLEAR_SIGNUP_ERRORS: string = 'CLEAR_SIGNUP_ERRORS';
+export const SET_RESET_PASSWORD_ERRORS: string = 'SET_RESET_PASSWORD_ERRORS';
+export const CLEAR_RESET_PASSWORD_ERRORS: string =
+  'CLEAR_RESET_PASSWORD_ERRORS';
+export const SET_REPLY_FORM_ERRORS: string = 'SET_REPLY_FORM_ERRORS';
+export const CLEAR_REPLY_FORM_ERRORS: string = 'CLEAR_REPLY_FORM_ERRORS';
+export const SET_COMMENT_REPLY_FORM_ERRORS_1: string =
+  'SET_COMMENT_REPLY_FORM_ERRORS_1';
+export const CLEAR_COMMENT_REPLY_FORM_ERRORS_1: string =
+  'CLEAR_COMMENT_REPLY_FORM_ERRORS_1';
+export const SET_COMMENT_REPLY_FORM_ERRORS_2: string =
+  'SET_COMMENT_REPLY_FORM_ERRORS_2';
+export const CLEAR_COMMENT_REPLY_FORM_ERRORS_2: string =
+  'CLEAR_COMMENT_REPLY_FORM_ERRORS_2';
+export const SET_COMMENT_REPLY_FORM_ERRORS_3: string =
+  'SET_COMMENT_REPLY_FORM_ERRORS_3';
+export const CLEAR_COMMENT_REPLY_FORM_ERRORS_3: string =
+  'CLEAR_COMMENT_REPLY_FORM_ERRORS_3';
+export const SET_COMMENT_REPLY_FORM_ERRORS_4: string =
+  'SET_COMMENT_REPLY_FORM_ERRORS_4';
+export const CLEAR_COMMENT_REPLY_FORM_ERRORS_4: string =
+  'CLEAR_COMMENT_REPLY_FORM_ERRORS_4';
+export const SET_COMMENT_REPLY_FORM_ERRORS_5: string =
+  'SET_COMMENT_REPLY_FORM_ERRORS_5';
+export const CLEAR_COMMENT_REPLY_FORM_ERRORS_5: string =
+  'CLEAR_COMMENT_REPLY_FORM_ERRORS_5';
+export const SET_CREATE_COMMENT_ERRORS: string = 'SET_CREATE_COMMENT_ERRORS';
+export const CLEAR_CREATE_COMMENT_ERRORS: string =
+  'CLEAR_CREATE_COMMENT_ERRORS';
+
+// loading types
+export const SET_LOADING_COMPONENT_POSTS: string =
+  'SET_LOADING_COMPONENT_POSTS';
+export const STOP_LOADING_COMPONENT_POSTS: string =
+  'STOP_LOADING_COMPONENT_POSTS';
+export const SET_LOADING_USER_SAVED_POSTS: string =
+  'SET_LOADING_USER_SAVED_POSTS ';
+export const STOP_LOADING_USER_SAVED_POSTS: string =
+  'STOP_LOADING_USER_SAVED_POSTS ';
+export const LOADING_USER: string = 'LOADING_USER';
+export const STOP_LOADING_USER: string = 'STOP_LOADING_USER';

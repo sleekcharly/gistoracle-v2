@@ -1,0 +1,13 @@
+// user reducer types
+
+export const SET_SUBSCRIBED_SHRINES: string = 'SET_SUBSCRIBED_SHRINES';
+export const SET_USER: string = 'SET_USER';
+export const SET_USER_PROFILE: string = 'SET_USER_PROFILE';
+export const SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL: string =
+  'SET_MORE_AUTH_SHRINES_FOR_INFINITE_SCROLL';
+export const RESET_AUTH_SHRINES_FOR_INFINITE_SCROLL: string =
+  'RESET_AUTH_SHRINES_FOR_INFINITE_SCROLL';
+export const ADD_USER_LIKES: string = 'ADD_USER_LIKES';
+export const REMOVE_USER_LIKE: string = 'REMOVE_USER_LIKE';
+export const ADD_USER_SAVED_POST: string = 'ADD_USER_SAVED_POST';
+export const REMOVE_USER_SAVED_POST: string = 'REMOVE_USER_SAVED_POST';
